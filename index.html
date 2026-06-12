@@ -1008,8 +1008,61 @@ body{
 @keyframes toastOut{from{opacity:1}to{opacity:0}}
 
 /* ============================================================
-   DESKTOP LAYOUT — centered column with flanking dark texture
+   SPLASH SCREEN — 启动加载屏
    ============================================================ */
+#splash{
+  position:fixed;inset:0;
+  z-index:9999;
+  background:var(--charcoal);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  transition:opacity .6s ease;
+}
+#splash.hide{opacity:0;pointer-events:none}
+.splash-title{
+  font-family:var(--font-d);
+  font-size:clamp(1.6rem,8vw,2.4rem);
+  font-weight:700;color:var(--gold);
+  letter-spacing:.12em;margin-bottom:1.6vw;
+  text-align:center;
+}
+.splash-sub{
+  font-family:var(--font-h);font-size:.55rem;
+  letter-spacing:.45em;color:var(--muted);
+  text-transform:uppercase;margin-bottom:10vw;
+}
+.splash-moon{
+  font-size:12vw;color:var(--gold);
+  animation:splashMoon 2s ease-in-out infinite;
+  filter:drop-shadow(0 0 16px rgba(184,134,11,.4));
+  margin-bottom:8vw;
+}
+@keyframes splashMoon{
+  0%,100%{transform:rotate(-12deg) scale(1);opacity:.7}
+  50%{transform:rotate(12deg) scale(1.1);opacity:1}
+}
+.splash-bar-wrap{
+  width:48vw;max-width:180px;
+  height:1px;background:rgba(184,134,11,.2);
+  position:relative;overflow:hidden;
+}
+.splash-bar{
+  position:absolute;top:0;left:0;height:100%;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  width:40%;
+  animation:splashScan 1.4s ease-in-out infinite;
+}
+@keyframes splashScan{
+  0%{left:-40%}100%{left:100%}
+}
+.splash-hint{
+  margin-top:4vw;
+  font-family:var(--font-h);font-size:.52rem;
+  letter-spacing:.2em;color:var(--muted);
+  opacity:.5;
+}
+
+
 @media(min-width:600px){
   html{font-size:16px}
 
@@ -1076,6 +1129,15 @@ body{
 </style>
 </head>
 <body>
+
+<!-- 启动加载屏 -->
+<div id="splash">
+  <span class="splash-moon">☽</span>
+  <div class="splash-title">神话人格</div>
+  <div class="splash-sub">Greek Myth Personality</div>
+  <div class="splash-bar-wrap"><div class="splash-bar"></div></div>
+  <div class="splash-hint">正在召唤神谕...</div>
+</div>
 
 <div class="top-gold-line"></div>
 <div class="ink-frame"></div>
@@ -1534,8 +1596,35 @@ function startFriendQuiz(){
 }
 
 // ============================================================
-// 预加载 — 首屏完成后预取后续图片，消除加载感知
+// SPLASH — 预加载首屏关键图片后淡出
 // ============================================================
+(function(){
+  // 首屏需要的关键图片
+  var CRITICAL=[
+    './assets/parchment-texture.webp',
+    './assets/ink-border.webp',
+    './images/athena.webp'
+  ];
+  var loaded=0;
+  var total=CRITICAL.length;
+  // 最长等待 4 秒，超时也淡出（避免网络极差时卡死）
+  var timer=setTimeout(hideSplash, 4000);
+  function hideSplash(){
+    clearTimeout(timer);
+    var splash=document.getElementById('splash');
+    if(!splash)return;
+    splash.classList.add('hide');
+    setTimeout(function(){splash.style.display='none'},650);
+  }
+  CRITICAL.forEach(function(src){
+    var img=new Image();
+    img.onload=img.onerror=function(){
+      loaded++;
+      if(loaded>=total)hideSplash();
+    };
+    img.src=src;
+  });
+})();
 function prefetchImg(src){
   if(!src)return;
   var i=new Image();i.src=src;
