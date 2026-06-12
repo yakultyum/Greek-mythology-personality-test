@@ -334,10 +334,22 @@ body{
   background:transparent;
   cursor:pointer;
   transition:border-color .2s,background .2s;
+  overflow:hidden;position:relative;
+}
+.totem-cell img{
+  width:100%;height:100%;
+  object-fit:cover;
+  opacity:.85;
+  transition:opacity .2s;
 }
 .totem-cell:active,.totem-cell.active{
   border-color:var(--gold);
   background:rgba(184,134,11,.12);
+}
+.totem-cell.active img,.totem-cell:active img{opacity:1}
+.totem-cell.active::after{
+  content:'';position:absolute;inset:0;
+  border:2px solid var(--gold);pointer-events:none;
 }
 
 /* UID */
@@ -765,6 +777,60 @@ body{
 .btn-again:hover{color:var(--deep-brown);border-color:var(--gold-dk)}
 
 /* ============================================================
+   命运羁绊 DESTINY BONDS
+   ============================================================ */
+.bonds-section{margin-bottom:6.4vw}
+.bonds-subtitle{
+  font-family:var(--font-h);font-size:.52rem;
+  letter-spacing:.35em;color:var(--gold-dk);
+  text-transform:uppercase;
+  text-align:center;margin-bottom:3.2vw;
+  display:flex;align-items:center;gap:6px;
+}
+.bonds-subtitle::before,.bonds-subtitle::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-dk),transparent);
+}
+.bond-card{
+  display:flex;align-items:center;
+  gap:3.2vw;padding:3vw 3.7vw;
+  border:1px solid rgba(184,134,11,.25);
+  background:rgba(240,232,213,.5);
+  margin-bottom:2.4vw;
+  position:relative;
+}
+.bond-card::before,.bond-card::after{
+  content:'';position:absolute;
+  width:8px;height:8px;
+}
+.bond-card::before{top:5px;left:5px;
+  border-top:1px solid var(--gold-dk);border-left:1px solid var(--gold-dk)}
+.bond-card::after{bottom:5px;right:5px;
+  border-bottom:1px solid var(--gold-dk);border-right:1px solid var(--gold-dk)}
+.bond-card.kindred{border-color:rgba(212,168,67,.45);background:rgba(240,232,213,.65)}
+.bond-card.tension{border-color:rgba(139,96,64,.3);background:rgba(240,232,213,.35)}
+.bond-avatar{
+  width:11vw;height:11vw;
+  max-width:44px;max-height:44px;
+  border-radius:50%;
+  border:1px solid var(--border-dk);
+  object-fit:cover;object-position:top center;
+  flex-shrink:0;background:var(--parchment2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:5.5vw;overflow:hidden;
+}
+.bond-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.bond-info{flex:1;min-width:0}
+.bond-name{
+  font-family:var(--font-h);font-size:.75rem;
+  color:var(--gold);letter-spacing:.08em;margin-bottom:.8vw;
+}
+.bond-desc{
+  font-family:var(--font-b);font-size:.72rem;
+  color:var(--mid-brown);line-height:1.5;
+}
+
+/* ============================================================
    FRIEND PAGE  (05-friend.jpg)
    ============================================================ */
 #sfr{padding:0;align-items:stretch}
@@ -1137,6 +1203,8 @@ body{
       <div class="sec-label">人格维度</div>
       <div class="stats-section" id="r-stats"></div>
       <div class="divider">✦</div>
+      <!-- 命运羁绊 -->
+      <div class="bonds-section" id="r-bonds"></div>
       <div class="result-actions">
         <button class="btn-share" onclick="doShare()">✦ 邀请好友测试 · 查看你们的神话关系</button>
         <button class="btn-again" onclick="location.reload()">再测一次</button>
@@ -1304,9 +1372,22 @@ var GOD_IMGS={
   achilles:'./images/achilles.jpg',odysseus:'./images/odysseus.jpg'
 };
 
-// 图腾 emoji
-var TOTEMS=['🦉','🐺','🦁','🌿','🐬','🔱','🐦','🐍','🦌','🌿','🦅','🦄'];
-var selectedTotem=TOTEMS[0];
+// 图腾配置：图片路径 + 备用emoji + 名称
+var TOTEMS=[
+  {img:'./assets/totems/owl.jpg',    emoji:'🦉', name:'owl'},
+  {img:'./assets/totems/wolf.jpg',   emoji:'🐺', name:'wolf'},
+  {img:'./assets/totems/lion.jpg',   emoji:'🦁', name:'lion'},
+  {img:'./assets/totems/olive.jpg',  emoji:'🌿', name:'olive'},
+  {img:'./assets/totems/dolphin.jpg',emoji:'🐬', name:'dolphin'},
+  {img:'./assets/totems/trident.jpg',emoji:'🔱', name:'trident'},
+  {img:'./assets/totems/phoenix.jpg',emoji:'🐦', name:'phoenix'},
+  {img:'./assets/totems/snake.jpg',  emoji:'🐍', name:'snake'},
+  {img:'./assets/totems/deer.jpg',   emoji:'🦌', name:'deer'},
+  {img:'./assets/totems/eagle.jpg',  emoji:'🦅', name:'eagle'},
+  {img:'./assets/totems/unicorn.jpg',emoji:'🦄', name:'unicorn'},
+  {img:'./assets/totems/branch.jpg', emoji:'🌿', name:'branch'},
+];
+var selectedTotem=TOTEMS[0].emoji;
 var LABELS=['A','B','C','D'];
 
 function genUID(){
@@ -1339,10 +1420,14 @@ function show(name){
   TOTEMS.forEach(function(t,i){
     var btn=document.createElement('button');
     btn.className='totem-cell'+(i===0?' active':'');
-    btn.textContent=t;
+    // 尝试加载图片，降级到 emoji
+    var img=document.createElement('img');
+    img.src=t.img;img.alt=t.name;
+    img.onerror=function(){btn.removeChild(img);btn.textContent=t.emoji};
+    btn.appendChild(img);
     btn.onclick=function(){
       document.querySelectorAll('.totem-cell').forEach(function(b){b.classList.remove('active')});
-      btn.classList.add('active');selectedTotem=t;
+      btn.classList.add('active');selectedTotem=t.emoji;
     };
     grid.appendChild(btn);
   });
@@ -1385,6 +1470,27 @@ function startFriendQuiz(){
   scores={};Object.keys(GODS).forEach(function(k){scores[k]=0});
   qIdx=0;isFriend=true;show('quiz');renderQ();
 }
+
+// ============================================================
+// 预加载 — 首屏完成后预取后续图片，消除加载感知
+// ============================================================
+function prefetchImg(src){
+  if(!src)return;
+  var i=new Image();i.src=src;
+}
+function prefetchAfterLoad(){
+  // 预取前3题场景图
+  setTimeout(function(){
+    Q_SCENES.slice(0,3).forEach(prefetchImg);
+  },800);
+  // 预取剩余场景图
+  setTimeout(function(){
+    Q_SCENES.slice(3).forEach(prefetchImg);
+  },2000);
+}
+// 页面加载完成后开始预取
+if(document.readyState==='complete'){prefetchAfterLoad()}
+else{window.addEventListener('load',prefetchAfterLoad)}
 
 // ============================================================
 // 题目场景图映射 — AI 生成的油画场景插图
@@ -1433,6 +1539,8 @@ function renderQ(){
       sceneEmoji.textContent=q.scene;
       sceneDiv.appendChild(sceneEmoji);
     }
+    // 预取下一题场景图
+    prefetchImg(Q_SCENES[qIdx+1]);
 
     // 问题文字
     var txt=document.createElement('div');
@@ -1473,6 +1581,99 @@ function finishQuiz(){
     if(isFriend&&hostGodId){showFriendCompare()}
     else{showResult(winner)}
   },2200);
+}
+
+// ============================================================
+// 命运羁绊 — 余弦相似度计算
+// ============================================================
+function cosineSim(a,b){
+  var dot=0,ma=0,mb=0;
+  for(var i=0;i<a.length;i++){dot+=a[i]*b[i];ma+=a[i]*a[i];mb+=b[i]*b[i]}
+  return dot/(Math.sqrt(ma)*Math.sqrt(mb));
+}
+
+// CHARACTERS.md 附录二中的关系文案（每位神祇 → 其他19位）
+var BOND_TEXTS={
+  zeus:{hera:"同握权杖，恩怨皆是命数",athena:"雷霆出于脑，父女各执一道",poseidon:"天海各据一极，霸气相认",apollo:"光耀同脉，雷与日共照大地",achilles:"宙斯赐命，英雄以血还诸神",persephone:"宙斯允冥约，深渊因此开裂",ares:"同为烈性，然一主律，一嗜乱",odysseus:"宙斯布局，人以智游其棋盘",prometheus:"一个封火，一个盗火，各执天命",aphrodite:"雷霆难制欲焰，权威逢情生隙",hades:"天与冥分治，深沉暗合君威",demeter:"宙斯裁四季，大地以泪作答",artemis:"父令难束月光，自由与律各行",hermes:"宙斯遣信使，权令化风而散",hephaestus:"雷霆由锻造生，权威借匠心成",dionysus:"秩序遭酒神消解，王座对狂欢失语",eros:"雷声压不住心弦，权威败于情箭",nike:"胜利为宙斯加冕，荣耀同源",tyche:"宙斯定律，命运女神掷骰于律外"},
+  hera:{demeter:"同以守护为冠，一主天下，一主大地",zeus:"共执权柄，却在雷霆与誓约间博弈",achilles:"激情与护卫同炽，烈骨英魂相映",persephone:"深沉藏于守护之下，冥春两界同契",prometheus:"护众之心相通，然一守秩序一破天规",nike:"权威共鸣，赫拉定命，尼刻加冕",hades:"同处幽权之位，深沉与威仪各镇一方",poseidon:"权势相当，激流暗涌于天穹与深海之间",athena:"同掌护佑，智与威之间横亘无言暗较",apollo:"激情相通，然光明无拘，天后持缰",hephaestus:"深沉与威权之间，是母与子的久伤",aphrodite:"激情同烈，然誓约与自由势同水火",odysseus:"赫拉护佑流浪者，智谋与权威暗中合契",ares:"同以激情燃身，然律法与杀伐终难同路",artemis:"守护同源，却一缚于誓，一游于荒野",eros:"权威遇无羁之爱，天后眉间横一箭",hermes:"天规与越界，赫拉张网，赫尔墨斯穿网",dionysus:"秩序遇狂欢，冕旒与酒神不共一天",tyche:"命运无常动摇威权，赫拉所握堤喀所散"},
+  athena:{odysseus:"智谋共鸣，一守城邦一渡沧海",persephone:"深沉相映，明与暗各守其门",prometheus:"同燃智慧之火，护人族于黑暗",hades:"深沉与睿智，各执秩序一端",artemis:"同为独立之神，守土各有疆界",hephaestus:"智慧与匠艺相合，共铸神器",apollo:"智光相近，一沉思一燃烈",zeus:"父女之间，权威与智慧分庭",demeter:"守护同源，一护苍生一护智识",hera:"权威相近，秩序与情欲暗中角力",nike:"胜利随智谋而至，二者相伴",poseidon:"权威相当，雅典争城各不相让",achilles:"智者导英雄，烈火终需明灯",hermes:"智脉相通，一沉稳一轻灵游走",aphrodite:"美与智各执一道，暗中较量",dionysus:"理性遇狂欢，秩序与混沌对立",ares:"同司战事，智谋与蛮力永恒相克",eros:"智慧拒情欲，箭矢难穿神盾",tyche:"命运弄偶然，智慧求必然，水火不容"},
+  apollo:{nike:"荣光同燃，胜利即诗",poseidon:"烈焰与怒潮，同出奔放",aphrodite:"激情共鸣，各燃其焰",prometheus:"一者燃光，一者窃火",odysseus:"智各有道，殊途同归",hermes:"琴弦与飞翼，共舞自由",zeus:"父子光芒，各据苍穹",dionysus:"日光与醉梦，皆为激情",achilles:"一以箭鸣，一以剑震",persephone:"春光触幽冥，明暗相映",athena:"智者并立，文武殊途",ares:"同怀烈焰，出口各异",artemis:"日月双生，相望不相融",hephaestus:"光耀苍穹，匠隐幽火",eros:"箭指芳心，琴弦颤动",hera:"王冠束缚光，二者暗涌",demeter:"阳光催谷生，惜各有岸",tyche:"命运无序处，预言亦失言",hades:"光不入冥府，二者永相背"},
+  artemis:{odysseus:"荒野与远海，皆是自由的归处",prometheus:"守护之心同燃，各以己命护苍生",hermes:"林间月与路间风，共逐无拘之境",athena:"智慧同源，一守林泽一守城邦",persephone:"一人守光明，一人渡幽冥，深浅相知",aphrodite:"月光拒缚，玫瑰缠人，道不同而心皆烈",eros:"箭矢同出，一射自由，一射痴缠",achilles:"猎月之弓与战场之盾，守护各有其道",apollo:"日月同胞，光辉相映，各守半片苍穹",dionysus:"同嗜自由，月下静猎与醉中狂舞殊途",poseidon:"荒野之月照不尽深海，威势相抗而不交",demeter:"守护同归，一护野兽，一护万物生长",hephaestus:"孤独相通，月色无声，炉火无语",nike:"猎弓张处即胜机，荣耀借月光而降",tyche:"月有定轨，命无定数，各行其道难相合",ares:"狩猎非嗜杀，月光非战火，貌似而神异",zeus:"雷霆欲驭天地，月神唯守无拘之野",hera:"一者以缚为守，一者以离为守，势同水火",hades:"月光止于冥土之门，自由与幽禁永不相渡"},
+  poseidon:{nike:"征途相随，胜利即是彼此的海",apollo:"烈焰与怒潮，皆燃于同一激情",ares:"浪与刃共鸣，皆以狂烈立世",zeus:"天与海各据一方，权威不相让",achilles:"同燃激情，一守身荣一守疆界",aphrodite:"浪潮与爱欲，皆不受锁链驯服",persephone:"深海与深渊，各怀不言之秘密",dionysus:"同癫同烈，波塞冬缚于王座间",prometheus:"一以力开路，一以智燃火种",odysseus:"同属大海，一为主宰一为漂客",artemis:"自由相近，海与林各守孤傲边界",hera:"威权相当，守与不守之间暗潮涌",athena:"力与谋交锋，雅典之争未曾息",hermes:"海与风皆自由，深浅各异心难合",eros:"爱箭难射深海，情与权彼此疏离",tyche:"命运掷骰，浪潮之下皆是未知",hades:"海与冥府，激情与沉寂永世对望",hephaestus:"烈与深皆有，自由与禁锢两相背",demeter:"一耕沃土一掌汪洋，守护殊途"},
+  demeter:{persephone:"母女同根，守护与深沉皆成命",prometheus:"一以守护生灵，一以光明济世",hera:"同守其所爱，各燃心中烈焰",achilles:"大地之守与战场之护，同源异形",hephaestus:"二者皆沉于本分，深耕不辍",odysseus:"得墨忒耳守土，奥德修斯逐浪，相知难同行",athena:"一耕心田，一耕疆场，殊途同归",aphrodite:"爱以激情散播，爱以守护凝聚",artemis:"月下自由身与丰收守土者，静默相望",hades:"一执生之守，一掌死之权，天壤难和",apollo:"光芒四射者与守土者，热烈却不同根",zeus:"威权统九天，守护润万物，各执一道",eros:"箭矢无根，麦穗有土，爱之形迥异",nike:"胜利流于表，丰收沉于根，浮沉各异",poseidon:"海域无疆，土地有界，碰而不融",ares:"战火所焚，乃守护者最深之痛",hermes:"飞羽无处不栖，麦田深根难动",dionysus:"同出泥土，一醉忘形，一守本真",tyche:"命运骰子与丰收誓约，秩序对无常"},
+  hermes:{dionysus:"皆以自由为翼，一舞一飞，共醉天涯",apollo:"智光相映，一司晨曦，一驭暗道",odysseus:"同以谋行路，狡黠惺惺相惜",artemis:"共饮自由之风，各守边野山泽",tyche:"偶然与变数同行，命运难分彼此",aphrodite:"一递欲念，一传信息，共织人间网",nike:"胜者需使者传名，二者相辅而行",prometheus:"盗火者与窃秘者，同以智慧犯禁",eros:"一传情箭，一递密语，暗中共谋",poseidon:"汪洋之霸气遇轻灵，难御亦难缚",ares:"战神逞烈火，使者借风势，貌合神离",athena:"同怀智慧，一守秩序，一破藩篱",achilles:"荣耀之火与速行之风，难以同驻",persephone:"一往幽冥引渡，一守春秋两界",zeus:"天父令旗所指，使者不得不从",hephaestus:"一困炉火不出，一逍遥天地间",demeter:"生息之根与流离之翼，相望不相交",hera:"枷锁与自由对望，礼法难缚信使",hades:"一引亡魂入冥，一不受幽暗所留"},
+  aphrodite:{eros:"爱欲同源，彼此即是彼此",achilles:"烈焰共燃，荣耀与美并驾",ares:"战火与玫瑰，激情无需理由",dionysus:"醉与美，皆是世间的放纵",apollo:"美与光同辉，各领一片盛世",prometheus:"一以情燃世，一以火照暗",poseidon:"海与爱同样深邃难测",nike:"荣耀加身，美为胜者加冕",artemis:"自由相契，却各择其道而行",tyche:"命运无常，美亦转瞬即逝",hermes:"风行之处，爱意随信而至",persephone:"花开花落，一人守春一人守冥",odysseus:"智者漂泊，美神令其动心难归",demeter:"爱以美燃，爱以土养，各有所系",zeus:"权与美相逢，各以本性争辉",hera:"同燃激情，却一束缚一放纵",hephaestus:"美俯视烈火，炉锤难锻芳心",athena:"智与美各执一端，难以交融",hades:"爱神止步冥渊，光无法入深渊"},
+  ares:{aphrodite:"烈焰与蔷薇，共燃一火",achilles:"战神与英雄，同沸同烈",poseidon:"怒涛与铁蹄，震山动海",nike:"战火所向，胜利相随",eros:"激情同源，一刃一箭",dionysus:"热血与狂欢，皆不知节",tyche:"战局善变，命运难测",apollo:"烈日照沙场，光与刃并行",zeus:"父命难违，雷威压战魂",hermes:"一奔战场，一穿云隙",prometheus:"蛮力与深谋，各执一道",artemis:"月下孤箭，不入战阵",hera:"权威相当，冠冕压刀锋",persephone:"生死两界，战火难渡冥河",odysseus:"一战而破，一谋而胜",demeter:"战火所过，大地泣无声",athena:"血勇对峙智谋，永不相让",hephaestus:"铸剑者沉默，持剑者张扬",hades:"阿瑞斯燃战，哈迪斯收魂"},
+  hephaestus:{persephone:"深沉者各守一域，暗中相照",prometheus:"同以智与火，燃尽自身照世人",odysseus:"一锻于炉，一谋于途，智者相知",hades:"深沉者各镇幽暗，默然相认",athena:"智与技合，器与道共鸣",demeter:"一守熔炉，一守沃土，守望相契",apollo:"火焰与光辉，各自灼人不自知",hera:"母子之间，铸造与权柄暗自角力",artemis:"一囿于炉火，一纵于旷野",achilles:"锻甲者沉默，披甲者烈烈，相依相远",aphrodite:"美生于炉火，却与铁匠背道而驰",poseidon:"火与海，各据其极，势同水火",nike:"胜利轻盈飞扬，锻造者沉于炉底",zeus:"雷霆出自铁锤，父与子各执一端",hermes:"一人深根炉台，一人轻履八方",eros:"爱箭由火中来，情与匠却两不相解",dionysus:"醉于无界者与囿于深炉者，道不同",ares:"赫淮斯托斯铸剑，阿瑞斯挥剑，功与名异归",tyche:"命运无常笑锻造之执，格格不入"},
+  dionysus:{tyche:"皆以随性为命，同醉于无常之美",aphrodite:"激情共燃，欢宴与爱欲难分彼此",hermes:"一个破界，一个越界，同行于边缘",eros:"迷狂即爱，二者皆令凡心沦陷",apollo:"白昼与夜宴，光与醉的永恒对唱",ares:"战场与酒场，同样烈焰，殊途同归",poseidon:"深海暗涌，与狂欢浪潮隐有共鸣",artemis:"自由相通，然一入林，一入宴，各自清醒",nike:"胜冠与醉冠，荣耀的滋味微有差异",achilles:"同燃激情，一以剑，一以酒，皆不惜身",prometheus:"一者以火予人，一者以酒解人，同怀博悯",odysseus:"智者与醉神，皆善以迂回抵达彼岸",persephone:"冥春与狂秋，深沉牵住了欢宴的边界",zeus:"雷霆欲立秩序，美酒偏要消融规则",hephaestus:"匠神俯首铸形，酒神仰天破形，南辕北辙",athena:"理智与迷狂，奥林匹斯最深的裂缝",demeter:"麦田守护根与土，葡萄藤却要挣脱地",hera:"枷锁与解脱，天后与酒神势不两立",hades:"冥王以沉默统治，狄俄尼索斯以喧嚣反其道"},
+  hades:{athena:"同以深思御世，沉默即权柄",persephone:"冥界因她而有春色",hephaestus:"皆藏于暗处，以深沉铸造永恒",hera:"一者守疆，一者守序，微妙制衡",prometheus:"哈迪斯守死，普罗米修斯盗火——皆因执念",odysseus:"一者深不见底，一者迂回千里",zeus:"雷霆耀天穹，幽冥压大地",demeter:"大地孕生机，冥府收终途",apollo:"光照之处，皆是阴影所避",poseidon:"深海咆哮，冥域沉默，各据一渊",achilles:"英雄燃尽赴冥，方知沉默之重",nike:"胜利只在生者，哈迪斯不论荣败",artemis:"月光逐旷野，幽冥无边界",aphrodite:"爱欲如焰，冥王不动如渊",hermes:"唯引路者，可往来生死之间",ares:"战神制造亡者，哈迪斯悉数收纳",dionysus:"醉乡与冥府，皆令人忘却自身",eros:"情箭曾刺穿冥王，深沉者亦有软肋",tyche:"命运无常，唯冥府之门对所有人公平"},
+  persephone:{prometheus:"同怀悲悯，以深沉守护苍生",hephaestus:"幽暗孕育创造，静水深流相知",demeter:"一为根，一为果，守护同源",odysseus:"深渊与远海，智慧殊途同归",athena:"一以智谋治世，一以深情守界",achilles:"烈焰护卫苍生，深渊同守情义",hera:"守护之名相同，深沉之根各异",hades:"共居幽冥，深沉中各守寂静",artemis:"一守冥界之深，一守荒野之远",apollo:"光照之处恰是阴影所起之处",aphrodite:"深情与痴情，各执爱之一端",poseidon:"汹涌逐浪，深沉藏于静水之下",zeus:"雷霆统万界，深渊另立乾坤",nike:"胜者仰望荣光，深者俯视代价",eros:"箭射欲望，而深渊消解一切痴迷",ares:"战意炙热，深沉将其冷却至骨",dionysus:"一沉于冥土，一溺于狂欢",hermes:"使者往返两界，冥后独守一端",tyche:"命运无常如骰，深沉不信偶然"},
+  eros:{aphrodite:"母子同心，爱欲共燃一炬",dionysus:"醉与痴，皆是世间烈火",achilles:"激情与荣耀，同频共鸣",tyche:"爱生偶然，命运难以预料",ares:"烈火相遇，灼而不熄",artemis:"厄洛斯追逐，月神永隐林",prometheus:"一以情燃，一以智燃众生",hermes:"爱似流风，二者皆难驻足",apollo:"光与情交织，各耀其芒",odysseus:"情动于心，智引其归途",nike:"激情催生胜机，各取所需",demeter:"痴情无束，守护生根于土",persephone:"厄洛斯之箭，开冥界春色",poseidon:"热浪拍深洋，激而难融",hera:"爱欲无羁，礼法筑其樊笼",hephaestus:"厄洛斯逐光，匠神沉于暗",zeus:"雷霆欲驭情箭，终难如愿",athena:"情与智交锋，水火各不让",hades:"一驻幽冥，一燃人世春光"},
+  nike:{apollo:"荣光同燃，胜与美共赴巅峰",zeus:"一主宰苍穹，一加冕英雄",poseidon:"激浪与胜风，共卷天地",ares:"战火即燃处，尼刻随影而至",aphrodite:"热烈同源，征服各有其道",achilles:"烈焰之躯，以胜为命",hermes:"速捷相逢，却各奔东西",odysseus:"谋定胜局，殊途同归",prometheus:"以苦博胜，二者皆知代价",hera:"权焰相对，荣冠之争暗涌",dionysus:"狂欢无败者，胜负皆消于醉",persephone:"胜驻光明，彼深陷幽冥",athena:"智谋铸胜，二者共握月桂",artemis:"胜冠落处，猎者已入林深",eros:"爱无常胜，尼刻难渡此局",tyche:"命运弄骰，胜败皆成笑谈",demeter:"荣耀速逝，丰收默守岁月",hephaestus:"烈焰锻器，胜冠非炉中所铸",hades:"胜者终归冥府，二者皆知"},
+  tyche:{dionysus:"醉意与偶然，皆是自由本身",eros:"热烈相逢，皆不问来路",hermes:"翅翼与骰子，共舞于风中",aphrodite:"美生于偶然，情起于无意",ares:"战火与机缘，同样不可预料",artemis:"自由同源，守与散各异",apollo:"预言执于掌，命运抛于空",nike:"胜负皆由堤喀先掷",poseidon:"浪涌难测，皆因命数弄潮",achilles:"英雄命途，终落偶然一箭",odysseus:"智算千般，仍渡堤喀之海",prometheus:"一者窃火于必然，一者散运于无常",zeus:"雷霆立法，骰子破局",persephone:"深渊有定数，轮转是偶然",athena:"智谋织命理，偶然解死局",demeter:"播种循时令，收成凭堤喀",hephaestus:"匠心铸必然，命轮转无常",hera:"秩序执于冕，乱数藏于壶",hades:"死途终有归，命落从无定"},
+  prometheus:{odysseus:"智谋济世，皆以一人之力撼命运",persephone:"一守生之光，一守死之深",artemis:"自由与守护，殊途同归于野",hephaestus:"同以匠心铸世，皆知锁链之重",demeter:"一燃天火，一育地粮，同为庇佑",apollo:"普罗献火，阿波罗照耀，光辉呼应",athena:"智慧同源，一创文明，一传薪火",aphrodite:"激情共燃，一以情动，一以火明",achilles:"同以烈焰护众，皆甘赴不归之途",eros:"一以智燃，一以情燃，炽烈相映",hermes:"同守自由之道，智慧各领一方",nike:"普罗谋远，尼刻趋胜，方向各异",poseidon:"一窃天火，一主深渊，皆力撼苍穹",hera:"同怀守护之心，却困于权威罗网",zeus:"一盗火种，一持雷霆，天命相抗",dionysus:"普罗负重而行，狄俄尼索斯纵情忘返",hades:"一燃光于上界，一沉默于冥土",ares:"火之智与火之暴，同源异途",tyche:"深谋远虑遇无常，命运弄人"},
+  achilles:{aphrodite:"烈焰与玫瑰，皆因激情而生",ares:"同燃战火，杀伐中各寻荣耀",persephone:"烈焰与深渊，皆守挚爱不退",poseidon:"怒涛与铁蹄，同以狂烈震世",prometheus:"一以身守火，一以命守荣",hera:"护者相逢，烈性难分高下",eros:"激情同源，一射心，一刺敌",demeter:"守护之名相同，所护各异其命",nike:"阿喀琉斯奔赴荣耀，尼刻为其加冕",apollo:"烈日与猛将，光芒难分伯仲",zeus:"雷霆俯视烈火，威权压而不灭",artemis:"一以荣耀为锁，一以自由为弓",odysseus:"蛮勇遇智谋，英雄之道殊途",dionysus:"烈性相通，一醉于战，一醉于酒",athena:"激情撞智慧，剑锋与算筹相持",hephaestus:"烈火铸英雄，锻者与战者互成",hermes:"荣耀束缚烈士，自由放逐信使",tyche:"命运骰子落定，英雄偏要挣脱",hades:"烈火终归深渊，阿喀琉斯的宿命"},
+  odysseus:{prometheus:"智谋济世，皆以一人之力撼命运",artemis:"一浪迹海途，一独行荒野，自由同根",athena:"智慧双峰并立，谋深处暗合天意",persephone:"归途各异，皆识幽冥与光明之重",apollo:"智者与光明共鸣，谋局与预言交织",hermes:"一谋定天下，一信步四方，异途同游",hephaestus:"皆以智巧胜蛮力，深藏不露共鸣",aphrodite:"激情蛊人心，智谋破柔情",nike:"胜利之神催其锋，智者方知胜之重",achilles:"烈士以命博荣光，谋士以智渡沧海",demeter:"一心系归途，一根植大地，守护殊途",poseidon:"海神阻归路，漂泊者以智破怒涛",zeus:"雷霆掌权威，智谋绕天规，各行其道",dionysus:"迷醉忘归处，智者独醒偏向远方",eros:"情箭乱方寸，谋心不为爱所缚",hades:"幽冥重如铁，漂泊者偏与自由为伴",hera:"枷锁与流浪，相逢即是对峙",ares:"莽勇撞智谋，战场各执一途",tyche:"命运以骰决浮沉，谋者偏要逆天数"}
+};
+
+function renderBonds(gid){
+  var myDims=GODS[gid].dims;
+  var others=Object.keys(GODS).filter(function(k){return k!==gid});
+  var sims=others.map(function(k){
+    return {id:k,sim:cosineSim(myDims,GODS[k].dims)};
+  }).sort(function(a,b){return b.sim-a.sim});
+
+  var kindred=sims.slice(0,2);
+  var tension=sims.slice(-2).reverse();
+
+  var el=document.getElementById('r-bonds');
+  if(!el)return;
+  el.innerHTML='';
+
+  var secLabel=document.createElement('div');
+  secLabel.className='sec-label';secLabel.textContent='命运羁绊';
+  el.appendChild(secLabel);
+
+  function makeBondCard(godId,type){
+    var g=GODS[godId];
+    var texts=BOND_TEXTS[gid]||{};
+    var desc=texts[godId]||'命运将你们交织在一起';
+
+    var card=document.createElement('div');
+    card.className='bond-card '+type;
+
+    var avatarEl=document.createElement('div');
+    avatarEl.className='bond-avatar';
+    var path=GOD_IMGS[godId];
+    if(path){
+      var img=document.createElement('img');
+      img.src=path;img.alt=g.name;img.loading='lazy';
+      img.onerror=function(){avatarEl.textContent=g.icon};
+      avatarEl.appendChild(img);
+    } else {
+      avatarEl.textContent=g.icon;
+    }
+
+    var info=document.createElement('div');info.className='bond-info';
+    var name=document.createElement('div');name.className='bond-name';name.textContent=g.name;
+    var descEl=document.createElement('div');descEl.className='bond-desc';descEl.textContent=desc;
+    info.appendChild(name);info.appendChild(descEl);
+
+    card.appendChild(avatarEl);card.appendChild(info);
+    return card;
+  }
+
+  // 命运相契
+  var kindredLabel=document.createElement('div');
+  kindredLabel.className='bonds-subtitle';kindredLabel.textContent='命运相契';
+  el.appendChild(kindredLabel);
+  kindred.forEach(function(item){el.appendChild(makeBondCard(item.id,'kindred'))});
+
+  // 命运张力
+  var tensionLabel=document.createElement('div');
+  tensionLabel.className='bonds-subtitle';tensionLabel.textContent='命运张力';
+  el.appendChild(tensionLabel);
+  tension.forEach(function(item){el.appendChild(makeBondCard(item.id,'tension'))});
 }
 
 // ============================================================
@@ -1531,6 +1732,7 @@ function showResult(gid){
       b.style.transitionDelay=(i*90)+'ms';
       b.style.width=b.dataset.val+'%';
     });
+    renderBonds(gid);
   },300);
 }
 
