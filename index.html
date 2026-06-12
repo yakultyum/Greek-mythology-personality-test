@@ -1679,7 +1679,8 @@ function renderBonds(gid){
 // ============================================================
 // RESULT
 // ============================================================
-var STAT_ICONS={权威:'⚡',智慧:'🦉',激情:'🔥',守护:'🛡️',公正:'⚖️',独立:'🌙'};
+var STAT_ICONS={权威:'⚡',智慧:'🦉',激情:'🔥',自由:'🌿',深沉:'💀',守护:'🛡️'};
+var STAT_DIMS=['权威','智慧','激情','自由','深沉','守护'];
 
 function loadImg(imgEl,emojiEl,card,gid){
   var path=GOD_IMGS[gid];
@@ -1706,23 +1707,21 @@ function showResult(gid){
   document.getElementById('r-quote').textContent=g.quote;
 
   var statsEl=document.getElementById('r-stats');statsEl.innerHTML='';
-  Object.entries(g.stats).forEach(function(pair,i){
+  STAT_DIMS.forEach(function(dim,i){
+    var val=g.dims[i]||0;
     var row=document.createElement('div');row.className='stat-row';
-    // 图标
     var icon=document.createElement('div');icon.className='stat-icon';
-    icon.textContent=STAT_ICONS[pair[0]]||'✦';
-    // 标签+条
+    icon.textContent=STAT_ICONS[dim]||'✦';
     var wrap=document.createElement('div');
     wrap.style.cssText='grid-column:2;display:flex;flex-direction:column;gap:1.5vw';
-    var lbl=document.createElement('div');lbl.className='stat-label-text';lbl.textContent=pair[0];
+    var lbl=document.createElement('div');lbl.className='stat-label-text';lbl.textContent=dim;
     var trackWrap=document.createElement('div');trackWrap.className='stat-track-wrap';
     var trk=document.createElement('div');trk.className='stat-track';
-    var bar=document.createElement('div');bar.className='stat-bar';bar.dataset.val=pair[1];
+    var bar=document.createElement('div');bar.className='stat-bar';bar.dataset.val=val;
     trk.appendChild(bar);trackWrap.appendChild(trk);
     wrap.appendChild(lbl);wrap.appendChild(trackWrap);
-    // 数值
-    var val=document.createElement('div');val.className='stat-val';val.textContent=pair[1]+'%';
-    row.appendChild(icon);row.appendChild(wrap);row.appendChild(val);
+    var valEl=document.createElement('div');valEl.className='stat-val';valEl.textContent=val+'%';
+    row.appendChild(icon);row.appendChild(wrap);row.appendChild(valEl);
     statsEl.appendChild(row);
   });
 
