@@ -574,6 +574,13 @@ body{
   background-image:url('./assets/parchment-texture.jpg');
   background-size:cover;
   background-blend-mode:multiply;
+  padding-bottom:0;
+}
+.result-wrap::after{
+  content:'';display:block;
+  width:100%;height:60px;
+  background:linear-gradient(to bottom,transparent,var(--charcoal2));
+  margin-top:-2px;
 }
 
 /* 底部卷草纹装饰带 */
@@ -599,12 +606,14 @@ body{
 /* 底部渐变过渡到羊皮纸 */
 .result-hero::after{
   content:'';position:absolute;
-  bottom:0;left:0;right:0;height:60%;
+  bottom:0;left:0;right:0;height:75%;
   background:linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(240,232,213,.6) 55%,
-    var(--parchment) 100%
+    rgba(240,232,213,.3) 30%,
+    rgba(240,232,213,.75) 60%,
+    rgba(240,232,213,.95) 80%,
+    #F0E8D5 100%
   );pointer-events:none;
 }
 /* 名字叠在图片上 */
