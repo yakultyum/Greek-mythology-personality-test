@@ -1117,7 +1117,7 @@ body{
   <div class="result-wrap">
     <!-- 神祇大图 -->
     <div class="result-hero" id="result-hero">
-      <img class="result-hero-img" id="r-img" src="" alt="">
+      <img class="result-hero-img" id="r-img" src="" alt="" loading="lazy">
       <span class="result-hero-emoji" id="r-emoji"></span>
       <div class="result-hero-info">
         <div class="result-name" id="r-name"></div>
@@ -1417,7 +1417,8 @@ function renderQ(){
     var scenePath=Q_SCENES[qIdx];
     if(scenePath){
       var sImg=document.createElement('img');
-      sImg.style.cssText='width:100%;height:100%;object-fit:cover;object-position:center;display:block;';
+      sImg.style.cssText='width:100%;height:100%;object-fit:cover;object-position:center top;display:block;';
+      sImg.loading='lazy';
       sImg.src=scenePath;sImg.alt='';
       sImg.onerror=function(){
         sceneDiv.innerHTML='';
