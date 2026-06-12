@@ -75,7 +75,7 @@ body{
   left:50%;transform:translateX(-50%);
   width:100%;max-width:480px;
   pointer-events:none;z-index:50;
-  background:url('./assets/ink-border.jpg') center/100% 100% no-repeat;
+  background:url('./assets/ink-border.webp') center/100% 100% no-repeat;
   mix-blend-mode:multiply;
   opacity:.92;
 }
@@ -103,7 +103,7 @@ body{
    ============================================================ */
 .parchment-bg{
   background-color:var(--parchment);
-  background-image:url('./assets/parchment-texture.jpg');
+  background-image:url('./assets/parchment-texture.webp');
   background-size:cover;
   background-blend-mode:multiply;
 }
@@ -144,7 +144,7 @@ body{
   padding:0 clamp(16px,5.3vw,28px) clamp(24px,8vw,48px);
   position:relative;
   background-color:var(--parchment);
-  background-image:url('./assets/parchment-texture.jpg');
+  background-image:url('./assets/parchment-texture.webp');
   background-size:cover;
   background-blend-mode:multiply;
 }
@@ -152,7 +152,7 @@ body{
 /* 雅典娜水印背景 */
 .intro-watermark{
   position:absolute;inset:0;
-  background:url('./images/athena.jpg') center top/cover no-repeat;
+  background:url('./images/athena.webp') center top/cover no-repeat;
   opacity:.12;
   pointer-events:none;
   /* 四边渐变遮蔽，保留中心水印感 */
@@ -1242,7 +1242,7 @@ body{
         <button class="btn-again" onclick="location.reload()">再测一次</button>
       </div>
       <!-- 底部卷草纹装饰带 -->
-      <img class="result-ornament-band" src="" data-src="./assets/ornament-band.jpg" alt="" loading="lazy">
+      <img class="result-ornament-band" src="" data-src="./assets/ornament-band.webp" alt="" loading="lazy">
     </div>
   </div>
 </div>
@@ -1394,16 +1394,16 @@ function getRel(a,b){
 // 图片映射
 // ============================================================
 var GOD_IMGS={
-  zeus:'./images/zeus.jpg',hera:'./images/hera.jpg',
-  athena:'./images/athena.jpg',apollo:'./images/apollo.jpg',
-  artemis:'./images/artemis.jpg',poseidon:'./images/poseidon.jpg',
-  demeter:'./images/demeter.jpg',hermes:'./images/hermes.jpg',
-  aphrodite:'./images/aphrodite.jpg',ares:'./images/ares.jpg',
-  hephaestus:'./images/hephaestus.jpg',dionysus:'./images/dionysus.jpg',
-  hades:'./images/hades.jpg',persephone:'./images/persephone.jpg',
-  eros:'./images/eros.jpg',nike:'./images/nike.jpg',
-  tyche:'./images/tyche.jpg',prometheus:'./images/prometheus.jpg',
-  achilles:'./images/achilles.jpg',odysseus:'./images/odysseus.jpg'
+  zeus:'./images/zeus.webp',hera:'./images/hera.webp',
+  athena:'./images/athena.webp',apollo:'./images/apollo.webp',
+  artemis:'./images/artemis.webp',poseidon:'./images/poseidon.webp',
+  demeter:'./images/demeter.webp',hermes:'./images/hermes.webp',
+  aphrodite:'./images/aphrodite.webp',ares:'./images/ares.webp',
+  hephaestus:'./images/hephaestus.webp',dionysus:'./images/dionysus.webp',
+  hades:'./images/hades.webp',persephone:'./images/persephone.webp',
+  eros:'./images/eros.webp',nike:'./images/nike.webp',
+  tyche:'./images/tyche.webp',prometheus:'./images/prometheus.webp',
+  achilles:'./images/achilles.webp',odysseus:'./images/odysseus.webp'
 };
 
 // 图腾配置：图片路径 + 备用emoji + 名称
@@ -1440,13 +1440,13 @@ var scores={},qIdx=0,isFriend=false,hostGodId=null,myGodId=null;
 // ============================================================
 // 背景图按需加载映射
 var BG_IMGS={
-  intro:   [{el:'intro-wrap',     img:'./assets/parchment-texture.jpg'}],
-  setup:   [{el:'setup-wrap',     img:'./assets/parchment-texture.jpg'},
-            {el:'setup-pillar-l', img:'./assets/pillar-left.jpg'},
-            {el:'setup-pillar-r', img:'./assets/pillar-right.jpg'}],
-  quiz:    [{el:'quiz-wrap',      img:'./assets/quiz-bg.jpg'}],
-  result:  [{el:'result-wrap',    img:'./assets/parchment-texture.jpg'}],
-  friend:  [{el:'friend-wrap',    img:'./assets/parchment-texture.jpg'}]
+  intro:   [{el:'intro-wrap',     img:'./assets/parchment-texture.webp'}],
+  setup:   [{el:'setup-wrap',     img:'./assets/parchment-texture.webp'},
+            {el:'setup-pillar-l', img:'./assets/pillar-left.webp'},
+            {el:'setup-pillar-r', img:'./assets/pillar-right.webp'}],
+  quiz:    [{el:'quiz-wrap',      img:'./assets/quiz-bg.webp'}],
+  result:  [{el:'result-wrap',    img:'./assets/parchment-texture.webp'}],
+  friend:  [{el:'friend-wrap',    img:'./assets/parchment-texture.webp'}]
 };
 var _bgLoaded={};
 function applyBg(name){
@@ -1558,16 +1558,16 @@ else{window.addEventListener('load',prefetchAfterLoad)}
 // 题目场景图映射 — AI 生成的油画场景插图
 // ============================================================
 var Q_SCENES = [
-  './assets/scene-crisis.jpg',    // Q1 危机
-  './assets/scene-cosmos.jpg',    // Q2 人生哲学
-  './assets/scene-home.jpg',      // Q3 理想居所
-  './assets/scene-betrayal.jpg',  // Q4 背叛
-  './assets/scene-social.jpg',    // Q5 朋友眼中
-  './assets/scene-moon.jpg',      // Q6 弱点
-  './assets/scene-goal.jpg',      // Q7 人生目标
-  './assets/scene-love.jpg',      // Q8 爱情
-  './assets/scene-solitude.jpg',  // Q9 独处
-  './assets/scene-dawn.jpg'       // Q10 记住什么
+  './assets/scene-crisis.webp',    // Q1 危机
+  './assets/scene-cosmos.webp',    // Q2 人生哲学
+  './assets/scene-home.webp',      // Q3 理想居所
+  './assets/scene-betrayal.webp',  // Q4 背叛
+  './assets/scene-social.webp',    // Q5 朋友眼中
+  './assets/scene-moon.webp',      // Q6 弱点
+  './assets/scene-goal.webp',      // Q7 人生目标
+  './assets/scene-love.webp',      // Q8 爱情
+  './assets/scene-solitude.webp',  // Q9 独处
+  './assets/scene-dawn.webp'       // Q10 记住什么
 ];
 function renderQ(){
   var q=QS[qIdx];
