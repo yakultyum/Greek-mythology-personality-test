@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<title>神话人格 · 你是哪位希腊神？</title>
+<meta name="description" content="十道命运之问，揭示你灵魂深处对应的希腊神祇。20位神祇，完整关系故事。">
+<meta property="og:title" content="神话人格 · Greek Myth Personality">
+<meta property="og:description" content="10道题，20位希腊神祇，找到属于你的神话对应。">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="stylesheet" href="https://unpkg.com/@fontsource/cinzel@4.5.14/400.css">
+<link rel="stylesheet" href="https://unpkg.com/@fontsource/cinzel@4.5.14/600.css">
+<link rel="stylesheet" href="https://unpkg.com/@fontsource/cinzel@4.5.14/700.css">
+<link rel="stylesheet" href="https://unpkg.com/@fontsource/cinzel-decorative@4.5.10/400.css">
+<link rel="stylesheet" href="https://unpkg.com/@fontsource/cinzel-decorative@4.5.10/700.css">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --parchment:   #F0E8D5;
+  --parchment2:  #E8DCC0;
+  --parchment3:  #DDD0A8;
+  --charcoal:    #1A1510;
+  --charcoal2:   #241C10;
+  --deep-brown:  #2C1F0E;
+  --mid-brown:   #6B5744;
+  --muted:       #A89070;
+  --gold:        #B8860B;
+  --gold-lt:     #D4A843;
+  --gold-dk:     #7A5C1E;
+  --border:      #C4A070;
+  --border-dk:   #8B6040;
+  --font-d: 'Cinzel Decorative','Cinzel',Georgia,serif;
+  --font-h: 'Cinzel',Georgia,serif;
+  --font-b: 'Noto Serif SC','Georgia','宋体',serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px;scroll-behavior:smooth}
+body{
+  background:var(--charcoal2);
+  background-image:url('./assets/quiz-bg.jpg');
+  background-size:cover;
+  background-attachment:fixed;
+  color:var(--deep-brown);
+  font-family:var(--font-b);
+  min-height:100dvh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* ============================================================
+   SCREENS
+   ============================================================ */
+.screen{
+  position:fixed;inset:0;
+  display:flex;align-items:flex-start;justify-content:center;
+  z-index:10;opacity:0;pointer-events:none;
+  transition:opacity .45s ease;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+}
+.screen.on{opacity:1;pointer-events:all}
+
+/* ============================================================
+   SHARED — 炭笔毛边框（使用真实 AI 生成图片）
+   ============================================================ */
+.ink-frame{
+  position:fixed;
+  top:0;bottom:0;
+  left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;
+  pointer-events:none;z-index:50;
+  background:url('./assets/ink-border.jpg') center/100% 100% no-repeat;
+  mix-blend-mode:multiply;
+  opacity:.92;
+}
+/* On desktop, expand the ink frame to follow the content column */
+@media(min-width:600px){
+  .ink-frame{max-width:520px}
+}
+/* 四角金色内框 */
+.ink-frame::before{
+  content:'';position:absolute;inset:14px;
+  border:1px solid rgba(184,134,11,.22);
+  pointer-events:none;
+}
+/* 顶部菱形金色装饰点 */
+.ink-frame::after{
+  content:'◆';
+  position:absolute;top:6px;left:50%;
+  transform:translateX(-50%);
+  font-size:.45rem;color:var(--gold-dk);
+  opacity:.7;letter-spacing:0;
+}
+
+/* ============================================================
+   SHARED — 羊皮纸真实纹理背景
+   ============================================================ */
+.parchment-bg{
+  background-color:var(--parchment);
+  background-image:url('./assets/parchment-texture.jpg');
+  background-size:cover;
+  background-blend-mode:multiply;
+}
+
+/* ============================================================
+   SHARED — 装饰分割线
+   ============================================================ */
+.divider{
+  display:flex;align-items:center;gap:8px;
+  margin:4.5vw 0;
+  font-family:var(--font-h);font-size:.55rem;
+  letter-spacing:.3em;color:var(--gold-dk);
+}
+.divider::before,.divider::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border-dk),transparent);
+}
+
+/* 顶部金线 */
+.top-gold-line{
+  position:fixed;top:0;
+  left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold-dk),var(--gold),var(--gold-dk),transparent);
+  z-index:200;pointer-events:none;
+}
+
+/* ============================================================
+   INTRO PAGE  (01-intro.jpg)
+   ============================================================ */
+#si{padding:0;align-items:stretch}
+
+.intro-wrap{
+  width:100%;max-width:480px;margin:0 auto;
+  min-height:100dvh;
+  display:flex;flex-direction:column;
+  padding:0 clamp(16px,5.3vw,28px) clamp(24px,8vw,48px);
+  position:relative;
+  background-color:var(--parchment);
+  background-image:url('./assets/parchment-texture.jpg');
+  background-size:cover;
+  background-blend-mode:multiply;
+}
+
+/* 雅典娜水印背景 */
+.intro-watermark{
+  position:absolute;inset:0;
+  background:url('./images/athena.jpg') center top/cover no-repeat;
+  opacity:.12;
+  pointer-events:none;
+  /* 四边渐变遮蔽，保留中心水印感 */
+  mask-image:radial-gradient(ellipse 70% 60% at 50% 35%,black 30%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 35%,black 30%,transparent 100%);
+}
+
+.intro-content{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;
+  align-items:center;
+  flex:1;
+  padding-top:clamp(32px,12vw,64px);
+}
+
+/* 月牙符号 */
+.intro-moon{
+  font-size:9.3vw;color:var(--gold-dk);
+  margin-bottom:3.2vw;
+  filter:drop-shadow(0 0 8px rgba(184,134,11,.3));
+  font-family:serif;
+}
+
+/* 大标题 */
+.intro-title{
+  font-family:var(--font-d);
+  font-size:clamp(2rem,9.3vw,3.2rem);
+  font-weight:700;color:var(--gold);
+  letter-spacing:.08em;line-height:1.1;
+  margin-bottom:1.6vw;text-align:center;
+}
+.intro-en{
+  font-family:var(--font-h);
+  font-size:.6rem;letter-spacing:.45em;
+  color:var(--muted);margin-bottom:5.3vw;
+  text-transform:uppercase;
+}
+
+/* 正文描述 */
+.intro-desc{
+  font-size:.82rem;line-height:2;
+  color:var(--mid-brown);text-align:center;
+  margin-bottom:5.3vw;
+  max-width:76vw;
+}
+
+/* 功能三卡 */
+.feat-list{
+  width:100%;display:flex;flex-direction:column;
+  gap:2.4vw;margin-bottom:6.4vw;
+}
+.feat-item{
+  display:flex;align-items:center;
+  border:1px solid var(--border-dk);
+  background:rgba(220,200,160,.15);
+  padding:3.2vw 4vw;gap:3.2vw;
+}
+.feat-num{
+  font-family:var(--font-h);font-size:.7rem;
+  color:var(--gold-dk);letter-spacing:.05em;
+  flex-shrink:0;min-width:1.4rem;
+}
+.feat-text{
+  font-size:.82rem;line-height:1.6;
+  color:var(--deep-brown);flex:1;
+}
+.feat-icon{
+  font-size:1.1rem;flex-shrink:0;opacity:.7;
+  filter:sepia(.5);
+}
+
+/* 主按钮 — 实心金色 */
+.btn-main{
+  width:100%;
+  background:var(--gold-dk);
+  border:none;
+  color:var(--parchment);
+  padding:4vw 0;
+  font-family:var(--font-h);
+  font-size:.95rem;font-weight:600;
+  letter-spacing:.25em;
+  cursor:pointer;
+  transition:background .2s;
+  text-align:center;
+}
+.btn-main:active{background:var(--gold)}
+
+.intro-footer{
+  text-align:center;
+  font-family:var(--font-h);
+  font-size:.55rem;letter-spacing:.35em;
+  color:var(--muted);opacity:.7;
+  margin-top:4vw;
+}
+
+/* ============================================================
+   SETUP PAGE  (02-setup.jpg)
+   ============================================================ */
+#ss{padding:0;align-items:stretch}
+
+.setup-wrap{
+  width:100%;max-width:480px;margin:0 auto;
+  min-height:100dvh;
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+  background-color:var(--parchment);
+  background-image:url('./assets/parchment-texture.jpg');
+  background-size:cover;
+  background-blend-mode:multiply;
+}
+
+/* 左右神庙柱廊装饰 — 真实 AI 图片 */
+.setup-pillar-l,.setup-pillar-r{
+  position:absolute;top:0;bottom:0;width:18vw;max-width:86px;
+  pointer-events:none;z-index:0;
+  background-size:cover;background-repeat:no-repeat;
+}
+.setup-pillar-l{
+  left:0;background-position:right center;
+  background-image:url('./assets/pillar-left.jpg');
+  mask-image:linear-gradient(to right,rgba(0,0,0,.7) 0%,rgba(0,0,0,.4) 60%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,.7) 0%,rgba(0,0,0,.4) 60%,transparent 100%);
+}
+.setup-pillar-r{
+  right:0;background-position:left center;
+  background-image:url('./assets/pillar-right.jpg');
+  mask-image:linear-gradient(to left,rgba(0,0,0,.7) 0%,rgba(0,0,0,.4) 60%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to left,rgba(0,0,0,.7) 0%,rgba(0,0,0,.4) 60%,transparent 100%);
+}
+
+.setup-content{
+  position:relative;z-index:1;
+  flex:1;display:flex;flex-direction:column;
+  padding:12vw 6.4vw 8vw;
+}
+
+.setup-label{
+  font-family:var(--font-h);font-size:.55rem;
+  letter-spacing:.45em;color:var(--muted);
+  text-transform:uppercase;text-align:center;
+  margin-bottom:2vw;
+}
+.setup-title{
+  font-family:var(--font-d);
+  font-size:clamp(1.6rem,7.5vw,2.6rem);
+  font-weight:700;color:var(--gold);
+  letter-spacing:.08em;text-align:center;
+  margin-bottom:5.3vw;
+}
+
+/* 输入框 */
+.field-label{
+  font-family:var(--font-h);font-size:.55rem;
+  letter-spacing:.3em;color:var(--muted);
+  text-transform:uppercase;margin-bottom:2.4vw;
+}
+.input-field{
+  width:100%;background:transparent;
+  border:none;border-bottom:1px solid var(--border-dk);
+  padding:2.4vw 0;
+  font-family:var(--font-b);font-size:1rem;
+  color:var(--deep-brown);outline:none;
+  transition:border-color .2s;
+  margin-bottom:6.4vw;
+}
+.input-field::placeholder{color:var(--muted)}
+.input-field:focus{border-color:var(--gold)}
+
+/* 图腾网格 */
+.totem-grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:2vw;margin-top:2.4vw;
+  margin-bottom:4vw;
+}
+.totem-cell{
+  aspect-ratio:1;
+  display:flex;align-items:center;justify-content:center;
+  font-size:5.5vw;
+  border:1px solid var(--border);
+  background:transparent;
+  cursor:pointer;
+  transition:border-color .2s,background .2s;
+}
+.totem-cell:active,.totem-cell.active{
+  border-color:var(--gold);
+  background:rgba(184,134,11,.12);
+}
+
+/* UID */
+.uid-row{
+  text-align:center;
+  font-family:var(--font-h);font-size:.55rem;
+  letter-spacing:.2em;color:var(--muted);
+  margin-bottom:5.3vw;
+}
+.uid-row span{color:var(--gold-dk);letter-spacing:.1em}
+
+/* 次要按钮 — 金边空心 */
+.btn-outline{
+  width:100%;background:transparent;
+  border:1px solid var(--gold-dk);
+  color:var(--gold);
+  padding:3.7vw 0;
+  font-family:var(--font-h);
+  font-size:.88rem;font-weight:600;
+  letter-spacing:.2em;cursor:pointer;
+  transition:background .2s;text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:2vw;
+}
+.btn-outline:active{background:rgba(184,134,11,.1)}
+.btn-outline.dim{opacity:.4;pointer-events:none}
+
+/* ============================================================
+   QUIZ PAGE  (03-quiz.jpg)
+   ============================================================ */
+#sq{
+  padding:0;align-items:stretch;
+  background:var(--charcoal);
+}
+
+.quiz-wrap{
+  width:100%;max-width:480px;margin:0 auto;
+  min-height:100dvh;
+  display:flex;flex-direction:column;
+  background-color:var(--charcoal);
+  /* AI 生成的深色背景：石像 + 罗盘 */
+  background-image:url('./assets/quiz-bg.jpg');
+  background-size:cover;background-position:center;
+  position:relative;
+}
+
+/* 顶部金线 + 题号 */
+.quiz-top{
+  padding:10.7vw 5.3vw 4vw;
+}
+.quiz-progress-bar{
+  width:100%;height:1px;
+  background:rgba(184,134,11,.2);
+  margin-bottom:3.2vw;position:relative;
+}
+.quiz-progress-fill{
+  position:absolute;top:0;left:0;height:100%;
+  background:var(--gold);
+  transition:width .6s cubic-bezier(.4,0,.2,1);
+}
+.quiz-progress-fill::after{
+  content:'';position:absolute;right:-3px;top:50%;
+  transform:translateY(-50%);
+  width:5px;height:5px;border-radius:50%;
+  background:var(--gold);
+}
+.quiz-meta{
+  display:flex;align-items:center;justify-content:center;
+  gap:2vw;
+  font-family:var(--font-h);font-size:.6rem;
+  letter-spacing:.2em;color:var(--muted);
+}
+.quiz-meta-num{color:var(--gold-lt);font-size:.7rem}
+.quiz-meta-sep{opacity:.4}
+/* ─── 命运之问 标题 ─── */
+.quiz-section-title{
+  text-align:center;
+  font-family:var(--font-h);font-size:.62rem;
+  letter-spacing:.3em;color:var(--gold-dk);
+  margin-top:1.6vw;text-transform:uppercase;
+}
+
+/* 题目卡片 */
+.quiz-body{
+  flex:1;display:flex;align-items:center;
+  justify-content:center;padding:0 5.3vw 4vw;
+}
+.q-card{
+  width:100%;
+  background:var(--parchment2);
+  border:1px solid var(--border-dk);
+  position:relative;
+  animation:cardIn .4s cubic-bezier(.22,1,.36,1);
+}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+/* 四角金色装饰 */
+.q-card::before,.q-card::after{
+  content:'◆';position:absolute;
+  font-size:.45rem;color:var(--gold);opacity:.6;
+}
+.q-card::before{top:6px;left:8px}
+.q-card::after{bottom:6px;right:8px}
+
+/* 场景插图区 */
+.q-scene-img{
+  width:100%;
+  aspect-ratio:16/9;
+  overflow:hidden;
+  border-bottom:1px solid var(--border-dk);
+  display:flex;align-items:center;justify-content:center;
+  background:var(--charcoal2);
+  position:relative;
+}
+.q-scene-emoji{
+  font-size:12vw;
+  filter:drop-shadow(0 0 10px rgba(184,134,11,.3));
+  animation:sceneFloat 4s ease-in-out infinite;
+}
+@keyframes sceneFloat{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-4px) scale(1.04)}
+}
+/* 插图底部金色装饰线 */
+.q-scene-img::after{
+  content:'';position:absolute;
+  bottom:0;left:10%;right:10%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold-dk),transparent);
+}
+
+/* 问题文字 */
+.q-text{
+  padding:4vw 5.3vw 3.2vw;
+  font-family:var(--font-b);font-size:.92rem;
+  line-height:1.75;color:var(--deep-brown);
+  text-align:center;font-weight:500;
+}
+
+/* 选项 */
+.q-opts{
+  display:flex;flex-direction:column;
+  gap:0;border-top:1px solid var(--border);
+}
+.opt-btn{
+  width:100%;text-align:left;
+  background:rgba(26,21,16,.88);
+  border:none;
+  border-bottom:1px solid rgba(184,134,11,.15);
+  padding:3.7vw 4.5vw 3.7vw 10.7vw;
+  font-family:var(--font-b);font-size:.85rem;
+  line-height:1.65;color:rgba(240,232,213,.8);
+  cursor:pointer;
+  transition:background .18s,color .18s;
+  position:relative;
+}
+.opt-btn:last-child{border-bottom:none}
+/* 字母前缀 */
+.opt-btn::before{
+  content:attr(data-idx);
+  position:absolute;left:4.5vw;top:50%;
+  transform:translateY(-50%);
+  font-family:var(--font-h);font-size:.6rem;
+  color:var(--gold-dk);letter-spacing:0;
+}
+.opt-btn:active,.opt-btn.sel{
+  background:rgba(122,92,30,.35);
+  color:var(--gold-lt);
+}
+.opt-btn:active::before,.opt-btn.sel::before{color:var(--gold-lt)}
+/* 选中态右侧指南针图标 */
+.opt-btn.sel::after{
+  content:'✦';
+  position:absolute;right:4vw;top:50%;
+  transform:translateY(-50%);
+  font-size:.65rem;color:var(--gold);
+  animation:spinStar 3s linear infinite;
+}
+@keyframes spinStar{to{transform:translateY(-50%) rotate(360deg)}}
+
+/* ============================================================
+   LOADING PAGE
+   ============================================================ */
+#sl{
+  background:var(--charcoal);
+  align-items:center;justify-content:center;
+}
+.loading-inner{
+  text-align:center;padding:4vw;
+}
+.loading-moon{
+  font-size:14vw;display:block;
+  margin:0 auto 6vw;
+  animation:moonSway 3.5s ease-in-out infinite;
+  color:var(--gold);
+  filter:drop-shadow(0 0 16px rgba(184,134,11,.4));
+}
+@keyframes moonSway{
+  0%,100%{transform:rotate(-12deg) scale(1)}
+  50%{transform:rotate(12deg) scale(1.06)}
+}
+.loading-title{
+  font-family:var(--font-h);font-size:.88rem;
+  letter-spacing:.25em;color:var(--gold);
+  margin-bottom:2vw;
+}
+.loading-sub{
+  font-family:var(--font-h);font-size:.55rem;
+  letter-spacing:.4em;color:var(--muted);
+  margin-bottom:5.3vw;text-transform:uppercase;
+}
+.loading-dots{display:flex;gap:2vw;justify-content:center}
+.loading-dots span{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--gold-dk);
+  animation:dotPulse 1.4s ease-in-out infinite;
+}
+.loading-dots span:nth-child(2){animation-delay:.2s}
+.loading-dots span:nth-child(3){animation-delay:.4s}
+@keyframes dotPulse{
+  0%,80%,100%{transform:scale(.6);opacity:.3}
+  40%{transform:scale(1);opacity:1}
+}
+
+/* ============================================================
+   RESULT PAGE  (04-result.jpg)
+   ============================================================ */
+#sr{padding:0;align-items:stretch}
+
+.result-wrap{
+  width:100%;max-width:480px;margin:0 auto;
+  min-height:100dvh;
+  background-color:var(--parchment);
+  background-image:url('./assets/parchment-texture.jpg');
+  background-size:cover;
+  background-blend-mode:multiply;
+}
+
+/* 底部卷草纹装饰带 */
+.result-ornament-band{
+  width:100%;height:auto;
+  display:block;
+  opacity:.65;
+  margin-top:6.4vw;
+  filter:sepia(.2);
+}
+
+/* 神祇大图区 */
+.result-hero{
+  position:relative;width:100%;
+  aspect-ratio:3/4;overflow:hidden;
+  background:var(--charcoal);
+}
+.result-hero-img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:top center;
+  display:block;
+}
+/* 底部渐变过渡到羊皮纸 */
+.result-hero::after{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:60%;
+  background:linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(240,232,213,.6) 55%,
+    var(--parchment) 100%
+  );pointer-events:none;
+}
+/* 名字叠在图片上 */
+.result-hero-info{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  padding:4vw 5.3vw 5.3vw;
+  text-align:center;z-index:2;
+}
+
+/* 降级 emoji 模式 */
+.result-hero.no-img{
+  aspect-ratio:unset;
+  background:var(--parchment2);
+  display:flex;flex-direction:column;
+  align-items:center;padding:10vw 0 0;
+}
+.result-hero.no-img .result-hero-img{display:none}
+.result-hero-emoji{
+  display:none;
+  font-size:20vw;margin-bottom:4vw;
+  filter:sepia(.2);
+  animation:floatIcon 5s ease-in-out infinite;
+}
+@keyframes floatIcon{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px)}
+}
+.result-hero.no-img .result-hero-emoji{display:block}
+.result-hero.no-img::after{display:none}
+.result-hero.no-img .result-hero-info{
+  position:static;padding:0 5.3vw 5.3vw;
+}
+
+.result-name{
+  font-family:var(--font-d);
+  font-size:clamp(1.8rem,8.5vw,3rem);
+  font-weight:700;color:var(--gold);
+  letter-spacing:.12em;
+  text-shadow:0 1px 12px rgba(26,21,16,.6);
+  margin-bottom:1.6vw;
+}
+.result-en{
+  font-family:var(--font-h);font-size:.58rem;
+  letter-spacing:.5em;color:rgba(240,232,213,.7);
+  text-transform:uppercase;margin-bottom:1.6vw;
+}
+.result-role{
+  font-size:.82rem;
+  color:rgba(240,232,213,.85);
+  letter-spacing:.05em;
+}
+
+/* 内容区 */
+.result-body{padding:0 5.3vw 16vw}
+
+/* 特质标签 */
+.result-tags{
+  display:flex;flex-wrap:wrap;gap:2vw;
+  justify-content:center;
+  margin:5.3vw 0 6.4vw;
+}
+.tag{
+  border:1px solid var(--gold-dk);
+  color:var(--gold);padding:.8vw 3.2vw;
+  font-family:var(--font-h);font-size:.62rem;
+  letter-spacing:.15em;background:transparent;
+}
+
+.sec-label{
+  font-family:var(--font-h);font-size:.55rem;
+  letter-spacing:.35em;color:var(--gold-dk);
+  text-transform:uppercase;margin-bottom:2.4vw;
+}
+.result-desc{
+  font-size:.88rem;line-height:2;
+  color:var(--mid-brown);margin-bottom:5.3vw;
+}
+.result-quote{
+  border-left:2px solid var(--gold-dk);
+  padding:2vw 0 2vw 4vw;
+  font-family:var(--font-b);font-style:italic;
+  color:var(--gold);font-size:.88rem;
+  line-height:1.8;margin-bottom:6.4vw;opacity:.9;
+}
+
+/* 6维数据 */
+.stats-section{margin-bottom:6.4vw}
+.stat-row{
+  display:grid;
+  grid-template-columns:24px 1fr 36px;
+  align-items:center;gap:2.4vw;
+  margin-bottom:3.2vw;
+}
+.stat-icon{font-size:.75rem;opacity:.7;filter:sepia(.4)}
+.stat-label-text{
+  font-family:var(--font-h);font-size:.6rem;
+  letter-spacing:.1em;color:var(--mid-brown);
+}
+/* 数据条 track */
+.stat-track-wrap{
+  grid-column:2;
+  display:flex;align-items:center;gap:2vw;
+}
+.stat-track{
+  flex:1;height:1px;
+  background:var(--border);position:relative;
+}
+.stat-bar{
+  position:absolute;top:0;left:0;
+  height:100%;background:var(--gold-dk);
+  width:0%;
+  transition:width 1.2s cubic-bezier(.4,0,.2,1);
+}
+.stat-bar::after{
+  content:'';position:absolute;
+  right:-3px;top:50%;transform:translateY(-50%);
+  width:5px;height:5px;border-radius:50%;
+  background:var(--gold);
+}
+.stat-val{
+  font-family:var(--font-h);font-size:.6rem;
+  color:var(--gold);text-align:right;min-width:28px;
+}
+
+/* 操作按钮 */
+.result-actions{
+  display:flex;flex-direction:column;
+  gap:3.2vw;align-items:center;
+}
+.btn-share{
+  width:100%;background:transparent;
+  border:1px solid var(--gold-dk);
+  color:var(--gold);
+  padding:3.7vw 4vw;
+  font-family:var(--font-h);font-size:.82rem;
+  letter-spacing:.08em;cursor:pointer;
+  transition:background .2s;text-align:center;
+}
+.btn-share:active{background:rgba(184,134,11,.1)}
+.btn-again{
+  background:transparent;border:none;
+  border-bottom:1px solid var(--border);
+  color:var(--muted);padding:2vw 0;
+  font-family:var(--font-h);font-size:.72rem;
+  letter-spacing:.2em;cursor:pointer;
+  transition:color .2s,border-color .2s;
+}
+.btn-again:hover{color:var(--deep-brown);border-color:var(--gold-dk)}
+
+/* ============================================================
+   FRIEND PAGE  (05-friend.jpg)
+   ============================================================ */
+#sfr{padding:0;align-items:stretch}
+
+.friend-wrap{
+  width:100%;max-width:480px;margin:0 auto;
+  min-height:100dvh;
+  background-color:var(--parchment);
+  background-image:url('./assets/parchment-texture.jpg');
+  background-size:cover;
+  background-blend-mode:multiply;
+  padding:0 5.3vw 16vw;
+}
+
+.friend-head{
+  text-align:center;padding:12vw 0 0;
+}
+.friend-title{
+  font-family:var(--font-d);
+  font-size:clamp(1.5rem,7.5vw,2.4rem);
+  font-weight:700;color:var(--gold);
+  letter-spacing:.08em;margin-bottom:1.6vw;
+}
+.friend-subtitle{
+  font-family:var(--font-h);font-size:.55rem;
+  letter-spacing:.45em;color:var(--muted);
+  text-transform:uppercase;margin-bottom:6.4vw;
+}
+
+/* 邀请提示区 */
+.frd-prompt{text-align:center}
+.frd-icon{font-size:14vw;display:block;margin:0 auto 3.2vw;filter:sepia(.2)}
+.frd-name{
+  font-family:var(--font-h);font-size:1.1rem;
+  font-weight:700;color:var(--gold);
+  letter-spacing:.1em;margin-bottom:2.4vw;
+}
+.frd-desc{
+  font-size:.82rem;line-height:1.85;
+  color:var(--mid-brown);margin-bottom:6.4vw;
+}
+
+/* 对比区 */
+.cmp-section{display:none}
+.cmp-section.show{display:block}
+
+/* 两神祇对比卡 */
+.cmp-pair{
+  display:flex;align-items:stretch;
+  gap:0;margin-bottom:5.3vw;
+}
+.cmp-card{
+  flex:1;
+  border:1px solid var(--border-dk);
+  background:var(--parchment2);
+  display:flex;flex-direction:column;
+  align-items:center;overflow:hidden;
+}
+.cmp-portrait{
+  width:100%;aspect-ratio:3/4;
+  object-fit:cover;object-position:top center;
+  display:block;
+}
+.cmp-portrait-emoji{
+  display:none;font-size:12vw;
+  padding:4vw 0 2vw;filter:sepia(.2);
+}
+.cmp-card.no-img .cmp-portrait{display:none}
+.cmp-card.no-img .cmp-portrait-emoji{display:block}
+.cmp-info{padding:2.4vw 2vw;text-align:center;width:100%}
+.cmp-name{
+  font-family:var(--font-h);font-size:.82rem;
+  font-weight:700;color:var(--gold);
+  letter-spacing:.1em;margin-bottom:1vw;
+}
+.cmp-role{
+  font-family:var(--font-h);font-size:.5rem;
+  letter-spacing:.08em;color:var(--muted);
+  line-height:1.5;
+}
+
+/* VS 分隔 */
+.vs-sep{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:0 3.2vw;flex-shrink:0;
+}
+.vs-bolt{
+  font-size:7vw;color:var(--gold);
+  filter:drop-shadow(0 0 6px rgba(184,134,11,.5));
+  margin-bottom:1.6vw;
+}
+.vs-txt{
+  font-family:var(--font-h);font-size:.55rem;
+  letter-spacing:.3em;color:var(--muted);
+}
+
+/* 关系故事卡 */
+.rel-card{
+  border:1px solid var(--border-dk);
+  background:var(--parchment2);
+  padding:5.3vw 4.5vw;
+  margin-bottom:6.4vw;
+  position:relative;
+}
+/* 角花 */
+.rel-card::before,.rel-card::after{
+  content:'✦';position:absolute;
+  font-size:.4rem;color:var(--gold);opacity:.5;
+}
+.rel-card::before{top:6px;left:8px}
+.rel-card::after{bottom:6px;right:8px}
+.rel-type{
+  font-family:var(--font-h);font-size:.55rem;
+  letter-spacing:.35em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:3.2vw;
+  text-align:center;
+}
+.rel-story{
+  font-size:.85rem;line-height:2;
+  color:var(--mid-brown);margin-bottom:4vw;
+}
+.rel-dynamic{
+  border-left:2px solid var(--gold-dk);
+  padding:1.6vw 0 1.6vw 3.7vw;
+  font-family:var(--font-b);font-style:italic;
+  font-size:.82rem;color:var(--gold);
+  opacity:.88;line-height:1.7;
+}
+
+/* 底部两按钮 */
+.friend-actions{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:3.2vw;
+}
+.btn-act{
+  background:transparent;
+  border:1px solid var(--border-dk);
+  color:var(--gold);
+  padding:3.7vw 2vw;
+  font-family:var(--font-h);font-size:.7rem;
+  letter-spacing:.06em;cursor:pointer;
+  transition:background .2s;text-align:center;
+  display:flex;flex-direction:column;
+  align-items:center;gap:1.5vw;
+}
+.btn-act:active{background:rgba(184,134,11,.1)}
+.btn-act-icon{font-size:1rem;opacity:.8}
+.btn-act-text{font-size:.62rem;letter-spacing:.08em}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast{
+  position:fixed;bottom:8vw;left:50%;
+  transform:translateX(-50%);
+  background:var(--charcoal);
+  border:1px solid var(--border-dk);
+  color:var(--parchment);
+  padding:3vw 6vw;
+  font-family:var(--font-h);font-size:.75rem;
+  letter-spacing:.1em;z-index:9999;
+  white-space:nowrap;
+  animation:toastIn .3s ease,toastOut .3s ease 2.5s forwards;
+}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes toastOut{from{opacity:1}to{opacity:0}}
+
+/* ============================================================
+   DESKTOP LAYOUT — centered column with flanking dark texture
+   ============================================================ */
+@media(min-width:600px){
+  html{font-size:16px}
+
+  /* Screens are fixed full-viewport; content max-width stays */
+  .screen{
+    align-items:flex-start;
+    justify-content:center;
+  }
+
+  /* Cap vw-based spacing that becomes excessive on wide viewports */
+  .intro-content{padding-top:48px}
+  .intro-moon{font-size:36px;margin-bottom:12px}
+  .intro-desc{margin-bottom:20px;max-width:360px}
+  .feat-list{gap:8px;margin-bottom:24px}
+  .feat-item{padding:12px 16px;gap:12px}
+  .divider{margin:16px 0}
+
+  /* Setup page */
+  .setup-content{padding:48px 24px 32px}
+  .input-field{margin-bottom:24px}
+  .totem-grid{gap:8px;margin-bottom:16px}
+  .uid-row{margin-bottom:20px}
+
+  /* Quiz page */
+  .q-scene-img{aspect-ratio:21/9}
+  .q-text{padding:16px 20px 12px}
+  .opt-btn{padding:14px 18px 14px 42px}
+  .opt-btn::before{left:18px}
+  .quiz-top{padding:40px 20px 16px}
+
+  /* Result page */
+  .result-wrap,
+  .friend-wrap{max-width:520px}
+  .result-hero{aspect-ratio:4/3}
+  .result-body{padding:0 20px 60px}
+  .result-tags{gap:8px;margin:20px 0 24px}
+  .result-desc{margin-bottom:20px}
+  .result-quote{margin-bottom:24px}
+  .stats-section{margin-bottom:24px}
+  .stat-row{margin-bottom:12px}
+  .result-actions{gap:12px}
+
+  /* Friend page */
+  .friend-wrap{padding:0 20px 60px}
+  .friend-head{padding:48px 0 0}
+  .rel-card{padding:20px 18px}
+
+  /* Toast */
+  .toast{padding:12px 24px}
+
+  /* Content column shadow to lift it from the dark bg */
+  .intro-wrap,
+  .setup-wrap,
+  .result-wrap,
+  .friend-wrap,
+  .quiz-wrap{
+    box-shadow:0 0 60px rgba(0,0,0,.6);
+  }
+}
+
+@media(max-width:360px){html{font-size:14px}}
+
+.hid{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="top-gold-line"></div>
+<div class="ink-frame"></div>
+
+<!-- ============================================================
+     INTRO  (01-intro.jpg)
+     ============================================================ -->
+<div id="si" class="screen on">
+  <div class="intro-wrap">
+    <div class="intro-watermark"></div>
+    <div class="intro-content">
+      <div class="intro-moon">☽</div>
+      <h1 class="intro-title">神话人格</h1>
+      <div class="intro-en">Greek Myth Personality</div>
+      <div class="divider">◆</div>
+      <p class="intro-desc">
+        在人类文明的长河中，神话是最古老的镜子。<br>
+        神明的性格，映照着你内心深处的原型与可能性。<br>
+        通过测试，发现你与哪位神祇共鸣，<br>
+        解锁属于你的神话人格与命运轨迹。
+      </p>
+      <div class="feat-list">
+        <div class="feat-item">
+          <span class="feat-num">I</span>
+          <span class="feat-text">测出你的神话人格</span>
+          <span class="feat-icon">🏛️</span>
+        </div>
+        <div class="feat-item">
+          <span class="feat-num">II</span>
+          <span class="feat-text">阅读你的角色故事</span>
+          <span class="feat-icon">📜</span>
+        </div>
+        <div class="feat-item">
+          <span class="feat-num">III</span>
+          <span class="feat-text">查看人格维度数据</span>
+          <span class="feat-icon">✦</span>
+        </div>
+      </div>
+      <button class="btn-main" onclick="goSetup()">开始测试 BEGIN</button>
+      <div class="intro-footer">20 DEITIES · 190 RELATIONSHIPS</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SETUP  (02-setup.jpg)
+     ============================================================ -->
+<div id="ss" class="screen">
+  <div class="setup-wrap">
+    <div class="setup-pillar-l"></div>
+    <div class="setup-pillar-r"></div>
+    <div class="setup-content">
+      <div class="setup-label">Step 1 of 1</div>
+      <div class="setup-title">为自己命名</div>
+      <div class="divider">◆</div>
+
+      <div class="field-label">Your Name</div>
+      <input id="inp-nick" class="input-field" type="text"
+             maxlength="12" placeholder="Enter your name..."
+             oninput="checkSetup()">
+
+      <div class="field-label">Select Your Totem</div>
+      <div class="totem-grid" id="totem-grid"></div>
+
+      <div class="uid-row">Your Unique ID &nbsp;<span id="uid-val"></span></div>
+
+      <div class="divider">◆</div>
+      <button class="btn-outline dim" id="btn-enter" onclick="startQuiz()">
+        进入神谕 &nbsp; Enter the Oracle
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     QUIZ  (03-quiz.jpg)
+     ============================================================ -->
+<div id="sq" class="screen">
+  <div class="quiz-wrap">
+    <div class="quiz-top">
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="p-fill"></div>
+      </div>
+      <div class="quiz-meta">
+        <span class="quiz-meta-num" id="q-num">01</span>
+        <span class="quiz-meta-sep">/</span>
+        <span>10</span>
+      </div>
+      <div class="quiz-section-title">─── 命运之问 ───</div>
+    </div>
+    <div class="quiz-body">
+      <div class="q-card" id="q-card"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     LOADING
+     ============================================================ -->
+<div id="sl" class="screen">
+  <div class="loading-inner">
+    <span class="loading-moon">☽</span>
+    <div class="loading-title">命运之轮正在旋转</div>
+    <div class="loading-sub">The Fates Are Weaving...</div>
+    <div class="loading-dots"><span></span><span></span><span></span></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     RESULT  (04-result.jpg)
+     ============================================================ -->
+<div id="sr" class="screen">
+  <div class="result-wrap">
+    <!-- 神祇大图 -->
+    <div class="result-hero" id="result-hero">
+      <img class="result-hero-img" id="r-img" src="" alt="">
+      <span class="result-hero-emoji" id="r-emoji"></span>
+      <div class="result-hero-info">
+        <div class="result-name" id="r-name"></div>
+        <div class="result-en" id="r-en"></div>
+        <div class="result-role" id="r-role"></div>
+      </div>
+    </div>
+
+    <!-- 内容区 -->
+    <div class="result-body">
+      <div class="result-tags" id="r-tags"></div>
+      <div class="divider">✦</div>
+      <div class="sec-label">性格解读</div>
+      <div class="result-desc" id="r-desc"></div>
+      <div class="result-quote" id="r-quote"></div>
+      <div class="divider">◆</div>
+      <div class="sec-label">人格维度</div>
+      <div class="stats-section" id="r-stats"></div>
+      <div class="divider">✦</div>
+      <div class="result-actions">
+        <button class="btn-share" onclick="doShare()">✦ 邀请好友测试 · 查看你们的神话关系</button>
+        <button class="btn-again" onclick="location.reload()">再测一次</button>
+      </div>
+      <!-- 底部卷草纹装饰带 -->
+      <img class="result-ornament-band" src="./assets/ornament-band.jpg" alt="">
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     FRIEND  (05-friend.jpg)
+     ============================================================ -->
+<div id="sfr" class="screen">
+  <div class="friend-wrap">
+    <div class="friend-head">
+      <div class="friend-title">命运的交汇</div>
+      <div class="friend-subtitle">Your Fates Have Crossed</div>
+    </div>
+
+    <!-- 邀请提示 -->
+    <div id="frd-prompt" class="frd-prompt">
+      <span class="frd-icon" id="frd-icon"></span>
+      <div class="frd-name" id="frd-name"></div>
+      <div class="frd-desc" id="frd-desc"></div>
+      <div class="divider">◆</div>
+      <button class="btn-main" onclick="startFriendQuiz()">开始测试 &nbsp; Take the Test</button>
+    </div>
+
+    <!-- 对比结果 -->
+    <div id="cmp-section" class="cmp-section">
+      <div class="divider">✦</div>
+      <div class="cmp-pair">
+        <div class="cmp-card" id="cmp-host-card">
+          <img class="cmp-portrait" id="c-h-img" src="" alt="">
+          <span class="cmp-portrait-emoji" id="c-h-emoji"></span>
+          <div class="cmp-info">
+            <div class="cmp-name" id="c-h-name"></div>
+            <div class="cmp-role" id="c-h-role"></div>
+          </div>
+        </div>
+        <div class="vs-sep">
+          <span class="vs-bolt">⚡</span>
+          <div class="vs-txt">VS</div>
+        </div>
+        <div class="cmp-card" id="cmp-my-card">
+          <img class="cmp-portrait" id="c-m-img" src="" alt="">
+          <span class="cmp-portrait-emoji" id="c-m-emoji"></span>
+          <div class="cmp-info">
+            <div class="cmp-name" id="c-m-name"></div>
+            <div class="cmp-role" id="c-m-role"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rel-card">
+        <div class="rel-type" id="rel-type"></div>
+        <div class="rel-story" id="rel-story"></div>
+        <div class="rel-dynamic" id="rel-dynamic"></div>
+      </div>
+
+      <div class="friend-actions">
+        <button class="btn-act" onclick="doShare()">
+          <span class="btn-act-icon">🏛️</span>
+          <span class="btn-act-text">查看合盘解析</span>
+        </button>
+        <button class="btn-act" onclick="shareFromFriend()">
+          <span class="btn-act-icon">🔥</span>
+          <span class="btn-act-text">分享这份羁绊</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA — 20 GODS
+// ============================================================
+var GODS={
+  zeus:     {name:"宙斯",en:"Zeus",role:"奥林匹斯之王 · 天空与雷电之神",icon:"⚡",tags:["领袖","权威","果断","骄傲","慷慨"],desc:"你身上有一种与生俱来的领导气场——人们自然而然地听从你，不是因为你强迫，而是因为你确实能撑起局面。你渴望秩序，厌恶混乱，对自己的判断充满自信，有时甚至过于自信。你善于在最混乱的局面里做出快速决策，并且往往是对的。你有慷慨的一面，愿意庇护弱者，但你的自尊心极强，一旦权威受到挑战，怒火会来得毫无预兆。你的弱点不是能力，而是执念——对控制的执念，对自己永远正确的执念。",quote:"「雷鸣不只是愤怒，更是宣告：这片天地，有人在守护。」",stats:{权威:95,智慧:65,激情:70,守护:55},dims:[95,65,70,45,40,55]},
+  hera:     {name:"赫拉",en:"Hera",role:"婚姻与家庭之神 · 王后",icon:"👑",tags:["忠贞","高贵","执着","坚韧","不可侵犯"],desc:"你对承诺有着近乎固执的坚守。忠诚是你的信仰，背叛是你无法原谅的原罪。你外表端庄，内心却有一片不为人知的汹涌——你爱得深，也恨得深。你是天生的掌舵者，能把一团乱局梳理得井井有条。只是，你的执念有时会让自己深陷其中，忘了放手。",quote:"「王冠的重量从未让我弯腰，但那些背叛，让我学会了如何成为风暴本身。」",stats:{权威:80,智慧:60,激情:80,守护:85},dims:[80,60,80,20,55,85]},
+  athena:   {name:"雅典娜",en:"Athena",role:"智慧与战略之神 · 雅典守护者",icon:"🦉",tags:["睿智","冷静","战略","公正","独立"],desc:"你从不靠蛮力，靠的是两步之后的算计。面对问题你第一反应是拆解它，分析它，然后找到最优解。你不喜欢无谓的情绪消耗，偏好以理性驾驭局面。你既能在战场上运筹帷幄，也能在平时以智慧平息纷争。你的冷静有时被误解为冷漠，但那不过是你在专注。",quote:"「真正的胜利从不靠血与火——靠的是在开战前就赢得的那步棋。」",stats:{权威:70,智慧:95,激情:40,守护:70},dims:[70,95,40,60,70,70]},
+  apollo:   {name:"阿波罗",en:"Apollo",role:"太阳·艺术·预言之神",icon:"☀️",tags:["完美主义","光芒","艺术","自信","理想"],desc:"你对美有着极高的标准——无论是音乐、语言还是一个人的谈吐，你都能立刻感知到其中的粗糙与精妙。你渴望光，也喜欢成为光。你骄傲，但这种骄傲建立在真实的才华之上。你有时对自己和他人都太过严苛，忘记了不完美本身也有其美丽。",quote:"「我不追逐黑暗，我只是照耀——让阴影无处遁形。」",stats:{权威:55,智慧:80,激情:85,守护:40},dims:[55,80,85,60,50,40]},
+  artemis:  {name:"阿尔忒弥斯",en:"Artemis",role:"月亮·狩猎·荒野之神",icon:"🌙",tags:["独立","敏锐","纯粹","自由","坚韧"],desc:"你不需要任何人的许可来决定自己是谁。独立是你最深的本能，荒野是你最真实的家园。你敏锐、直觉强，能感知到周围人未曾言说的情绪。你保护弱者，但不允许任何人以保护之名束缚你。你的距离感并非冷漠，而是一种清醒的自我保全。",quote:"「月亮从不解释自己为何时圆时缺——我亦如是。」",stats:{权威:40,智慧:70,激情:55,守护:75},dims:[40,70,55,95,60,75]},
+  poseidon: {name:"波塞冬",en:"Poseidon",role:"海洋·地震·风暴之神",icon:"🔱",tags:["情感丰沛","自由","强大","冲动","深邃"],desc:"你的情绪像海洋——平静时无比辽阔包容，激动时足以掀翻山岳。你渴望自由，讨厌被局限。你有着强烈的直觉，常常在别人还没意识到问题时就已经感到了不安。你慷慨、热烈，但一旦被触碰底线，你的愤怒将无可阻挡。",quote:"「大海不需要解释它的深度——你只有沉进去，才能理解。」",stats:{权威:80,智慧:50,激情:85,守护:40},dims:[80,50,85,70,65,40]},
+  demeter:  {name:"得墨忒耳",en:"Demeter",role:"丰收·大地·母性之神",icon:"🌾",tags:["温柔","坚韧","奉献","深情","执着"],desc:"你是别人生命中的土地——稳定，滋养，不求回报。你把照顾他人视为本能，而非负担，从中获得真实的满足感。你的爱是实实在在的：一顿饭，一句叮嘱，一次默默的陪伴。但当你失去所爱，整个世界也会随你一起进入漫长的冬天。",quote:"「爱不是拥有——是一遍又一遍地选择留下。」",stats:{权威:40,智慧:60,激情:65,守护:95},dims:[40,60,65,30,55,95]},
+  hermes:   {name:"赫尔墨斯",en:"Hermes",role:"旅行·商业·信息之神",icon:"🪶",tags:["机智","灵活","幽默","好奇","社交达人"],desc:"你是房间里最先让气氛活跃的人。你思维飞速，能在几秒内找到任何话题的切入点，话语像一把钥匙，能开启所有人的心门。你好奇心旺盛，热爱新事物，讨厌一成不变。你游走于各种圈子之间，如鱼得水，却也因此让人觉得你难以捉摸。",quote:"「信息是最快的武器，我不需要盾——因为我从不在一个地方停留太久。」",stats:{权威:35,智慧:80,激情:70,守护:35},dims:[35,80,70,90,30,35]},
+  aphrodite:{name:"阿芙罗狄忒",en:"Aphrodite",role:"爱与美之神",icon:"🌹",tags:["热情","魅力","感性","创造力","执着"],desc:"你对美与爱有着超乎常人的感知——你能看见别人身上独特的光芒，并让他们也相信自己的光。你天生有吸引力，不只是外表，而是那种让人感到被看见的温度。你热烈，占有欲强，爱得轰轰烈烈。你的弱点在于，你太渴望被爱，有时会模糊自己的边界。",quote:"「爱本身就是答案，不管问题是什么。」",stats:{权威:40,智慧:50,激情:95,守护:60},dims:[40,50,95,70,45,60]},
+  ares:     {name:"阿瑞斯",en:"Ares",role:"战争·勇气之神",icon:"⚔️",tags:["勇敢","冲动","直接","热烈","不服输"],desc:"你不绕弯，不拖延，眼前有障碍就直接冲破。你活得最彻底，爱得最炽烈，战斗起来毫无保留。你对懦弱零容忍，对真正的勇气有着本能的敬意。你的直接有时伤人，但你的坦诚也让人放心——跟你在一起，不需要猜测。",quote:"「我不是最聪明的，但我是站到最后的那个。」",stats:{权威:60,智慧:30,激情:95,守护:50},dims:[60,30,95,70,30,50]},
+  hephaestus:{name:"赫淮斯托斯",en:"Hephaestus",role:"锻造·工艺·火焰之神",icon:"🔥",tags:["创造力","专注","内敛","坚韧","完美主义"],desc:"你是用双手改变世界的人。你不善言辞，但你的作品会替你说话——每一件都倾注了你全部的心血。你习惯独处，在创造中寻找意义。外界的冷落和不公你都经历过，但那些没有打倒你，反而锻造了你。你的力量深藏于内，那是火焰，不是烟。",quote:"「他们嘲笑我的跌撞，却渴望我双手造出的奇迹。」",stats:{权威:30,智慧:85,激情:60,守护:60},dims:[30,85,60,30,80,60]},
+  dionysus: {name:"狄俄尼索斯",en:"Dionysus",role:"酒·狂欢·戏剧之神",icon:"🍇",tags:["自由","热情","创意","解放","反传统"],desc:"你天生反对框架。你相信真正的自由是把面具摘下来，让所有人看见最真实的彼此。你有一种感染力，能让最压抑的人也在你身边放松下来。你爱热闹，也爱深夜的坦诚。你颠覆常规，拥抱混乱，因为你知道，酒杯碎了，才能倒出真心。",quote:"「我不是在打破规则——我是在提醒大家，规则本来就是人造的。」",stats:{权威:30,智慧:55,激情:95,守护:30},dims:[30,55,95,95,50,30]},
+  hades:    {name:"哈迪斯",en:"Hades",role:"冥界之王 · 死亡与财富之神",icon:"💀",tags:["神秘","公正","沉稳","深邃","误解"],desc:"你是那种被误解最多的人。你沉默，但绝非冷漠；你威严，但绝非残忍。你掌管着所有人最终都要面对的那个领域，所以你比任何人都更理解生命的重量。你公正，不偏不倚，这反而是你最稀缺的品质。你的内心世界比表面深邃得多，进入的人不多，但都不会后悔。",quote:"「每个灵魂都在我这里得到公正——不多，不少，恰好如此。」",stats:{权威:75,智慧:80,激情:40,守护:60},dims:[75,80,40,20,95,60]},
+  persephone:{name:"珀耳塞福涅",en:"Persephone",role:"冥后 · 春天与重生之神",icon:"🌺",tags:["蜕变","双面","坚韧","深情","神秘"],desc:"你经历过至暗，也见过盛放的春天——正因如此，你对两者都有常人难及的理解。你有两面：阳光里的你温柔、充满生命力；黑暗中的你沉静、强大、不容侵犯。你不是被塑造的，你是在经历中自我锻造的。你懂得如何在最难的处境里找到美。",quote:"「我学会了爱冬天，不是因为我不念春——而是因为我知道春天一定会回来。」",stats:{权威:55,智慧:70,激情:70,守护:80},dims:[55,70,70,50,85,80]},
+  eros:     {name:"厄洛斯",en:"Eros",role:"爱与欲望之神",icon:"💘",tags:["浪漫","热忱","直觉","勇敢去爱","感性"],desc:"你相信爱是宇宙最强的力量，并且你愿意为此押上一切。你直觉敏锐，能感知到别人心里没说出口的渴望。你的存在本身就能唤起别人心底沉睡的柔软。你不怕受伤，因为你知道，不敢爱的人才是真正的弱者。",quote:"「我的箭没有瞄准——那是因为爱本来就没有逻辑。」",stats:{权威:20,智慧:45,激情:95,守护:70},dims:[20,45,95,80,35,70]},
+  nike:     {name:"尼刻",en:"Nike",role:"胜利之神",icon:"🏆",tags:["进取","专注","自律","荣耀","不认输"],desc:"你的字典里没有「差不多」。你对自己的标准极高，一旦认定目标，就会以全部力量扑上去。你渴望胜利，但不是为了炫耀——而是因为你无法接受低于自己最佳状态的表现。你激励身边的人，让他们也相信自己可以做得更好。",quote:"「桂冠不是终点，它只是一次呼吸，然后继续向前。」",stats:{权威:70,智慧:65,激情:80,守护:40},dims:[70,65,80,55,30,40]},
+  tyche:    {name:"堤喀",en:"Tyche",role:"命运与幸运之神",icon:"🎲",tags:["随性","乐观","直觉","活在当下","魅力"],desc:"你跟「计划」这个词天然有些距离感。你相信时机、直觉和那些说不清道不明的缘分。你能在最意外的地方找到惊喜，也能把看似糟糕的局面笑着走出来。你的乐观不是逃避，是真正相信：最后都会好的。而且通常，你是对的。",quote:"「命运的骰子我掌中一转——看，又是好的那面。」",stats:{权威:25,智慧:35,激情:80,守护:30},dims:[25,35,80,95,20,30]},
+  prometheus:{name:"普罗米修斯",en:"Prometheus",role:"先知与盗火者 · 人类保护神",icon:"🔦",tags:["理想主义","智慧","牺牲","远见","反抗"],desc:"你看见了别人还没意识到的未来，并且愿意为此付出代价。你的理想主义不是天真，是建立在深刻洞察之上的选择。你敢于向权威说不，敢于为原则承担后果。你可能孤独，可能被误解，但你从不后悔——因为你清楚，有些火，必须有人去偷。",quote:"「那些锁链只是证明：有人害怕我手中的光。」",stats:{权威:45,智慧:90,激情:80,守护:85},dims:[45,90,80,70,75,85]},
+  achilles: {name:"阿喀琉斯",en:"Achilles",role:"最伟大的希腊英雄",icon:"🛡️",tags:["英勇","热烈","骄傲","忠义","短暂而灿烂"],desc:"你活得极致。热起来像烈火，冷起来像冰川，爱起来不顾一切，恨起来同样彻底。你的荣誉感极强，被辜负时的愤怒是真实的，对所爱之人的深情也是真实的。你不怕死，但你怕平庸。你宁愿燃烧殆尽，也不愿意慢慢熄灭。",quote:"「短暂而辉煌，好过漫长而黯淡。」",stats:{权威:60,智慧:45,激情:95,守护:80},dims:[60,45,95,60,55,80]},
+  odysseus: {name:"奥德修斯",en:"Odysseus",role:"伊塔卡之王 · 最智慧的英雄",icon:"🌊",tags:["智慧","适应力","坚韧","机智","温柔的执着"],desc:"你是那种无论落到什么处境，都能找到出路的人。你的聪明不是耍小聪明，是真正的灵活——你懂得放低姿态，懂得观察，懂得在对的时机出手。你历经漂泊，但心里始终有一盏灯。你坚韧，但不粗粝；你机智，但不失温情。",quote:"「每一次迷路，都是认识自己的机会。」",stats:{权威:50,智慧:95,激情:60,守护:70},dims:[50,95,60,80,65,70]}
+};
+
+// ============================================================
+// QUESTIONS
+// ============================================================
+var QS=[
+  {scene:"⚡",text:"危机突然降临。你的第一反应是？",opts:[{text:"立刻站出来，稳住局面，指挥大家行动",scores:{zeus:3,hera:2,athena:1,nike:2,achilles:1}},{text:"先退一步，快速分析局势，找到最优解",scores:{athena:3,odysseus:3,prometheus:2,hephaestus:1}},{text:"凭直觉行动，情绪和本能是我最可靠的向导",scores:{poseidon:2,ares:2,achilles:2,dionysus:1,eros:1}},{text:"默默做好自己那一部分，不张扬但绝不缺席",scores:{demeter:2,hephaestus:2,persephone:2,hermes:1}}]},
+  {scene:"🌟",text:"最能代表你的那种人生哲学是？",opts:[{text:"秩序与公正是文明的基石，我愿意为此战斗",scores:{zeus:3,athena:2,hera:2,prometheus:1}},{text:"自由是最高价值，任何枷锁都是对灵魂的侵犯",scores:{artemis:3,dionysus:3,hermes:2,tyche:2}},{text:"爱与创造，是我存在的全部意义",scores:{aphrodite:3,eros:3,apollo:2,hephaestus:2}},{text:"为所爱之人牺牲，是最伟大的事",scores:{demeter:3,achilles:2,persephone:2,prometheus:3,hera:1}}]},
+  {scene:"🏡",text:"如果可以选择，你最想生活在哪里？",opts:[{text:"奥林匹斯山顶，俯瞰大地，众星捧月",scores:{zeus:3,apollo:2,nike:2,hera:1}},{text:"深海或岛屿，辽阔无边，随浪而居",scores:{poseidon:3,odysseus:2,hermes:2,tyche:1}},{text:"森林或荒野，清净远离，与自然同呼吸",scores:{artemis:3,demeter:2,persephone:1,prometheus:1}},{text:"幽深的地下宫殿，或隐秘的工坊，静谧而神秘",scores:{hades:3,hephaestus:3,persephone:2,athena:1}}]},
+  {scene:"💔",text:"面对背叛，你会怎么做？",opts:[{text:"愤怒如雷，不遮不掩，直接表态",scores:{zeus:2,poseidon:2,ares:3,achilles:3}},{text:"冷静记在心里，在最合适的时机以智慧回应",scores:{athena:2,odysseus:3,hades:2,hera:2}},{text:"长时间难以释怀，但最终会选择放下和蜕变",scores:{hera:2,persephone:3,demeter:2,aphrodite:1}},{text:"以更宏大的目标超越个人恩怨",scores:{prometheus:3,zeus:1,nike:2,apollo:1}}]},
+  {scene:"👥",text:"朋友怎么描述你？",opts:[{text:"那种让人感到安全和踏实的领袖",scores:{zeus:2,athena:2,hera:2,odysseus:2,demeter:1}},{text:"永远能让气氛活跃的那个人",scores:{dionysus:3,hermes:3,aphrodite:2,tyche:2,apollo:1}},{text:"深不可测，但值得最深的信任",scores:{hades:3,persephone:2,artemis:2,hephaestus:2}},{text:"敢爱敢拼，活得最彻底的那个",scores:{ares:3,achilles:3,eros:2,poseidon:1,nike:1}}]},
+  {scene:"🌙",text:"你最难逃脱的弱点是？",opts:[{text:"太过自信，有时候冲动行事",scores:{zeus:2,ares:3,achilles:3,poseidon:2}},{text:"占有欲强，患得患失",scores:{hera:3,aphrodite:3,apollo:2,demeter:1}},{text:"内心深处极度孤独，不善表达情感",scores:{hades:3,hephaestus:3,artemis:2,persephone:1}},{text:"对冒险和自由的渴望让我忽视身边的稳定",scores:{hermes:3,dionysus:3,tyche:2,odysseus:2,prometheus:1}}]},
+  {scene:"✨",text:"你的人生目标最接近哪一个？",opts:[{text:"建立属于自己的秩序与遗产",scores:{zeus:3,hera:2,athena:2,prometheus:2}},{text:"创造出真正打动人心的东西",scores:{apollo:3,hephaestus:3,aphrodite:2,eros:1}},{text:"体验每一种可能，把生命活得淋漓尽致",scores:{dionysus:3,tyche:3,hermes:2,eros:2}},{text:"守护所有重要的人，让他们不受伤害",scores:{demeter:3,achilles:2,artemis:2,hera:1,persephone:2}}]},
+  {scene:"💘",text:"面对爱情，你是哪种人？",opts:[{text:"主动热烈，认定了就全力以赴，毫无保留",scores:{ares:2,aphrodite:3,eros:3,achilles:2,poseidon:1}},{text:"理性克制，爱得深沉却不善于表达",scores:{athena:2,hades:3,hephaestus:2,apollo:2}},{text:"自由随性，享受当下的感觉，拒绝被束缚",scores:{artemis:3,dionysus:2,hermes:2,tyche:2}},{text:"忠贞执着，相信缘分，愿意为爱等待很久",scores:{hera:3,demeter:2,persephone:3,odysseus:3}}]},
+  {scene:"🔮",text:"当你独处时，你最享受的状态是？",opts:[{text:"思考宏大的问题：人、世界、意义",scores:{prometheus:3,athena:2,hades:2,zeus:1,apollo:1}},{text:"创作：画画、写作、做任何有形的东西",scores:{hephaestus:3,apollo:3,aphrodite:2,artemis:1}},{text:"漫无目的地游荡，让思绪自由飘浮",scores:{hermes:3,dionysus:2,tyche:2,odysseus:2,poseidon:1}},{text:"在自然或安静的空间里感受内心的重量",scores:{demeter:2,persephone:3,artemis:2,hades:2,achilles:1}}]},
+  {scene:"🌅",text:"你最想被人记住的是什么？",opts:[{text:"我建立的东西，我守住的秩序",scores:{zeus:3,hera:2,athena:2,nike:2}},{text:"我创造的美，我留下的作品",scores:{apollo:3,hephaestus:3,aphrodite:2,eros:1}},{text:"我的勇气，那些我毫不犹豫冲进去的瞬间",scores:{ares:3,achilles:3,prometheus:2,nike:2,poseidon:1}},{text:"我对别人生命产生的温度和影响",scores:{demeter:3,persephone:2,odysseus:2,hermes:2,eros:2,tyche:1}}]}
+];
+
+// ============================================================
+// RELATIONSHIPS
+// ============================================================
+var RELS={
+  "zeus_hera":{type:"永恒的对立婚姻",story:"宙斯与赫拉是奥林匹斯最著名的婚姻，也是最充满张力的关系。他拥有雷霆，她拥有王冠，两人在权力与忠诚之间永无休止地拉锯。他的风流是她最深的伤，她的执念是他最深的罪。但这段婚姻从未真正终结——因为他们都知道，失去对方意味着失去整个宇宙的秩序。",dynamic:"你们相互碰撞，却又彼此定义。"},
+  "zeus_athena":{type:"父女守望",story:"宙斯最爱的女儿，从他的头颅中全副武装地诞生。他给了她力量，她给了他智慧；他有时鲁莽，她总是清醒。宙斯信任雅典娜超过任何人，而雅典娜也在最关键的时刻选择站在父亲身旁。",dynamic:"力量与智慧相遇，是帝国最坚固的基石。"},
+  "zeus_poseidon":{type:"兄弟角力",story:"世界被三分——天空、海洋与冥界。宙斯得了最好的那份，波塞冬始终耿耿于怀。他们争夺雅典城的守护权，争夺人类的崇拜，争夺谁才是真正意义上的第一。但面对泰坦，他们永远并肩。",dynamic:"你们都想赢，但遇到真正的敌人，永远是彼此的后盾。"},
+  "apollo_artemis":{type:"双子星辰",story:"日与月，弓与琴，光明与夜晚。阿波罗和阿尔忒弥斯是最默契的双生神。他喧嚣，她沉静；他渴望被看见，她渴望消失于荒野。但无论走多远，他们总是彼此的参照——另一半的镜子。",dynamic:"你们是一枚硬币的两面，分开都不完整。"},
+  "hades_persephone":{type:"冥界的春天",story:"他绑架了她，却给了她一个王国的王冠。她以为是囚禁，最终发现是救赎。石榴的种子让两个世界永远相连——她在春天属于大地，在冬天属于他。这是希腊神话里最意外的爱情，也是最深刻的。",dynamic:"你们是彼此最不可能却最真实的归宿。"},
+  "prometheus_zeus":{type:"叛逆与审判",story:"普罗米修斯从奥林匹斯偷走火焰，送给渺小的人类。宙斯将他缚于山岩，日日以鹰啄肝。但普罗米修斯从未后悔。这是理想主义与权威秩序最激烈的碰撞——他输了，但历史记住了他。",dynamic:"你们都相信自己是对的——这才是最难解的战争。"},
+  "achilles_odysseus":{type:"剑与谋",story:"阿喀琉斯是纯粹的力量与荣耀，奥德修斯是弯曲的智慧与忍耐。在特洛伊战场，两人相互鄙视，又相互需要。少了任何一个，特洛伊都不会陷落。",dynamic:"你们的差异本身就是最强的武器。"},
+  "aphrodite_ares":{type:"战神与爱神的秘密",story:"她嫁给了赫淮斯托斯，却爱上了阿瑞斯——最柔软的感情，配上最粗粝的灵魂。这段秘密恋情是奥林匹斯最著名的丑闻，也是最真实的情感写照：有时候，爱就是选择了不该选的那个人。",dynamic:"你们在一起不够理智，却足够真实。"},
+  "hera_demeter":{type:"深情者的彼此理解",story:"她们都失去过最重要的东西——赫拉失去了忠诚的婚姻，得墨忒耳失去了心爱的女儿。但她们没有被打倒，而是在失去中变得更强大，更深沉。",dynamic:"你们都经历过冬天，所以都懂春天的重量。"},
+  "odysseus_athena":{type:"智者与守护者",story:"雅典娜是奥德修斯最忠实的守护神。她欣赏他的智慧，他信任她的指引。在漫长的归途中，无数次是她出手，让他化险为夷。这是希腊神话里最美的关系之一：神与人之间，建立在真正的相互理解之上的深情。",dynamic:"你们是彼此最懂对方的那个人。"},
+  "eros_aphrodite":{type:"爱神母子",story:"阿芙罗狄忒是爱的本体，厄洛斯是爱的箭——母亲代表爱的全部复杂，儿子代表爱最初那一刻的纯粹冲动。他们是爱情最完整的呈现：有了起点的箭，也有了承载全程的心。",dynamic:"你们合在一起，就是爱的完整——从心动到深情。"},
+  "hades_zeus":{type:"秩序的两极",story:"宙斯管生，哈迪斯管死——宇宙的秩序需要两者同时存在。他们并不亲密，但彼此尊重。宙斯知道自己最终也得来哈迪斯的国度，而哈迪斯知道那一天的到来不会动摇他的公正。",dynamic:"你们站在秩序的两端，共同撑起了世界的完整。"}
+};
+
+function genRel(g1,g2){
+  var dims=["权威","智慧","激情","自由","深沉","守护"];
+  var d1=GODS[g1].dims,d2=GODS[g2].dims;
+  var dom1=dims[d1.indexOf(Math.max.apply(null,d1))];
+  var dom2=dims[d2.indexOf(Math.max.apply(null,d2))];
+  if(dom1===dom2){
+    return {type:"同源的灵魂",story:GODS[g1].name+"与"+GODS[g2].name+"有着相似的内核——都以「"+dom1+"」为本。相遇时，你们能立刻感受到某种深层的共鸣，像是见到了一面镜子。但越是相似，越容易碰撞——因为都不愿意让步。",dynamic:"你们是彼此的镜子，照出了自己最深的样子。"};
+  }
+  return {type:dom1+"与"+dom2+"的相遇",story:GODS[g1].name+"以「"+dom1+"」立于世，"+GODS[g2].name+"以「"+dom2+"」行于世。这两种力量的相遇本身就是一个故事——不同，所以吸引；不同，所以摩擦；不同，所以在相处中各自变得更完整。",dynamic:"你们的差异，恰恰是对方最需要的。"};
+}
+function getRel(a,b){
+  var key=[a,b].sort().join('_');
+  return RELS[key]||genRel(a,b);
+}
+
+// ============================================================
+// 图片映射
+// ============================================================
+var GOD_IMGS={
+  zeus:'./images/zeus.jpg',hera:'./images/hera.jpg',
+  athena:'./images/athena.jpg',apollo:'./images/apollo.jpg',
+  artemis:'./images/artemis.jpg',poseidon:'./images/poseidon.jpg',
+  demeter:'./images/demeter.jpg',hermes:'./images/hermes.jpg',
+  aphrodite:'./images/aphrodite.jpg',ares:'./images/ares.jpg',
+  hephaestus:'./images/hephaestus.jpg',dionysus:'./images/dionysus.jpg',
+  hades:'./images/hades.jpg',persephone:'./images/persephone.jpg',
+  eros:'./images/eros.jpg',nike:'./images/nike.jpg',
+  tyche:'./images/tyche.jpg',prometheus:'./images/prometheus.jpg',
+  achilles:'./images/achilles.jpg',odysseus:'./images/odysseus.jpg'
+};
+
+// 图腾 emoji
+var TOTEMS=['🦉','🐺','🦁','🌿','🐬','🔱','🐦','🐍','🦌','🌿','🦅','🦄'];
+var selectedTotem=TOTEMS[0];
+var LABELS=['A','B','C','D'];
+
+function genUID(){
+  var c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  var r='';for(var i=0;i<10;i++)r+=c[Math.floor(Math.random()*c.length)];
+  return r.slice(0,3)+'-'+r.slice(3,7)+'-'+r.slice(7,10);
+}
+
+// ============================================================
+// STATE
+// ============================================================
+var scores={},qIdx=0,isFriend=false,hostGodId=null,myGodId=null;
+
+// ============================================================
+// SCREENS
+// ============================================================
+var SCREEN_IDS={intro:'si',setup:'ss',quiz:'sq',loading:'sl',result:'sr',friend:'sfr'};
+function show(name){
+  Object.values(SCREEN_IDS).forEach(function(id){document.getElementById(id).classList.remove('on')});
+  var el=document.getElementById(SCREEN_IDS[name]);
+  el.classList.add('on');el.scrollTop=0;
+}
+
+// ============================================================
+// INIT
+// ============================================================
+(function(){
+  // 图腾网格
+  var grid=document.getElementById('totem-grid');
+  TOTEMS.forEach(function(t,i){
+    var btn=document.createElement('button');
+    btn.className='totem-cell'+(i===0?' active':'');
+    btn.textContent=t;
+    btn.onclick=function(){
+      document.querySelectorAll('.totem-cell').forEach(function(b){b.classList.remove('active')});
+      btn.classList.add('active');selectedTotem=t;
+    };
+    grid.appendChild(btn);
+  });
+  // UID
+  document.getElementById('uid-val').textContent='ORA-'+genUID();
+
+  // URL 参数
+  var p=new URLSearchParams(location.search);
+  var from=p.get('from');
+  if(from&&GODS[from]){
+    hostGodId=from;isFriend=true;
+    document.getElementById('frd-icon').textContent=GODS[from].icon;
+    document.getElementById('frd-name').textContent=GODS[from].name+' 邀请你';
+    document.getElementById('frd-desc').textContent='Ta的神话人格是「'+GODS[from].name+'」——'+GODS[from].role+'。完成测试后揭晓你们的神话关系。';
+    show('friend');
+  } else {
+    show('intro');
+  }
+})();
+
+// ============================================================
+// SETUP
+// ============================================================
+function goSetup(){show('setup')}
+function checkSetup(){
+  var nick=document.getElementById('inp-nick').value.trim();
+  var btn=document.getElementById('btn-enter');
+  if(nick.length>0){btn.classList.remove('dim')}
+  else{btn.classList.add('dim')}
+}
+
+// ============================================================
+// QUIZ
+// ============================================================
+function startQuiz(){
+  scores={};Object.keys(GODS).forEach(function(k){scores[k]=0});
+  qIdx=0;isFriend=false;show('quiz');renderQ();
+}
+function startFriendQuiz(){
+  scores={};Object.keys(GODS).forEach(function(k){scores[k]=0});
+  qIdx=0;isFriend=true;show('quiz');renderQ();
+}
+
+// ============================================================
+// 题目场景图映射 — AI 生成的油画场景插图
+// ============================================================
+var Q_SCENES = [
+  './assets/scene-crisis.jpg',    // Q1 危机
+  './assets/scene-cosmos.jpg',    // Q2 人生哲学
+  './assets/scene-home.jpg',      // Q3 理想居所
+  './assets/scene-betrayal.jpg',  // Q4 背叛
+  './assets/scene-social.jpg',    // Q5 朋友眼中
+  './assets/scene-moon.jpg',      // Q6 弱点
+  './assets/scene-goal.jpg',      // Q7 人生目标
+  './assets/scene-love.jpg',      // Q8 爱情
+  './assets/scene-solitude.jpg',  // Q9 独处
+  './assets/scene-dawn.jpg'       // Q10 记住什么
+];
+function renderQ(){
+  var q=QS[qIdx];
+  document.getElementById('q-num').textContent=String(qIdx+1).padStart(2,'0');
+  document.getElementById('p-fill').style.width=((qIdx/QS.length)*100)+'%';
+  var card=document.getElementById('q-card');
+  card.style.animation='none';
+  requestAnimationFrame(function(){
+    card.style.animation='';
+    card.innerHTML='';
+
+    // 场景图区 — AI 油画场景图，降级到 emoji
+    var sceneDiv=document.createElement('div');
+    sceneDiv.className='q-scene-img';
+    var scenePath=Q_SCENES[qIdx];
+    if(scenePath){
+      var sImg=document.createElement('img');
+      sImg.style.cssText='width:100%;height:100%;object-fit:cover;object-position:center;display:block;';
+      sImg.src=scenePath;sImg.alt='';
+      sImg.onerror=function(){
+        sceneDiv.innerHTML='';
+        var fb=document.createElement('span');
+        fb.className='q-scene-emoji';fb.textContent=q.scene;
+        sceneDiv.appendChild(fb);
+      };
+      sceneDiv.appendChild(sImg);
+    } else {
+      var sceneEmoji=document.createElement('span');
+      sceneEmoji.className='q-scene-emoji';
+      sceneEmoji.textContent=q.scene;
+      sceneDiv.appendChild(sceneEmoji);
+    }
+
+    // 问题文字
+    var txt=document.createElement('div');
+    txt.className='q-text';txt.textContent=q.text;
+
+    // 选项
+    var opts=document.createElement('div');
+    opts.className='q-opts';
+    q.opts.forEach(function(o,i){
+      var btn=document.createElement('button');
+      btn.className='opt-btn';
+      btn.setAttribute('data-idx',LABELS[i]);
+      btn.textContent=o.text;
+      btn.addEventListener('click',function(){pick(i)});
+      opts.appendChild(btn);
+    });
+    card.appendChild(sceneDiv);card.appendChild(txt);card.appendChild(opts);
+  });
+}
+
+function pick(i){
+  var opts=document.querySelectorAll('.opt-btn');
+  opts.forEach(function(o){o.classList.remove('sel')});
+  opts[i].classList.add('sel');
+  var sc=QS[qIdx].opts[i].scores;
+  Object.entries(sc).forEach(function(p){scores[p[0]]=(scores[p[0]]||0)+p[1]});
+  setTimeout(function(){
+    qIdx++;
+    if(qIdx>=QS.length){finishQuiz()}else{renderQ()}
+  },400);
+}
+
+function finishQuiz(){
+  show('loading');
+  setTimeout(function(){
+    var winner=Object.entries(scores).sort(function(a,b){return b[1]-a[1]})[0][0];
+    myGodId=winner;
+    if(isFriend&&hostGodId){showFriendCompare()}
+    else{showResult(winner)}
+  },2200);
+}
+
+// ============================================================
+// RESULT
+// ============================================================
+var STAT_ICONS={权威:'⚡',智慧:'🦉',激情:'🔥',守护:'🛡️',公正:'⚖️',独立:'🌙'};
+
+function loadImg(imgEl,emojiEl,card,gid){
+  var path=GOD_IMGS[gid];
+  if(!path){card.classList.add('no-img');emojiEl.textContent=GODS[gid].icon;return}
+  var t=new Image();
+  t.onload=function(){imgEl.src=path;imgEl.alt=GODS[gid].name;card.classList.remove('no-img')};
+  t.onerror=function(){card.classList.add('no-img');emojiEl.textContent=GODS[gid].icon};
+  t.src=path;
+}
+
+function showResult(gid){
+  var g=GODS[gid];
+  var hero=document.getElementById('result-hero');
+  loadImg(document.getElementById('r-img'),document.getElementById('r-emoji'),hero,gid);
+  document.getElementById('r-name').textContent=g.name;
+  document.getElementById('r-en').textContent=g.en;
+  document.getElementById('r-role').textContent=g.role;
+
+  var tagsEl=document.getElementById('r-tags');tagsEl.innerHTML='';
+  g.tags.forEach(function(t){
+    var s=document.createElement('span');s.className='tag';s.textContent=t;tagsEl.appendChild(s);
+  });
+  document.getElementById('r-desc').textContent=g.desc;
+  document.getElementById('r-quote').textContent=g.quote;
+
+  var statsEl=document.getElementById('r-stats');statsEl.innerHTML='';
+  Object.entries(g.stats).forEach(function(pair,i){
+    var row=document.createElement('div');row.className='stat-row';
+    // 图标
+    var icon=document.createElement('div');icon.className='stat-icon';
+    icon.textContent=STAT_ICONS[pair[0]]||'✦';
+    // 标签+条
+    var wrap=document.createElement('div');
+    wrap.style.cssText='grid-column:2;display:flex;flex-direction:column;gap:1.5vw';
+    var lbl=document.createElement('div');lbl.className='stat-label-text';lbl.textContent=pair[0];
+    var trackWrap=document.createElement('div');trackWrap.className='stat-track-wrap';
+    var trk=document.createElement('div');trk.className='stat-track';
+    var bar=document.createElement('div');bar.className='stat-bar';bar.dataset.val=pair[1];
+    trk.appendChild(bar);trackWrap.appendChild(trk);
+    wrap.appendChild(lbl);wrap.appendChild(trackWrap);
+    // 数值
+    var val=document.createElement('div');val.className='stat-val';val.textContent=pair[1]+'%';
+    row.appendChild(icon);row.appendChild(wrap);row.appendChild(val);
+    statsEl.appendChild(row);
+  });
+
+  show('result');
+  setTimeout(function(){
+    document.querySelectorAll('.stat-bar').forEach(function(b,i){
+      b.style.transitionDelay=(i*90)+'ms';
+      b.style.width=b.dataset.val+'%';
+    });
+  },300);
+}
+
+// ============================================================
+// FRIEND COMPARE
+// ============================================================
+function showFriendCompare(){
+  var hg=GODS[hostGodId],fg=GODS[myGodId];
+  // 主机卡
+  var hCard=document.getElementById('cmp-host-card');
+  loadImg(document.getElementById('c-h-img'),document.getElementById('c-h-emoji'),hCard,hostGodId);
+  document.getElementById('c-h-name').textContent=hg.name;
+  document.getElementById('c-h-role').textContent=hg.role;
+  // 我的卡
+  var mCard=document.getElementById('cmp-my-card');
+  loadImg(document.getElementById('c-m-img'),document.getElementById('c-m-emoji'),mCard,myGodId);
+  document.getElementById('c-m-name').textContent=fg.name;
+  document.getElementById('c-m-role').textContent=fg.role;
+  // 关系
+  var rel=getRel(hostGodId,myGodId);
+  document.getElementById('rel-type').textContent=rel.type;
+  document.getElementById('rel-story').textContent=rel.story;
+  document.getElementById('rel-dynamic').textContent='「'+rel.dynamic+'」';
+  // 切换显示
+  document.getElementById('frd-prompt').classList.add('hid');
+  var cmp=document.getElementById('cmp-section');
+  cmp.classList.remove('hid');cmp.classList.add('show');
+  show('friend');
+}
+
+// ============================================================
+// SHARE
+// ============================================================
+function doShare(){
+  copyText(location.origin+location.pathname+'?from='+myGodId);
+}
+function shareFromFriend(){
+  copyText(location.origin+location.pathname+'?from='+myGodId);
+}
+function copyText(text){
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(function(){toast('链接已复制 ✦ 发给好友吧')});
+  } else {
+    var ta=document.createElement('textarea');ta.value=text;
+    document.body.appendChild(ta);ta.select();document.execCommand('copy');
+    document.body.removeChild(ta);toast('链接已复制 ✦ 发给好友吧');
+  }
+}
+function toast(msg){
+  var el=document.createElement('div');el.className='toast';el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(function(){el.remove()},3000);
+}
+</script>
+</body>
+</html>

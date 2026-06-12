@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 3 — 神祇图鉴</title>
+
+  <!-- Google Fonts — load first -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=Noto+Serif+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES — greek-myth-design dark mode
+       ============================================================ */
+    :root {
+      --background:      #0d0b0e;
+      --surface0:        #0d0b0e;
+      --surface1:        #1a1613;
+      --surface2:        #231e1a;
+      --surface3:        #2e2722;
+      --border:          #3a3028;
+      --border-visible:  #5a4830;
+      --border-gold:     #c9a84c;
+      --text1:           #f0ead8;
+      --text2:           #c9a84c;
+      --text3:           #a8906a;
+      --text4:           #6b5744;
+      --accent:          #c9a84c;
+      --accent-dim:      #8a6d28;
+      --accent-glow:     rgba(201, 168, 76, 0.18);
+      --accent-glow-md:  rgba(201, 168, 76, 0.08);
+
+      --font-display:  'Cinzel Decorative', 'Cinzel', Georgia, serif;
+      --font-heading:  'Cinzel', Georgia, 'Times New Roman', serif;
+      --font-body:     'Noto Serif SC', Georgia, '宋体', SimSun, serif;
+
+      --easing-ritual:  cubic-bezier(0.22, 1, 0.36, 1);
+      --duration-micro:    200ms;
+      --duration-standard: 350ms;
+    }
+
+    /* ============================================================
+       RESET & BASE
+       ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      background: var(--background);
+      min-height: 100vh;
+    }
+
+    body {
+      background-color: var(--background);
+      background-image:
+        /* subtle dot grid — aged paper texture */
+        radial-gradient(circle, rgba(201,168,76,0.06) 1px, transparent 1px),
+        radial-gradient(circle, rgba(240,234,216,0.025) 1px, transparent 1px);
+      background-size: 28px 28px, 7px 7px;
+      background-position: 0 0, 3.5px 3.5px;
+      color: var(--text1);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 2.0;
+      letter-spacing: 0.05em;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* ============================================================
+       SECTION WRAPPER
+       ============================================================ */
+    .section-deities {
+      width: 100%;
+      padding: 72px 64px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ambient vignette at section edges */
+    .section-deities::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(201,168,76,0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 100% 30% at 0% 50%, rgba(201,168,76,0.025) 0%, transparent 60%),
+        radial-gradient(ellipse 100% 30% at 100% 50%, rgba(201,168,76,0.025) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .section-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ============================================================
+       SECTION HEADER
+       ============================================================ */
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .micro-label {
+      display: inline-block;
+      font-family: var(--font-heading);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.45em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      opacity: 0.85;
+    }
+
+    .section-title {
+      font-family: 'Noto Serif SC', 'Georgia', '宋体', serif;
+      font-size: 42px;
+      font-weight: 300;
+      line-height: 1.25;
+      letter-spacing: 0.18em;
+      color: var(--text1);
+      margin-bottom: 28px;
+    }
+
+    /* Gold ornamental divider */
+    .ornament-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 0 auto;
+      width: 320px;
+    }
+
+    .ornament-divider .line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.6;
+    }
+
+    .ornament-divider .diamond {
+      font-family: var(--font-heading);
+      font-size: 8px;
+      color: var(--accent);
+      letter-spacing: 0;
+      opacity: 0.9;
+    }
+
+    /* ============================================================
+       BENTO DEITY GRID — 2 rows × 4 columns, gapless
+       ============================================================ */
+    .deity-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, auto);
+      gap: 0;
+      border: 1px solid var(--border-gold);
+      opacity: 0.85;
+      margin-bottom: 36px;
+    }
+
+    /* Individual deity card */
+    .deity-card {
+      background: var(--surface1);
+      border: 1px solid var(--border-gold);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition:
+        border-color var(--duration-micro) var(--easing-ritual),
+        background var(--duration-micro) var(--easing-ritual);
+    }
+
+    /* Remove double borders between cells — use negative margin or outline */
+    .deity-card {
+      margin: -1px 0 0 -1px;
+    }
+    .deity-grid {
+      padding: 1px 0 0 1px;
+    }
+
+    .deity-card:hover {
+      border-color: var(--accent);
+      background: #201c18;
+      z-index: 2;
+    }
+
+    /* Portrait area — square cropped */
+    .deity-portrait {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .deity-portrait svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Inner vignette overlay on portrait */
+    .deity-portrait::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 45%, rgba(13,11,14,0.55) 100%);
+      pointer-events: none;
+    }
+
+    /* Bottom strip: name + descriptor */
+    .deity-label {
+      padding: 10px 12px 11px;
+      border-top: 1px solid var(--border-gold);
+      background: linear-gradient(180deg, #1a1613 0%, #141210 100%);
+    }
+
+    .deity-name {
+      font-family: var(--font-heading);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .deity-descriptor {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: var(--text3);
+      display: block;
+      line-height: 1.4;
+    }
+
+    /* ============================================================
+       HIGHLIGHTED CARD — Athena (position 2 in row 1, index 1)
+       ============================================================ */
+    .deity-card.featured {
+      background: #1f1b16;
+      border-color: var(--accent);
+      z-index: 3;
+    }
+
+    .deity-card.featured::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border: 1px solid var(--accent);
+      box-shadow:
+        0 0 0 1px rgba(201,168,76,0.15),
+        inset 0 0 20px rgba(201,168,76,0.04);
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    /* Outer glow for featured card — soft luminous halo */
+    .deity-card.featured::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border: 1px solid rgba(201,168,76,0.4);
+      pointer-events: none;
+      z-index: 3;
+      /* inset box glow to simulate card emission */
+      box-shadow: 0 0 0 2px rgba(201,168,76,0.12);
+    }
+
+    .deity-card.featured .deity-portrait::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 30%, rgba(201,168,76,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .deity-card.featured .deity-label {
+      background: linear-gradient(180deg, #241f18 0%, #1a1512 100%);
+    }
+
+    .deity-card.featured .deity-name {
+      color: #e8c060;
+    }
+
+    /* ============================================================
+       CTA CAPTION
+       ============================================================ */
+    .cta-caption {
+      text-align: center;
+    }
+
+    .cta-link {
+      font-family: var(--font-heading);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(201,168,76,0.5);
+      padding-bottom: 2px;
+      transition: border-color var(--duration-micro) ease-out,
+                  color var(--duration-micro) ease-out;
+    }
+
+    .cta-link:hover {
+      color: #e8c060;
+      border-bottom-color: var(--accent);
+    }
+
+    /* ============================================================
+       SVG DEITY PORTRAITS — oil-painting style, inline
+       Each deity has:
+       - Moody layered color backdrop
+       - Characteristic visual elements (symbols, attributes)
+       - Painted-feel blended brushstroke shapes
+       - Consistent warm dark palette
+       ============================================================ */
+  </style>
+</head>
+<body>
+
+<section class="section-deities">
+  <div class="section-inner">
+
+    <!-- HEADER -->
+    <header class="section-header">
+      <p style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.5em;color:rgba(201,168,76,0.4);text-transform:uppercase;margin-bottom:10px;">✦ &nbsp; III &nbsp; ✦</p>
+      <span class="micro-label">DEITY ARCHETYPES</span>
+
+      <h2 class="section-title">八位神祇，等待被召唤</h2>
+
+      <div class="ornament-divider">
+        <span class="line"></span>
+        <span class="diamond">✦</span>
+        <span class="diamond" style="font-size:6px; opacity:0.5;">◆</span>
+        <span class="diamond">✦</span>
+        <span class="line"></span>
+      </div>
+    </header>
+
+    <!-- DEITY BENTO GRID -->
+    <div class="deity-grid">
+
+      <!-- 1. ZEUS — lightning, throne -->
+      <div class="deity-card">
+        <div class="deity-portrait">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="bg-zeus" cx="50%" cy="35%" r="65%">
+                <stop offset="0%" stop-color="#2a1f0a"/>
+                <stop offset="60%" stop-color="#1a1208"/>
+                <stop offset="100%" stop-color="#0d0a06"/>
+              </radialGradient>
+              <radialGradient id="sky-zeus" cx="50%" cy="20%" r="50%">
+                <stop offset="0%" stop-color="#4a3a18" stop-opacity="0.7"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+              <filter id="glow-zeus">
+                <feGaussianBlur stdDeviation="2.5" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+            </defs>
+            <!-- Sky background -->
+            <rect width="200" height="200" fill="url(#bg-zeus)"/>
+            <ellipse cx="100" cy="40" rx="90" ry="70" fill="url(#sky-zeus)"/>
+            <!-- Storm clouds – brushstroke shapes -->
+            <ellipse cx="60" cy="55" rx="45" ry="22" fill="#2a2010" opacity="0.8"/>
+            <ellipse cx="140" cy="45" rx="50" ry="18" fill="#241c0c" opacity="0.7"/>
+            <ellipse cx="100" cy="65" rx="60" ry="25" fill="#1e1808" opacity="0.9"/>
+            <!-- Throne suggestion — architectural columns hinted -->
+            <rect x="30" y="110" width="12" height="70" fill="#3a2c10" opacity="0.5"/>
+            <rect x="158" y="120" width="10" height="60" fill="#3a2c10" opacity="0.4"/>
+            <!-- Figure silhouette — Zeus seated, robed -->
+            <ellipse cx="100" cy="145" rx="38" ry="45" fill="#241c0a" opacity="0.95"/>
+            <ellipse cx="100" cy="95" rx="26" ry="30" fill="#2e2410" opacity="0.9"/>
+            <!-- Head -->
+            <ellipse cx="100" cy="72" rx="18" ry="20" fill="#4a3820" opacity="0.85"/>
+            <!-- White beard suggestion -->
+            <ellipse cx="100" cy="86" rx="12" ry="8" fill="#c8b890" opacity="0.2"/>
+            <!-- Zeus crown/laurel hint -->
+            <ellipse cx="100" cy="60" rx="18" ry="5" fill="#c9a84c" opacity="0.15"/>
+            <!-- LIGHTNING BOLT — central iconic element -->
+            <g filter="url(#glow-zeus)" opacity="0.9">
+              <polygon points="108,38 96,80 104,80 90,130 118,75 108,75 120,38" fill="#f0d878" opacity="0.85"/>
+              <polygon points="108,38 96,80 104,80 90,130 118,75 108,75 120,38" fill="#c9a84c" opacity="0.4"/>
+            </g>
+            <!-- Secondary lightning streaks -->
+            <line x1="145" y1="50" x2="130" y2="90" stroke="#c9a84c" stroke-width="1" opacity="0.3"/>
+            <line x1="55" y1="60" x2="72" y2="95" stroke="#c9a84c" stroke-width="0.8" opacity="0.25"/>
+            <!-- Ground shadow -->
+            <ellipse cx="100" cy="192" rx="55" ry="8" fill="#0a0805" opacity="0.8"/>
+            <!-- Atmospheric glow behind figure -->
+            <radialGradient id="aura-zeus" cx="50%" cy="60%" r="35%">
+              <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.08"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </radialGradient>
+            <ellipse cx="100" cy="110" rx="55" ry="60" fill="url(#aura-zeus)"/>
+          </svg>
+        </div>
+        <div class="deity-label">
+          <span class="deity-name">ZEUS</span>
+          <span class="deity-descriptor">宙斯 · 权威与秩序</span>
+        </div>
+      </div>
+
+      <!-- 2. ATHENA — owl, helmet — FEATURED -->
+      <div class="deity-card featured">
+        <div class="deity-portrait">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="bg-athena" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#1a1f14"/>
+                <stop offset="55%" stop-color="#0f1408"/>
+                <stop offset="100%" stop-color="#080c05"/>
+              </radialGradient>
+              <radialGradient id="aura-athena" cx="50%" cy="40%" r="40%">
+                <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.14"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+              <filter id="soft-athena">
+                <feGaussianBlur stdDeviation="1.5"/>
+              </filter>
+            </defs>
+            <rect width="200" height="200" fill="url(#bg-athena)"/>
+            <!-- Atmospheric haze -->
+            <ellipse cx="100" cy="80" rx="85" ry="70" fill="url(#aura-athena)"/>
+            <!-- Background architecture — Parthenon hint -->
+            <rect x="10" y="140" width="8" height="45" fill="#2a301e" opacity="0.5"/>
+            <rect x="28" y="148" width="6" height="37" fill="#2a301e" opacity="0.4"/>
+            <rect x="166" y="142" width="8" height="43" fill="#2a301e" opacity="0.5"/>
+            <!-- Robes — flowing painted shapes -->
+            <ellipse cx="100" cy="155" rx="42" ry="48" fill="#1c2018" opacity="0.95"/>
+            <path d="M65,130 Q50,170 60,200 L140,200 Q150,170 135,130 Q115,120 100,125 Q85,120 65,130Z" fill="#1e2218" opacity="0.9"/>
+            <!-- Breastplate / aegis hint -->
+            <ellipse cx="100" cy="115" rx="28" ry="22" fill="#2a3020" opacity="0.9"/>
+            <ellipse cx="100" cy="115" rx="24" ry="18" fill="#242a1c" opacity="0.7"/>
+            <!-- Medusa on aegis — tiny circular motif -->
+            <circle cx="100" cy="113" r="6" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.5"/>
+            <circle cx="100" cy="113" r="3" fill="#c9a84c" opacity="0.2"/>
+            <!-- Neck -->
+            <rect x="92" y="86" width="16" height="22" rx="4" fill="#3a3020" opacity="0.8"/>
+            <!-- Head -->
+            <ellipse cx="100" cy="76" rx="20" ry="22" fill="#3c3020" opacity="0.9"/>
+            <!-- HELMET — Corinthian crested -->
+            <path d="M82,68 Q82,48 100,44 Q118,48 118,68" fill="#c9a84c" opacity="0.7"/>
+            <path d="M84,66 Q84,50 100,46 Q116,50 116,66" fill="#a87830" opacity="0.5"/>
+            <!-- Helmet crest -->
+            <path d="M95,44 Q100,28 105,32 Q110,20 115,28 Q112,38 105,40 Q108,30 103,38 Q100,28 97,38 Q92,35 95,44Z" fill="#c9a84c" opacity="0.6"/>
+            <!-- Helmet visor/cheekguards -->
+            <rect x="82" y="64" width="7" height="18" rx="1" fill="#a87830" opacity="0.6"/>
+            <rect x="111" y="64" width="7" height="18" rx="1" fill="#a87830" opacity="0.6"/>
+            <!-- Eyes — piercing grey-gold -->
+            <ellipse cx="93" cy="74" rx="3.5" ry="3" fill="#c9a84c" opacity="0.55"/>
+            <ellipse cx="107" cy="74" rx="3.5" ry="3" fill="#c9a84c" opacity="0.55"/>
+            <ellipse cx="93" cy="74" rx="1.5" ry="1.5" fill="#1a1810" opacity="0.8"/>
+            <ellipse cx="107" cy="74" rx="1.5" ry="1.5" fill="#1a1810" opacity="0.8"/>
+            <!-- OWL — sitting right shoulder -->
+            <ellipse cx="148" cy="122" rx="13" ry="16" fill="#1a1c14" opacity="0.9"/>
+            <ellipse cx="148" cy="112" rx="10" ry="10" fill="#24261c" opacity="0.9"/>
+            <!-- Owl eyes -->
+            <circle cx="144" cy="110" r="3.5" fill="#c9a84c" opacity="0.7"/>
+            <circle cx="152" cy="110" r="3.5" fill="#c9a84c" opacity="0.7"/>
+            <circle cx="144" cy="110" r="1.5" fill="#0a0c08" opacity="0.9"/>
+            <circle cx="152" cy="110" r="1.5" fill="#0a0c08" opacity="0.9"/>
+            <!-- Owl beak -->
+            <path d="M147,113 L149,117 L145,117Z" fill="#8a7030" opacity="0.7"/>
+            <!-- Owl wings folded -->
+            <path d="M137,118 Q130,128 135,140 Q140,132 148,130Z" fill="#1c1e14" opacity="0.8"/>
+            <path d="M159,118 Q166,128 161,140 Q156,132 148,130Z" fill="#1c1e14" opacity="0.8"/>
+            <!-- Spear hint — left side -->
+            <rect x="50" y="30" width="2" height="170" fill="#c9a84c" opacity="0.3"/>
+            <polygon points="51,30 47,42 55,42" fill="#c9a84c" opacity="0.4"/>
+            <!-- Gold aura outline around featured figure -->
+            <ellipse cx="100" cy="120" rx="55" ry="65" fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.2"/>
+          </svg>
+        </div>
+        <div class="deity-label">
+          <span class="deity-name">ATHENA</span>
+          <span class="deity-descriptor">雅典娜 · 智慧与战略</span>
+        </div>
+      </div>
+
+      <!-- 3. APOLLO — sun, lyre -->
+      <div class="deity-card">
+        <div class="deity-portrait">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="bg-apollo" cx="50%" cy="30%" r="65%">
+                <stop offset="0%" stop-color="#2a1e08"/>
+                <stop offset="60%" stop-color="#1a1208"/>
+                <stop offset="100%" stop-color="#0d0a06"/>
+              </radialGradient>
+              <radialGradient id="sun-apollo" cx="50%" cy="22%" r="30%">
+                <stop offset="0%" stop-color="#f0c840" stop-opacity="0.5"/>
+                <stop offset="50%" stop-color="#c9a84c" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+            </defs>
+            <rect width="200" height="200" fill="url(#bg-apollo)"/>
+            <ellipse cx="100" cy="50" rx="100" ry="80" fill="url(#sun-apollo)"/>
+            <!-- Sun disc -->
+            <circle cx="100" cy="38" r="18" fill="#f0c840" opacity="0.25"/>
+            <circle cx="100" cy="38" r="12" fill="#f0c840" opacity="0.4"/>
+            <circle cx="100" cy="38" r="7" fill="#f8e060" opacity="0.6"/>
+            <!-- Sun rays -->
+            <g stroke="#c9a84c" stroke-width="1" opacity="0.3">
+              <line x1="100" y1="16" x2="100" y2="10"/>
+              <line x1="116" y1="22" x2="120" y2="18"/>
+              <line x1="122" y1="38" x2="128" y2="38"/>
+              <line x1="116" y1="54" x2="120" y2="58"/>
+              <line x1="84" y1="22" x2="80" y2="18"/>
+              <line x1="78" y1="38" x2="72" y2="38"/>
+              <line x1="84" y1="54" x2="80" y2="58"/>
+            </g>
+            <!-- Robes — white/cream painted -->
+            <path d="M70,130 Q55,165 62,200 L138,200 Q145,165 130,130 Q115,118 100,122 Q85,118 70,130Z" fill="#3a3020" opacity="0.85"/>
+            <!-- Torso -->
+            <ellipse cx="100" cy="112" rx="26" ry="24" fill="#342a18" opacity="0.9"/>
+            <!-- Neck -->
+            <rect x="93" y="84" width="14" height="20" rx="3" fill="#3c3220" opacity="0.85"/>
+            <!-- Head — idealized young Apollo -->
+            <ellipse cx="100" cy="74" rx="19" ry="21" fill="#4a3c24" opacity="0.9"/>
+            <!-- Laurel wreath -->
+            <ellipse cx="100" cy="60" rx="19" ry="7" fill="none" stroke="#5a7a30" stroke-width="2" opacity="0.6"/>
+            <ellipse cx="100" cy="60" rx="16" ry="5" fill="none" stroke="#4a6828" stroke-width="1.5" opacity="0.4"/>
+            <!-- Leaf details -->
+            <ellipse cx="82" cy="60" rx="5" ry="3" fill="#5a7a30" opacity="0.5" transform="rotate(-20,82,60)"/>
+            <ellipse cx="90" cy="56" rx="5" ry="2.5" fill="#5a7a30" opacity="0.5" transform="rotate(-10,90,56)"/>
+            <ellipse cx="110" cy="56" rx="5" ry="2.5" fill="#5a7a30" opacity="0.5" transform="rotate(10,110,56)"/>
+            <ellipse cx="118" cy="60" rx="5" ry="3" fill="#5a7a30" opacity="0.5" transform="rotate(20,118,60)"/>
+            <!-- LYRE — iconic attribute right side -->
+            <g opacity="0.75">
+              <!-- Lyre body -->
+              <ellipse cx="148" cy="130" rx="14" ry="18" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+              <ellipse cx="148" cy="130" rx="8" ry="10" fill="#2a2010" opacity="0.8"/>
+              <!-- Lyre arms -->
+              <path d="M136,118 Q128,105 132,96" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+              <path d="M160,118 Q168,105 164,96" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+              <!-- Crossbar -->
+              <line x1="132" y1="96" x2="164" y2="96" stroke="#c9a84c" stroke-width="1.5"/>
+              <!-- Strings -->
+              <line x1="136" y1="96" x2="140" y2="120" stroke="#c9a84c" stroke-width="0.7" opacity="0.6"/>
+              <line x1="142" y1="96" x2="144" y2="122" stroke="#c9a84c" stroke-width="0.7" opacity="0.6"/>
+              <line x1="148" y1="96" x2="148" y2="122" stroke="#c9a84c" stroke-width="0.7" opacity="0.6"/>
+              <line x1="154" y1="96" x2="152" y2="122" stroke="#c9a84c" stroke-width="0.7" opacity="0.6"/>
+              <line x1="160" y1="96" x2="156" y2="120" stroke="#c9a84c" stroke-width="0.7" opacity="0.6"/>
+            </g>
+            <!-- Ground shadow -->
+            <ellipse cx="100" cy="196" rx="50" ry="6" fill="#090806" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="deity-label">
+          <span class="deity-name">APOLLO</span>
+          <span class="deity-descriptor">阿波罗 · 光明与艺术</span>
+        </div>
+      </div>
+
+      <!-- 4. ARTEMIS — crescent moon, bow -->
+      <div class="deity-card">
+        <div class="deity-portrait">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="bg-artemis" cx="50%" cy="25%" r="60%">
+                <stop offset="0%" stop-color="#0c1018"/>
+                <stop offset="55%" stop-color="#080c12"/>
+                <stop offset="100%" stop-color="#05080e"/>
+              </radialGradient>
+              <radialGradient id="moon-glow" cx="72%" cy="18%" r="25%">
+                <stop offset="0%" stop-color="#d0e0f8" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+            </defs>
+            <rect width="200" height="200" fill="url(#bg-artemis)"/>
+            <ellipse cx="150" cy="40" rx="80" ry="60" fill="url(#moon-glow)"/>
+            <!-- Forest / pine trees silhouettes background -->
+            <polygon points="20,200 30,140 40,200" fill="#0c1408" opacity="0.7"/>
+            <polygon points="30,200 43,120 56,200" fill="#0e1808" opacity="0.6"/>
+            <polygon points="155,200 170,130 185,200" fill="#0c1408" opacity="0.7"/>
+            <polygon points="165,200 178,110 190,200" fill="#0e1808" opacity="0.6"/>
+            <!-- CRESCENT MOON -->
+            <circle cx="152" cy="36" r="20" fill="#c0cce0" opacity="0.3"/>
+            <circle cx="162" cy="32" r="18" fill="#090d14" opacity="0.95"/>
+            <!-- Moon glow -->
+            <circle cx="152" cy="36" r="22" fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.4"/>
+            <!-- Stars -->
+            <circle cx="40" cy="25" r="1.2" fill="#c9a84c" opacity="0.5"/>
+            <circle cx="70" cy="15" r="0.9" fill="#c9a84c" opacity="0.4"/>
+            <circle cx="120" cy="20" r="1.0" fill="#c9a84c" opacity="0.45"/>
+            <circle cx="170" cy="55" r="0.8" fill="#c9a84c" opacity="0.3"/>
+            <circle cx="55" cy="45" r="0.7" fill="#c9a84c" opacity="0.35"/>
+            <!-- Figure — Artemis in hunting stance -->
+            <path d="M72,130 Q58,165 65,200 L135,200 Q142,165 128,130 Q112,118 100,122 Q88,118 72,130Z" fill="#1a1c22" opacity="0.9"/>
+            <!-- Cloak/himation hint -->
+            <path d="M70,125 Q50,150 55,185" fill="none" stroke="#262830" stroke-width="8" opacity="0.6"/>
+            <!-- Torso -->
+            <ellipse cx="100" cy="112" rx="24" ry="22" fill="#1e2028" opacity="0.95"/>
+            <!-- Neck -->
+            <rect x="93" y="85" width="14" height="20" rx="3" fill="#2a2c38" opacity="0.85"/>
+            <!-- Head -->
+            <ellipse cx="100" cy="75" rx="18" ry="20" fill="#303240" opacity="0.9"/>
+            <!-- Hair — dark, pulled back -->
+            <ellipse cx="100" cy="65" rx="18" ry="10" fill="#1a1c28" opacity="0.9"/>
+            <path d="M82,70 Q78,80 80,95" fill="none" stroke="#1a1c28" stroke-width="5" opacity="0.7"/>
+            <!-- Crescent hair pin -->
+            <path d="M88,58 Q100,50 112,58" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.7"/>
+            <!-- BOW — drawn -->
+            <g opacity="0.8">
+              <path d="M148,75 Q168,100 148,130" fill="none" stroke="#c9a84c" stroke-width="1.8"/>
+              <!-- Bow string drawn -->
+              <line x1="148" y1="75" x2="155" y2="102" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
+              <line x1="148" y1="130" x2="155" y2="102" stroke="#c9a84c" stroke-width="0.8" opacity="0.6"/>
+              <!-- Arrow -->
+              <line x1="130" y1="100" x2="165" y2="100" stroke="#c9a84c" stroke-width="1.2"/>
+              <polygon points="165,100 158,96 158,104" fill="#c9a84c" opacity="0.8"/>
+              <!-- Arrow fletching -->
+              <path d="M130,100 L133,96 L137,100 L133,104Z" fill="#c9a84c" opacity="0.5"/>
+            </g>
+            <!-- Ground -->
+            <ellipse cx="100" cy="196" rx="48" ry="5" fill="#050810" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="deity-label">
+          <span class="deity-name">ARTEMIS</span>
+          <span class="deity-descriptor">阿尔忒弥斯 · 自然与狩猎</span>
+        </div>
+      </div>
+
+      <!-- 5. HERMES — winged helmet, caduceus -->
+      <div class="deity-card">
+        <div class="deity-portrait">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="bg-hermes" cx="50%" cy="35%" r="60%">
+                <stop offset="0%" stop-color="#0f1818"/>
+                <stop offset="60%" stop-color="#0a1010"/>
+                <stop offset="100%" stop-color="#060c0c"/>
+              </radialGradient>
+            </defs>
+            <rect width="200" height="200" fill="url(#bg-hermes)"/>
+            <!-- Speed/motion streaks in background -->
+            <line x1="0" y1="60" x2="80" y2="75" stroke="#c9a84c" stroke-width="0.5" opacity="0.12"/>
+            <line x1="0" y1="80" x2="70" y2="90" stroke="#c9a84c" stroke-width="0.5" opacity="0.10"/>
+            <line x1="120" y1="60" x2="200" y2="50" stroke="#c9a84c" stroke-width="0.5" opacity="0.12"/>
+            <line x1="130" y1="80" x2="200" y2="72" stroke="#c9a84c" stroke-width="0.5" opacity="0.10"/>
+            <!-- Clouds / sky -->
+            <ellipse cx="100" cy="35" rx="75" ry="35" fill="#141e1e" opacity="0.6"/>
+            <!-- Figure — Hermes in mid-motion -->
+            <path d="M75,130 Q60,165 68,200 L132,200 Q140,165 125,130 Q112,118 100,122 Q88,118 75,130Z" fill="#152020" opacity="0.9"/>
+            <!-- Cloak billowing — motion -->
+            <path d="M125,115 Q148,125 158,155 Q140,145 128,140Z" fill="#1a2828" opacity="0.7"/>
+            <!-- Torso -->
+            <ellipse cx="100" cy="112" rx="25" ry="22" fill="#1a2828" opacity="0.9"/>
+            <!-- Neck -->
+            <rect x="93" y="85" width="14" height="20" rx="3" fill="#1e2e2e" opacity="0.85"/>
+            <!-- Head -->
+            <ellipse cx="100" cy="74" rx="18" ry="20" fill="#243434" opacity="0.9"/>
+            <!-- WINGED HELMET — Hermes' signature -->
+            <!-- Helmet dome -->
+            <path d="M83,68 Q83,50 100,46 Q117,50 117,68" fill="#c9a84c" opacity="0.6"/>
+            <path d="M85,67 Q85,52 100,48 Q115,52 115,67" fill="#a87828" opacity="0.4"/>
+            <!-- Wing left -->
+            <path d="M83,65 Q68,55 58,62 Q70,68 78,70Z" fill="#e0d0b0" opacity="0.5"/>
+            <path d="M83,65 Q66,60 55,70 Q68,73 78,72Z" fill="#e0d0b0" opacity="0.3"/>
+            <!-- Wing right -->
+            <path d="M117,65 Q132,55 142,62 Q130,68 122,70Z" fill="#e0d0b0" opacity="0.5"/>
+            <path d="M117,65 Q134,60 145,70 Q132,73 122,72Z" fill="#e0d0b0" opacity="0.3"/>
+            <!-- CADUCEUS (staff of Hermes) -->
+            <g opacity="0.8">
+              <line x1="48" y1="40" x2="52" y2="190" stroke="#c9a84c" stroke-width="1.8"/>
+              <!-- Serpent 1 -->
+              <path d="M50,70 Q62,80 56,95 Q44,105 56,120 Q68,130 56,145" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.7"/>
+              <!-- Serpent 2 -->
+              <path d="M50,70 Q38,80 44,95 Q56,105 44,120 Q32,130 44,145" fill="none" stroke="#c9a84c" stroke-width="1.2" opacity="0.7"/>
+              <!-- Wings at top of caduceus -->
+              <path d="M50,65 Q38,52 30,58 Q40,64 47,68Z" fill="#c9a84c" opacity="0.5"/>
+              <path d="M50,65 Q62,52 70,58 Q60,64 53,68Z" fill="#c9a84c" opacity="0.5"/>
+              <!-- Snake heads -->
+              <ellipse cx="56" cy="145" rx="4" ry="3" fill="#c9a84c" opacity="0.6"/>
+              <ellipse cx="44" cy="145" rx="4" ry="3" fill="#c9a84c" opacity="0.6"/>
+            </g>
+            <!-- Ground -->
+            <ellipse cx="100" cy="196" rx="48" ry="5" fill="#060c0c" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="deity-label">
+          <span class="deity-name">HERMES</span>
+          <span class="deity-descriptor">赫耳墨斯 · 智巧与传达</span>
+        </div>
+      </div>
+
+      <!-- 6. APHRODITE — rose, mirror -->
+      <div class="deity-card">
+        <div class="deity-portrait">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="bg-aphrodite" cx="50%" cy="35%" r="65%">
+                <stop offset="0%" stop-color="#1e1010"/>
+                <stop offset="60%" stop-color="#140c0c"/>
+                <stop offset="100%" stop-color="#0e0808"/>
+              </radialGradient>
+              <radialGradient id="glow-aphrodite" cx="50%" cy="45%" r="40%">
+                <stop offset="0%" stop-color="#c9a84c" stop-opacity="0.08"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+            </defs>
+            <rect width="200" height="200" fill="url(#bg-aphrodite)"/>
+            <ellipse cx="100" cy="100" rx="80" ry="90" fill="url(#glow-aphrodite)"/>
+            <!-- Sea foam / ocean suggestion -->
+            <ellipse cx="100" cy="185" rx="95" ry="20" fill="#141010" opacity="0.8"/>
+            <path d="M0,175 Q25,165 50,175 Q75,185 100,175 Q125,165 150,175 Q175,185 200,175 L200,200 L0,200Z" fill="#181414" opacity="0.6"/>
+            <!-- Flowing robes — warm cream -->
+            <path d="M68,128 Q52,162 58,200 L142,200 Q148,162 132,128 Q116,116 100,120 Q84,116 68,128Z" fill="#281c18" opacity="0.9"/>
+            <!-- Gossamer veil -->
+            <path d="M68,120 Q45,145 42,180" fill="none" stroke="#3a2820" stroke-width="10" opacity="0.5"/>
+            <path d="M132,120 Q155,145 158,180" fill="none" stroke="#3a2820" stroke-width="10" opacity="0.5"/>
+            <!-- Torso -->
+            <ellipse cx="100" cy="110" rx="26" ry="23" fill="#2e2018" opacity="0.95"/>
+            <!-- Neck -->
+            <rect x="93" y="84" width="14" height="20" rx="5" fill="#3a2820" opacity="0.8"/>
+            <!-- Head -->
+            <ellipse cx="100" cy="73" rx="19" ry="21" fill="#3c2c1c" opacity="0.9"/>
+            <!-- Hair — elaborate, golden-touched -->
+            <ellipse cx="100" cy="62" rx="19" ry="12" fill="#2a1c14" opacity="0.95"/>
+            <path d="M84,65 Q78,75 80,88" fill="none" stroke="#2a1c14" stroke-width="7" opacity="0.8"/>
+            <path d="M116,65 Q122,75 120,88" fill="none" stroke="#2a1c14" stroke-width="7" opacity="0.8"/>
+            <!-- Hair ornament / tiara -->
+            <path d="M86,59 Q100,48 114,59" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.7"/>
+            <circle cx="100" cy="50" r="4" fill="#c9a84c" opacity="0.4"/>
+            <circle cx="88" cy="58" r="2.5" fill="#c9a84c" opacity="0.35"/>
+            <circle cx="112" cy="58" r="2.5" fill="#c9a84c" opacity="0.35"/>
+            <!-- MIRROR — gold handledd -->
+            <g opacity="0.8">
+              <circle cx="150" cy="110" r="18" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+              <circle cx="150" cy="110" r="15" fill="#1e1412" opacity="0.9"/>
+              <!-- Mirror reflection glint -->
+              <ellipse cx="145" cy="104" rx="5" ry="7" fill="#c9a84c" opacity="0.1"/>
+              <ellipse cx="144" cy="103" rx="2" ry="3" fill="#c9a84c" opacity="0.2"/>
+              <!-- Mirror handle -->
+              <rect x="148" y="128" width="4" height="18" fill="#c9a84c" opacity="0.6"/>
+              <ellipse cx="150" cy="148" rx="6" ry="4" fill="#c9a84c" opacity="0.4"/>
+            </g>
+            <!-- ROSES — scattered -->
+            <!-- Rose 1 -->
+            <circle cx="48" cy="135" r="8" fill="#5a1818" opacity="0.6"/>
+            <circle cx="44" cy="132" r="5" fill="#7a2020" opacity="0.5"/>
+            <circle cx="52" cy="133" r="4" fill="#7a2020" opacity="0.4"/>
+            <!-- Rose 2 — petal cluster -->
+            <circle cx="160" cy="150" r="7" fill="#5a1818" opacity="0.5"/>
+            <circle cx="156" cy="147" r="4" fill="#7a2020" opacity="0.4"/>
+            <!-- Ground -->
+            <ellipse cx="100" cy="196" rx="52" ry="5" fill="#0e0808" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="deity-label">
+          <span class="deity-name">APHRODITE</span>
+          <span class="deity-descriptor">阿芙罗狄忒 · 爱与美</span>
+        </div>
+      </div>
+
+      <!-- 7. ARES — armor, spear -->
+      <div class="deity-card">
+        <div class="deity-portrait">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="bg-ares" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#1a0c0c"/>
+                <stop offset="55%" stop-color="#120808"/>
+                <stop offset="100%" stop-color="#0c0606"/>
+              </radialGradient>
+              <radialGradient id="blood-glow" cx="50%" cy="50%" r="40%">
+                <stop offset="0%" stop-color="#8b1a1a" stop-opacity="0.12"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+            </defs>
+            <rect width="200" height="200" fill="url(#bg-ares)"/>
+            <ellipse cx="100" cy="110" rx="85" ry="90" fill="url(#blood-glow)"/>
+            <!-- Battle smoke / atmospheric dark background -->
+            <ellipse cx="40" cy="80" rx="45" ry="35" fill="#1a0c0c" opacity="0.5"/>
+            <ellipse cx="160" cy="60" rx="50" ry="28" fill="#180a0a" opacity="0.5"/>
+            <!-- FULL PLATE ARMOR — powerful figure -->
+            <!-- Greaves / lower armor -->
+            <rect x="80" y="155" width="17" height="40" rx="2" fill="#2a1c18" opacity="0.9"/>
+            <rect x="103" y="155" width="17" height="40" rx="2" fill="#2a1c18" opacity="0.9"/>
+            <!-- Kilt armor plates -->
+            <path d="M72,130 Q72,155 80,155 L120,155 Q128,155 128,130Z" fill="#2e2018" opacity="0.9"/>
+            <!-- Cuirass / breastplate -->
+            <path d="M70,95 Q68,130 75,130 L125,130 Q132,130 130,95 Q115,88 100,90 Q85,88 70,95Z" fill="#301a14" opacity="0.95"/>
+            <!-- Breastplate muscle detail -->
+            <ellipse cx="95" cy="112" rx="10" ry="13" fill="#382018" opacity="0.6"/>
+            <ellipse cx="105" cy="112" rx="10" ry="13" fill="#382018" opacity="0.6"/>
+            <!-- Shoulder pauldrons -->
+            <ellipse cx="72" cy="95" rx="15" ry="10" fill="#3a2018" opacity="0.9" transform="rotate(-15,72,95)"/>
+            <ellipse cx="128" cy="95" rx="15" ry="10" fill="#3a2018" opacity="0.9" transform="rotate(15,128,95)"/>
+            <!-- Neck guard -->
+            <rect x="91" y="80" width="18" height="18" rx="1" fill="#281812" opacity="0.9"/>
+            <!-- Head — Corinthian war helmet, fully down -->
+            <ellipse cx="100" cy="66" rx="20" ry="22" fill="#c9a84c" opacity="0.55"/>
+            <ellipse cx="100" cy="66" rx="17" ry="19" fill="#301a0a" opacity="0.85"/>
+            <!-- Helmet visor — narrow eye slit -->
+            <rect x="84" y="63" width="32" height="5" rx="1" fill="#c9a84c" opacity="0.15"/>
+            <rect x="86" y="64" width="28" height="3" fill="#0c0806" opacity="0.7"/>
+            <!-- Helmet cheekguards -->
+            <rect x="81" y="62" width="8" height="18" rx="1" fill="#c9a84c" opacity="0.4"/>
+            <rect x="111" y="62" width="8" height="18" rx="1" fill="#c9a84c" opacity="0.4"/>
+            <!-- Helmet crest — war red plume -->
+            <path d="M95,44 Q100,28 105,30 Q110,18 116,28 Q112,38 105,42 Q108,30 103,40 Q100,28 97,40 Q94,36 95,44Z" fill="#8b1a1a" opacity="0.7"/>
+            <!-- SPEAR -->
+            <g opacity="0.85">
+              <rect x="44" y="20" width="3" height="175" fill="#c9a84c" opacity="0.5"/>
+              <polygon points="45.5,20 41,34 50,34" fill="#c9a84c" opacity="0.7"/>
+              <rect x="44" y="185" width="3" height="10" fill="#a87828" opacity="0.6"/>
+            </g>
+            <!-- SHIELD hint — round, left side emerging -->
+            <circle cx="52" cy="115" r="22" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.4"/>
+            <circle cx="52" cy="115" r="18" fill="#2a1610" opacity="0.6"/>
+            <!-- Shield emblem — boar motif hint -->
+            <circle cx="52" cy="115" r="5" fill="#c9a84c" opacity="0.25"/>
+            <!-- Ground shadow -->
+            <ellipse cx="100" cy="196" rx="52" ry="6" fill="#080404" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="deity-label">
+          <span class="deity-name">ARES</span>
+          <span class="deity-descriptor">阿瑞斯 · 战争与勇武</span>
+        </div>
+      </div>
+
+      <!-- 8. HADES — crown, pomegranate -->
+      <div class="deity-card">
+        <div class="deity-portrait">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="bg-hades" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stop-color="#080a14"/>
+                <stop offset="55%" stop-color="#050708"/>
+                <stop offset="100%" stop-color="#030405"/>
+              </radialGradient>
+              <radialGradient id="underworld-glow" cx="50%" cy="75%" r="45%">
+                <stop offset="0%" stop-color="#1a0830" stop-opacity="0.5"/>
+                <stop offset="60%" stop-color="#0a041a" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="transparent"/>
+              </radialGradient>
+            </defs>
+            <rect width="200" height="200" fill="url(#bg-hades)"/>
+            <ellipse cx="100" cy="140" rx="90" ry="70" fill="url(#underworld-glow)"/>
+            <!-- Underworld atmosphere — bone/ash tones -->
+            <ellipse cx="30" cy="60" rx="35" ry="25" fill="#0a0c14" opacity="0.6"/>
+            <ellipse cx="170" cy="55" rx="40" ry="20" fill="#080a12" opacity="0.5"/>
+            <!-- Ethereal spirits — barely visible wisps -->
+            <ellipse cx="22" cy="115" rx="8" ry="20" fill="#c9a84c" opacity="0.05"/>
+            <ellipse cx="178" cy="120" rx="6" ry="18" fill="#c9a84c" opacity="0.04"/>
+            <!-- Figure — Hades on throne, commanding -->
+            <!-- Throne arms -->
+            <rect x="55" y="125" width="15" height="50" fill="#1a1420" opacity="0.8"/>
+            <rect x="130" y="125" width="15" height="50" fill="#1a1420" opacity="0.8"/>
+            <rect x="50" y="115" width="25" height="12" rx="1" fill="#1e1828" opacity="0.8"/>
+            <rect x="125" y="115" width="25" height="12" rx="1" fill="#1e1828" opacity="0.8"/>
+            <!-- Throne back -->
+            <rect x="60" y="60" width="80" height="80" rx="1" fill="#14101c" opacity="0.7"/>
+            <rect x="62" y="62" width="76" height="76" rx="0" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.25"/>
+            <!-- Robes — flowing dark draped -->
+            <path d="M65,128 Q50,162 56,200 L144,200 Q150,162 135,128 Q118,116 100,118 Q82,116 65,128Z" fill="#0e0c18" opacity="0.95"/>
+            <!-- Torso -->
+            <ellipse cx="100" cy="110" rx="28" ry="25" fill="#141020" opacity="0.95"/>
+            <!-- Neck -->
+            <rect x="93" y="83" width="14" height="20" rx="2" fill="#1c1828" opacity="0.9"/>
+            <!-- Head — stern, older, powerful -->
+            <ellipse cx="100" cy="72" rx="19" ry="22" fill="#1c1828" opacity="0.9"/>
+            <!-- Dark beard -->
+            <path d="M84,80 Q84,90 100,95 Q116,90 116,80" fill="#12101c" opacity="0.9"/>
+            <!-- CROWN OF HADES — jagged/pointed dark crown -->
+            <path d="M82,60 L82,50 L88,58 L94,42 L100,56 L106,42 L112,58 L118,50 L118,60 Q100,55 82,60Z" fill="#c9a84c" opacity="0.55"/>
+            <path d="M84,60 L84,52 L89,59 L94,46 L100,58 L106,46 L111,59 L116,52 L116,60 Q100,57 84,60Z" fill="#1c1828" opacity="0.6"/>
+            <!-- Crown gems -->
+            <circle cx="94" cy="52" r="2.5" fill="#c9a84c" opacity="0.5"/>
+            <circle cx="100" cy="48" r="3" fill="#c9a84c" opacity="0.6"/>
+            <circle cx="106" cy="52" r="2.5" fill="#c9a84c" opacity="0.5"/>
+            <!-- Eyes — deep-set, pale/glowing -->
+            <ellipse cx="93" cy="73" rx="4" ry="3.5" fill="#c9a84c" opacity="0.35"/>
+            <ellipse cx="107" cy="73" rx="4" ry="3.5" fill="#c9a84c" opacity="0.35"/>
+            <ellipse cx="93" cy="73" rx="2" ry="2" fill="#080810" opacity="0.9"/>
+            <ellipse cx="107" cy="73" rx="2" ry="2" fill="#080810" opacity="0.9"/>
+            <!-- POMEGRANATE — held in right hand -->
+            <g opacity="0.8">
+              <circle cx="148" cy="128" r="14" fill="#6a1a10" opacity="0.85"/>
+              <circle cx="148" cy="128" r="11" fill="#7a2018" opacity="0.7"/>
+              <!-- Pomegranate crown top -->
+              <path d="M143,115 Q148,110 153,115 Q150,112 148,114 Q146,112 143,115Z" fill="#8a2820" opacity="0.7"/>
+              <path d="M144,114 Q148,108 152,114" fill="none" stroke="#c9a84c" stroke-width="1" opacity="0.4"/>
+              <!-- Seeds visible through split -->
+              <ellipse cx="144" cy="129" rx="3" ry="4" fill="#c94040" opacity="0.3"/>
+              <ellipse cx="150" cy="127" rx="3" ry="4" fill="#c94040" opacity="0.3"/>
+              <ellipse cx="148" cy="134" rx="3" ry="3" fill="#c94040" opacity="0.25"/>
+            </g>
+            <!-- Three-headed dog Cerberus silhouette — tiny, distant -->
+            <ellipse cx="28" cy="178" rx="18" ry="10" fill="#0a0810" opacity="0.7"/>
+            <circle cx="18" cy="170" r="5" fill="#0c0a14" opacity="0.7"/>
+            <circle cx="28" cy="168" r="6" fill="#0c0a14" opacity="0.7"/>
+            <circle cx="38" cy="170" r="5" fill="#0c0a14" opacity="0.7"/>
+            <!-- Ground / Styx river glint -->
+            <ellipse cx="100" cy="196" rx="55" ry="7" fill="#06040e" opacity="0.8"/>
+            <path d="M30,194 Q65,188 100,193 Q135,188 170,194" fill="none" stroke="#c9a84c" stroke-width="0.5" opacity="0.12"/>
+          </svg>
+        </div>
+        <div class="deity-label">
+          <span class="deity-name">HADES</span>
+          <span class="deity-descriptor">哈迪斯 · 冥府与永恒</span>
+        </div>
+      </div>
+
+    </div><!-- end deity-grid -->
+
+    <!-- CTA CAPTION -->
+    <div class="cta-caption">
+      <a href="#" class="cta-link">测出你的神祇 &nbsp;→</a>
+    </div>
+
+  </div><!-- end section-inner -->
+</section>
+
+</body>
+</html>

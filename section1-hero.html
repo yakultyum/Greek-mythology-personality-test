@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1440">
+  <title>Section 1 — Hero</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=Noto+Serif+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --parchment: #f0e8d5;
+      --parchment-dark: #e8dcc0;
+      --charcoal: #1a1713;
+      --charcoal-mid: #2c2218;
+      --gold: #c4892a;
+      --gold-dim: #a87022;
+      --text1: #1a1713;
+      --text2: rgba(26,23,19,0.7);
+    }
+
+    html, body {
+      width: 1440px;
+      height: 810px;
+      overflow: hidden;
+      background: var(--parchment);
+    }
+
+    .hero {
+      width: 1440px;
+      height: 810px;
+      position: relative;
+      background-color: var(--parchment);
+      font-family: 'Cinzel', Georgia, serif;
+      overflow: hidden;
+    }
+
+    /* Paper grain overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* Heavy charcoal brush border — inward vignette */
+    .brush-border {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 8;
+      /* Top edge */
+      background:
+        radial-gradient(ellipse 120% 18% at 50% 0%, rgba(26,23,19,0.82) 0%, rgba(26,23,19,0.55) 35%, transparent 70%),
+        radial-gradient(ellipse 120% 18% at 50% 100%, rgba(26,23,19,0.75) 0%, rgba(26,23,19,0.45) 35%, transparent 70%),
+        radial-gradient(ellipse 14% 120% at 0% 50%, rgba(26,23,19,0.88) 0%, rgba(26,23,19,0.55) 40%, transparent 70%),
+        radial-gradient(ellipse 14% 120% at 100% 50%, rgba(26,23,19,0.85) 0%, rgba(26,23,19,0.50) 40%, transparent 70%),
+        radial-gradient(ellipse 6% 6% at 0% 0%, rgba(26,23,19,0.95) 0%, transparent 60%),
+        radial-gradient(ellipse 6% 6% at 100% 0%, rgba(26,23,19,0.95) 0%, transparent 60%),
+        radial-gradient(ellipse 6% 6% at 0% 100%, rgba(26,23,19,0.95) 0%, transparent 60%),
+        radial-gradient(ellipse 6% 6% at 100% 100%, rgba(26,23,19,0.95) 0%, transparent 60%);
+    }
+
+    /* Torn/rough edge simulation using additional overlay */
+    .brush-border-rough {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9;
+      background:
+        radial-gradient(ellipse 100% 8% at 30% 0%, rgba(26,23,19,0.4) 0%, transparent 100%),
+        radial-gradient(ellipse 80% 8% at 70% 0%, rgba(26,23,19,0.3) 0%, transparent 100%),
+        radial-gradient(ellipse 6% 80% at 0% 30%, rgba(26,23,19,0.35) 0%, transparent 100%),
+        radial-gradient(ellipse 6% 80% at 100% 60%, rgba(26,23,19,0.3) 0%, transparent 100%);
+    }
+
+    /* Watermark: MYTH · TEST */
+    .wordmark {
+      position: absolute;
+      top: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.5em;
+      color: var(--gold);
+      text-transform: uppercase;
+      z-index: 20;
+    }
+
+    /* Main illustration area */
+    .illustration-zone {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 75%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+    }
+
+    /* Central goddess SVG illustration */
+    .goddess-svg {
+      width: 340px;
+      height: 480px;
+      margin-top: 40px;
+    }
+
+    /* Scattered symbols */
+    .symbol {
+      position: absolute;
+      font-size: 14px;
+      color: var(--charcoal-mid);
+      opacity: 0.55;
+      z-index: 6;
+    }
+
+    /* Moon phases top row */
+    .moon-phases {
+      position: absolute;
+      top: 68px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 28px;
+      align-items: center;
+      z-index: 6;
+    }
+    .moon-phases span {
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      color: var(--charcoal-mid);
+      opacity: 0.5;
+    }
+
+    /* Side candles */
+    .candle-left, .candle-right {
+      position: absolute;
+      top: 200px;
+      z-index: 6;
+    }
+    .candle-left { left: 280px; }
+    .candle-right { right: 280px; }
+
+    /* Bottom ornaments */
+    .key-symbol {
+      position: absolute;
+      bottom: 38%;
+      left: 360px;
+      z-index: 6;
+    }
+    .crossroad-symbol {
+      position: absolute;
+      bottom: 36%;
+      right: 380px;
+      z-index: 6;
+    }
+
+    /* Bottom text zone */
+    .text-zone {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 30%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 15;
+      padding-bottom: 20px;
+    }
+
+    .ornamental-divider {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: 0.3em;
+      opacity: 0.9;
+    }
+
+    .headline {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--charcoal);
+      letter-spacing: 0.18em;
+      line-height: 1.1;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-family: 'Noto Serif SC', '宋体', serif;
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text2);
+      letter-spacing: 0.12em;
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    .cta-btn {
+      border: 1px solid var(--gold);
+      background: transparent;
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      padding: 12px 44px;
+      cursor: pointer;
+      border-radius: 0;
+      margin-top: 4px;
+    }
+
+    /* SVG drawing styles */
+    .engrave {
+      fill: none;
+      stroke: var(--charcoal-mid);
+      stroke-width: 0.8;
+    }
+    .engrave-fill {
+      fill: rgba(44,34,24,0.08);
+      stroke: var(--charcoal-mid);
+      stroke-width: 0.7;
+    }
+    .hatch {
+      fill: none;
+      stroke: rgba(44,34,24,0.25);
+      stroke-width: 0.5;
+    }
+  </style>
+</head>
+<body>
+<div class="hero">
+  <!-- Paper grain -->
+  <div class="hero::before"></div>
+  <!-- Brush border vignette -->
+  <div class="brush-border"></div>
+  <div class="brush-border-rough"></div>
+
+  <!-- Wordmark top -->
+  <div class="wordmark">MYTH · TEST</div>
+
+  <!-- Moon phases top row -->
+  <div class="moon-phases">
+    <span style="font-size:10px; opacity:0.35;">✦</span>
+    <span style="font-size:15px;">🌑</span>
+    <span style="font-size:15px;">🌒</span>
+    <span style="font-size:17px;">🌕</span>
+    <span style="font-size:15px;">🌖</span>
+    <span style="font-size:15px;">🌘</span>
+    <span style="font-size:10px; opacity:0.35;">✦</span>
+  </div>
+
+  <!-- Central illustration zone -->
+  <div class="illustration-zone">
+    <!-- Hecate Goddess SVG — fine-line engraving style -->
+    <svg class="goddess-svg" viewBox="0 0 340 480" xmlns="http://www.w3.org/2000/svg" style="filter: contrast(1.05);">
+      <!-- Full moon behind figure -->
+      <circle cx="170" cy="90" r="72" fill="none" stroke="#2c2218" stroke-width="1"/>
+      <circle cx="170" cy="90" r="68" fill="rgba(240,232,213,0.6)" stroke="#2c2218" stroke-width="0.5"/>
+      <!-- Moon crosshatch shading -->
+      <clipPath id="moonClip"><circle cx="170" cy="90" r="67"/></clipPath>
+      <g clip-path="url(#moonClip)" opacity="0.12">
+        <line x1="103" y1="23" x2="237" y2="157" stroke="#2c2218" stroke-width="0.5"/>
+        <line x1="110" y1="23" x2="237" y2="150" stroke="#2c2218" stroke-width="0.5"/>
+        <line x1="120" y1="23" x2="237" y2="140" stroke="#2c2218" stroke-width="0.5"/>
+        <line x1="135" y1="23" x2="237" y2="125" stroke="#2c2218" stroke-width="0.5"/>
+        <line x1="103" y1="40" x2="220" y2="157" stroke="#2c2218" stroke-width="0.5"/>
+        <line x1="103" y1="55" x2="200" y2="157" stroke="#2c2218" stroke-width="0.5"/>
+      </g>
+      <!-- Moon star marks -->
+      <text x="148" y="75" font-family="serif" font-size="8" fill="#2c2218" opacity="0.4">✦</text>
+      <text x="182" y="62" font-family="serif" font-size="6" fill="#2c2218" opacity="0.35">✦</text>
+      <text x="160" y="108" font-family="serif" font-size="7" fill="#2c2218" opacity="0.3">✦</text>
+
+      <!-- Stars around moon -->
+      <text x="100" y="55" font-size="9" fill="#2c2218" opacity="0.4">✦</text>
+      <text x="230" y="48" font-size="8" fill="#2c2218" opacity="0.35">✦</text>
+      <text x="88" y="110" font-size="7" fill="#2c2218" opacity="0.3">✦</text>
+      <text x="243" y="118" font-size="7" fill="#2c2218" opacity="0.3">✦</text>
+
+      <!-- Goddess robes / body outline -->
+      <!-- Head -->
+      <ellipse cx="170" cy="165" rx="22" ry="26" fill="rgba(240,232,213,0.85)" stroke="#2c2218" stroke-width="0.9"/>
+      <!-- Crown / headpiece -->
+      <path d="M148 152 Q155 140 162 148 Q170 134 178 148 Q185 140 192 152" fill="none" stroke="#2c2218" stroke-width="1"/>
+      <line x1="170" y1="134" x2="170" y2="143" stroke="#2c2218" stroke-width="0.8"/>
+      <circle cx="170" cy="133" r="3" fill="none" stroke="#c4892a" stroke-width="1"/>
+      <!-- Crown details -->
+      <line x1="155" y1="147" x2="158" y2="141" stroke="#2c2218" stroke-width="0.6"/>
+      <line x1="185" y1="147" x2="182" y2="141" stroke="#2c2218" stroke-width="0.6"/>
+
+      <!-- Hair flowing -->
+      <path d="M148 162 Q138 155 136 170 Q134 185 140 195 Q136 188 138 178" fill="rgba(44,34,24,0.15)" stroke="#2c2218" stroke-width="0.8"/>
+      <path d="M192 162 Q202 155 204 170 Q206 185 200 195 Q204 188 202 178" fill="rgba(44,34,24,0.15)" stroke="#2c2218" stroke-width="0.8"/>
+      <path d="M152 165 Q145 175 143 190 Q142 200 146 208" fill="none" stroke="#2c2218" stroke-width="0.6"/>
+      <path d="M188 165 Q195 175 197 190 Q198 200 194 208" fill="none" stroke="#2c2218" stroke-width="0.6"/>
+
+      <!-- Dark robes — main body -->
+      <path d="M148 190 Q138 205 132 230 Q120 270 115 320 Q110 360 108 400 L232 400 Q230 360 225 320 Q220 270 208 230 Q202 205 192 190 L170 200 Z"
+            fill="rgba(26,23,19,0.12)" stroke="#2c2218" stroke-width="1"/>
+      <!-- Robe inner lines -->
+      <path d="M155 200 Q148 230 142 270 Q138 300 138 340" fill="none" stroke="#2c2218" stroke-width="0.6" opacity="0.5"/>
+      <path d="M185 200 Q192 230 198 270 Q202 300 202 340" fill="none" stroke="#2c2218" stroke-width="0.6" opacity="0.5"/>
+      <path d="M165 200 Q160 240 158 280 Q157 310 158 350" fill="none" stroke="#2c2218" stroke-width="0.5" opacity="0.4"/>
+      <path d="M175 200 Q180 240 182 280 Q183 310 182 350" fill="none" stroke="#2c2218" stroke-width="0.5" opacity="0.4"/>
+
+      <!-- Robe hem details -->
+      <path d="M108 400 Q130 395 150 400 Q170 405 190 400 Q210 395 232 400" fill="none" stroke="#2c2218" stroke-width="0.8"/>
+      <!-- Robe border embroidery -->
+      <path d="M115 320 Q112 330 112 340" fill="none" stroke="#c4892a" stroke-width="0.8" opacity="0.6"/>
+      <path d="M225 320 Q228 330 228 340" fill="none" stroke="#c4892a" stroke-width="0.8" opacity="0.6"/>
+
+      <!-- LEFT ARM holding torch -->
+      <path d="M132 230 Q115 225 105 210 Q98 200 100 190" fill="none" stroke="#2c2218" stroke-width="1.1"/>
+      <!-- Left hand -->
+      <ellipse cx="101" cy="187" rx="6" ry="8" fill="rgba(240,232,213,0.8)" stroke="#2c2218" stroke-width="0.8"/>
+      <!-- Left torch -->
+      <line x1="101" y1="175" x2="101" y2="90" stroke="#2c2218" stroke-width="1.5"/>
+      <!-- Torch handle detail -->
+      <rect x="98" y="90" width="6" height="80" rx="1" fill="none" stroke="#2c2218" stroke-width="0.7"/>
+      <!-- Torch flame -->
+      <path d="M95 90 Q98 72 101 60 Q104 72 107 90 Q104 83 101 78 Q98 83 95 90Z" fill="rgba(196,137,42,0.4)" stroke="#c4892a" stroke-width="0.9"/>
+      <path d="M98 88 Q100 78 101 68 Q102 78 104 88" fill="rgba(196,137,42,0.2)" stroke="#c4892a" stroke-width="0.5"/>
+      <!-- Flame glow -->
+      <circle cx="101" cy="75" r="12" fill="rgba(196,137,42,0.08)"/>
+
+      <!-- RIGHT ARM holding torch -->
+      <path d="M208 230 Q225 225 235 210 Q242 200 240 190" fill="none" stroke="#2c2218" stroke-width="1.1"/>
+      <!-- Right hand -->
+      <ellipse cx="239" cy="187" rx="6" ry="8" fill="rgba(240,232,213,0.8)" stroke="#2c2218" stroke-width="0.8"/>
+      <!-- Right torch -->
+      <line x1="239" y1="175" x2="239" y2="90" stroke="#2c2218" stroke-width="1.5"/>
+      <rect x="236" y="90" width="6" height="80" rx="1" fill="none" stroke="#2c2218" stroke-width="0.7"/>
+      <!-- Right torch flame -->
+      <path d="M233 90 Q236 72 239 60 Q242 72 245 90 Q242 83 239 78 Q236 83 233 90Z" fill="rgba(196,137,42,0.4)" stroke="#c4892a" stroke-width="0.9"/>
+      <path d="M236 88 Q238 78 239 68 Q240 78 242 88" fill="rgba(196,137,42,0.2)" stroke="#c4892a" stroke-width="0.5"/>
+      <circle cx="239" cy="75" r="12" fill="rgba(196,137,42,0.08)"/>
+
+      <!-- Crossroads behind figure — three paths -->
+      <path d="M170 400 L170 460" stroke="#2c2218" stroke-width="1" opacity="0.3"/>
+      <path d="M170 430 L120 470" stroke="#2c2218" stroke-width="1" opacity="0.3"/>
+      <path d="M170 430 L220 470" stroke="#2c2218" stroke-width="1" opacity="0.3"/>
+      <!-- Road texture -->
+      <path d="M165 430 L162 470" stroke="#2c2218" stroke-width="0.4" opacity="0.2"/>
+      <path d="M175 430 L178 470" stroke="#2c2218" stroke-width="0.4" opacity="0.2"/>
+
+      <!-- Black dogs at feet — left dog -->
+      <ellipse cx="128" cy="420" rx="28" ry="14" fill="rgba(26,23,19,0.15)" stroke="#2c2218" stroke-width="0.8"/>
+      <circle cx="110" cy="415" r="9" fill="rgba(26,23,19,0.18)" stroke="#2c2218" stroke-width="0.8"/>
+      <path d="M106 415 Q103 408 105 403 Q107 400 109 403" fill="none" stroke="#2c2218" stroke-width="0.7"/>
+      <path d="M114 415 Q115 408 118 404 Q120 401 122 404" fill="none" stroke="#2c2218" stroke-width="0.7"/>
+      <path d="M136 420 Q142 422 145 428" fill="none" stroke="#2c2218" stroke-width="0.7"/>
+
+      <!-- Right dog -->
+      <ellipse cx="212" cy="420" rx="28" ry="14" fill="rgba(26,23,19,0.15)" stroke="#2c2218" stroke-width="0.8"/>
+      <circle cx="230" cy="415" r="9" fill="rgba(26,23,19,0.18)" stroke="#2c2218" stroke-width="0.8"/>
+      <path d="M226 415 Q223 408 225 403 Q227 400 229 403" fill="none" stroke="#2c2218" stroke-width="0.7"/>
+      <path d="M234 415 Q235 408 238 404 Q240 401 242 404" fill="none" stroke="#2c2218" stroke-width="0.7"/>
+      <path d="M204 420 Q198 422 195 428" fill="none" stroke="#2c2218" stroke-width="0.7"/>
+
+      <!-- Key symbol (bottom left area of figure) -->
+      <g transform="translate(118,370)" opacity="0.45">
+        <circle cx="0" cy="0" r="8" fill="none" stroke="#2c2218" stroke-width="0.8"/>
+        <line x1="8" y1="0" x2="24" y2="0" stroke="#2c2218" stroke-width="0.8"/>
+        <line x1="20" y1="0" x2="20" y2="5" stroke="#2c2218" stroke-width="0.8"/>
+        <line x1="24" y1="0" x2="24" y2="5" stroke="#2c2218" stroke-width="0.8"/>
+      </g>
+
+      <!-- Snake wrapping robe hem detail -->
+      <path d="M115 385 Q125 380 130 388 Q140 395 150 388 Q160 382 170 388" fill="none" stroke="#2c2218" stroke-width="0.6" opacity="0.4"/>
+      <path d="M170 388 Q180 382 190 388 Q200 395 210 388 Q220 380 225 385" fill="none" stroke="#2c2218" stroke-width="0.6" opacity="0.4"/>
+
+      <!-- Face detail — eyes, subtle features -->
+      <ellipse cx="162" cy="163" rx="3" ry="3.5" fill="rgba(26,23,19,0.7)" stroke="none"/>
+      <ellipse cx="178" cy="163" rx="3" ry="3.5" fill="rgba(26,23,19,0.7)" stroke="none"/>
+      <path d="M159 160 Q162 157 165 160" fill="none" stroke="#2c2218" stroke-width="0.6"/>
+      <path d="M175 160 Q178 157 181 160" fill="none" stroke="#2c2218" stroke-width="0.6"/>
+      <path d="M163 173 Q170 177 177 173" fill="none" stroke="#2c2218" stroke-width="0.6"/>
+      <!-- Nose suggestion -->
+      <path d="M168 163 Q167 169 166 172 Q169 174 172 172 Q171 169 172 163" fill="none" stroke="#2c2218" stroke-width="0.5" opacity="0.5"/>
+
+      <!-- Atmospheric hatch on robe -->
+      <g opacity="0.08" clip-path="url(#robeClip)">
+        <clipPath id="robeClip">
+          <path d="M148 190 Q138 205 132 230 Q120 270 115 320 Q110 360 108 400 L232 400 Q230 360 225 320 Q220 270 208 230 Q202 205 192 190 L170 200 Z"/>
+        </clipPath>
+        <line x1="120" y1="195" x2="108" y2="400" stroke="#2c2218" stroke-width="1"/>
+        <line x1="135" y1="192" x2="125" y2="400" stroke="#2c2218" stroke-width="1"/>
+        <line x1="150" y1="200" x2="145" y2="400" stroke="#2c2218" stroke-width="1"/>
+        <line x1="165" y1="200" x2="163" y2="400" stroke="#2c2218" stroke-width="1"/>
+        <line x1="180" y1="200" x2="182" y2="400" stroke="#2c2218" stroke-width="1"/>
+        <line x1="195" y1="200" x2="200" y2="400" stroke="#2c2218" stroke-width="1"/>
+        <line x1="210" y1="195" x2="218" y2="400" stroke="#2c2218" stroke-width="1"/>
+      </g>
+
+      <!-- Belt / sash detail -->
+      <path d="M138 240 Q155 235 170 237 Q185 235 202 240" fill="none" stroke="#c4892a" stroke-width="0.9" opacity="0.6"/>
+      <path d="M136 245 Q155 240 170 242 Q185 240 204 245" fill="none" stroke="#2c2218" stroke-width="0.5" opacity="0.3"/>
+
+    </svg>
+  </div>
+
+  <!-- Scattered decorative symbols -->
+  <!-- Left side candle -->
+  <div style="position:absolute; left:310px; top:220px; z-index:6; opacity:0.45;">
+    <svg width="28" height="90" viewBox="0 0 28 90">
+      <rect x="10" y="30" width="8" height="58" fill="none" stroke="#2c2218" stroke-width="0.8"/>
+      <path d="M10 30 Q14 20 18 30" fill="rgba(196,137,42,0.2)" stroke="#2c2218" stroke-width="0.7"/>
+      <!-- flame -->
+      <path d="M11 30 Q14 18 17 30 Q15 24 14 20 Q13 24 11 30Z" fill="rgba(196,137,42,0.35)" stroke="#c4892a" stroke-width="0.8"/>
+      <line x1="8" y1="88" x2="20" y2="88" stroke="#2c2218" stroke-width="0.7"/>
+      <!-- drips -->
+      <path d="M10 45 Q8 50 10 52" fill="none" stroke="#2c2218" stroke-width="0.5" opacity="0.5"/>
+    </svg>
+  </div>
+  <!-- Right side candle -->
+  <div style="position:absolute; right:310px; top:220px; z-index:6; opacity:0.45;">
+    <svg width="28" height="90" viewBox="0 0 28 90">
+      <rect x="10" y="30" width="8" height="58" fill="none" stroke="#2c2218" stroke-width="0.8"/>
+      <path d="M10 30 Q14 20 18 30" fill="rgba(196,137,42,0.2)" stroke="#2c2218" stroke-width="0.7"/>
+      <path d="M11 30 Q14 18 17 30 Q15 24 14 20 Q13 24 11 30Z" fill="rgba(196,137,42,0.35)" stroke="#c4892a" stroke-width="0.8"/>
+      <line x1="8" y1="88" x2="20" y2="88" stroke="#2c2218" stroke-width="0.7"/>
+      <path d="M18 50 Q20 55 18 57" fill="none" stroke="#2c2218" stroke-width="0.5" opacity="0.5"/>
+    </svg>
+  </div>
+
+  <!-- Small scattered stars left area -->
+  <div style="position:absolute; left:240px; top:160px; font-size:10px; color:#2c2218; opacity:0.3; z-index:6;">✦</div>
+  <div style="position:absolute; left:260px; top:320px; font-size:8px; color:#2c2218; opacity:0.25; z-index:6;">✦</div>
+  <div style="position:absolute; right:245px; top:180px; font-size:10px; color:#2c2218; opacity:0.3; z-index:6;">✦</div>
+  <div style="position:absolute; right:265px; top:310px; font-size:8px; color:#2c2218; opacity:0.25; z-index:6;">✦</div>
+  <!-- Corner area scatter -->
+  <div style="position:absolute; left:420px; top:380px; font-size:9px; color:#2c2218; opacity:0.22; z-index:6;">✦</div>
+  <div style="position:absolute; right:420px; top:360px; font-size:9px; color:#2c2218; opacity:0.22; z-index:6;">✦</div>
+
+  <!-- Text zone -->
+  <div class="text-zone">
+    <div class="ornamental-divider">✦ ——— ✦ ——— ✦</div>
+    <div class="headline">你是哪位希腊神祇</div>
+    <div class="subtitle">十二道题目，召唤命运为你选定的神话原型</div>
+    <button class="cta-btn">开始神谕测试 →</button>
+  </div>
+</div>
+</body>
+</html>

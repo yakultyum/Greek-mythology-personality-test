@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greek Myth Design — Bento Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=Noto+Serif+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --neutral-50: #FAF6EE; --neutral-100: #F5F0E8; --neutral-150: #EDE6D6;
+  --neutral-200: #E0D5BF; --neutral-300: #C4A882; --neutral-400: #A89880;
+  --neutral-500: #8B6E4E; --neutral-600: #6B5744; --neutral-700: #4A3828;
+  --neutral-800: #3A2818; --neutral-900: #2C1F0E; --neutral-950: #1A1008;
+  --brand-50: #FDF8EC; --brand-100: #FAF0D0; --brand-200: #F0D88A;
+  --brand-300: #D4A843; --brand-400: #C49020; --brand-500: #B8860B;
+  --brand-600: #9A6F08; --brand-700: #7A5C1E; --brand-800: #5C4216;
+  --background: #F5F0E8; --bg: #F5F0E8;
+  --surface1: #EDE6D6; --surface2: #E0D5BF; --surface3: #C4A882;
+  --border: #C4A882; --border-visible: #8B6E4E;
+  --text1: #2C1F0E; --text2: #6B5744; --text3: #8B6E4E; --text4: #A89880;
+  --accent: #B8860B; --accent-subtle: #FDF8EC;
+  --success: #5C7A4E; --warning: #B8860B; --error: #8B3A3A;
+  --font-display: 'Cinzel Decorative', 'Cinzel', Georgia, serif;
+  --font-heading: 'Cinzel', Georgia, serif;
+  --font-body: 'Noto Serif SC', Georgia, '宋体', serif;
+  --easing: cubic-bezier(0.22,1,0.36,1);
+  --bg-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23F5F0E8'/%3E%3Ccircle cx='1' cy='1' r='.4' fill='%23E8DCC8' opacity='.5'/%3E%3Ccircle cx='3' cy='3' r='.3' fill='%23DDD0B8' opacity='.3'/%3E%3C/svg%3E");
+}
+[data-theme="dark"] {
+  --background: #1A1008; --bg: #1A1008;
+  --surface1: #2C1F0E; --surface2: #3A2818; --surface3: #4A3828;
+  --border: #4A3828; --border-visible: #6B5744;
+  --text1: #FAF6EE; --text2: #C4A882; --text3: #A89880; --text4: #8B6E4E;
+  --accent: #D4A843; --accent-subtle: #1E1505;
+  --bg-texture: none;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background-color: var(--background);
+  background-image: var(--bg-texture);
+  color: var(--text1);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 2;
+  min-height: 100vh;
+  padding: 40px 24px;
+}
+
+/* ── Mode Toggle ── */
+.mode-bar {
+  position: fixed; top: 16px; right: 16px; z-index: 100;
+  display: flex; gap: 0;
+  border: 1px solid var(--border-visible);
+}
+.mode-bar button {
+  background: var(--surface1); color: var(--text2);
+  border: none; padding: 6px 16px;
+  font-family: var(--font-heading); font-size: 10px; letter-spacing: 0.2em;
+  cursor: pointer; transition: all 0.2s;
+}
+.mode-bar button.active { background: var(--accent); color: var(--background); }
+.mode-bar button:hover:not(.active) { color: var(--accent); }
+
+/* ── Layout ── */
+.preview-wrap { max-width: 900px; margin: 0 auto; }
+.page-title {
+  font-family: var(--font-display); font-size: 28px; font-weight: 700;
+  color: var(--accent); letter-spacing: 0.15em; text-align: center;
+  margin-bottom: 4px;
+}
+.page-sub {
+  font-family: var(--font-heading); font-size: 10px; letter-spacing: 0.4em;
+  color: var(--text3); text-align: center; margin-bottom: 32px;
+  text-transform: uppercase;
+}
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 24px 0; color: var(--border-visible);
+  font-size: 0.7rem; letter-spacing: 0.3em;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-visible), transparent);
+}
+.bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 16px;
+}
+.card {
+  background: var(--surface1);
+  border: 1px solid var(--border);
+  padding: 20px 24px;
+  position: relative;
+}
+.card-title {
+  font-family: var(--font-heading); font-size: 10px;
+  color: var(--accent); letter-spacing: 0.2em;
+  border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 16px;
+}
+.card-body { font-family: var(--font-body); font-size: 13px; color: var(--text1); line-height: 2; }
+.card-muted { color: var(--text2); font-size: 12px; line-height: 1.75; }
+
+/* Span helpers */
+.span2 { grid-column: span 2; }
+.span3 { grid-column: span 3; }
+
+/* ── God Result Card ── */
+.god-card {
+  text-align: center;
+  background: var(--background);
+  border: 1px solid var(--border-visible);
+  padding: 32px 24px;
+}
+.card-badge {
+  position: absolute; top: -1px; left: 24px;
+  background: var(--brand-700); color: var(--background);
+  font-family: var(--font-heading); font-size: 10px; letter-spacing: 0.2em;
+  padding: 4px 12px;
+}
+.god-emoji { font-size: 4rem; display: block; margin-bottom: 8px; filter: sepia(0.2); }
+.god-name {
+  font-family: var(--font-display); font-size: 36px; font-weight: 700;
+  color: var(--accent); letter-spacing: 0.15em; line-height: 1.2; margin-bottom: 4px;
+}
+.god-name-en {
+  font-family: var(--font-heading); font-size: 10px; letter-spacing: 0.5em;
+  color: var(--text3); text-transform: uppercase; margin-bottom: 8px;
+}
+.god-role { font-family: var(--font-body); font-size: 12px; color: var(--text2); }
+
+/* ── Stat Bars ── */
+.stat-row {
+  display: grid; grid-template-columns: 64px 1fr 36px;
+  align-items: center; gap: 12px; margin-bottom: 14px;
+}
+.stat-label {
+  font-family: var(--font-heading); font-size: 10px;
+  color: var(--text2); text-align: right; letter-spacing: 0.08em;
+}
+.stat-track { height: 1px; background: var(--border); position: relative; }
+.stat-bar {
+  position: absolute; top: 0; left: 0; height: 100%;
+  background: var(--brand-700);
+  transition: width 1.4s var(--easing);
+}
+.stat-bar::after {
+  content: ''; position: absolute; right: -3px; top: 50%;
+  transform: translateY(-50%);
+  width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+}
+.stat-value { font-family: var(--font-heading); font-size: 10px; color: var(--accent); }
+
+/* ── Option Buttons ── */
+.option-btn {
+  width: 100%; text-align: left;
+  background: transparent; border: 1px solid var(--border);
+  padding: 12px 16px 12px 36px;
+  font-family: var(--font-body); font-size: 13px; line-height: 1.7;
+  color: var(--text1); cursor: pointer; position: relative;
+  transition: all 0.2s; margin-bottom: 8px; display: block;
+}
+.option-btn::before {
+  content: attr(data-index);
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-heading); font-size: 10px; color: var(--text3); letter-spacing: 0;
+}
+.option-btn:hover { border-color: var(--brand-700); background: rgba(184,134,11,0.05); color: var(--accent); }
+.option-btn.selected { border-color: var(--accent); background: rgba(184,134,11,0.08); color: var(--accent); }
+.option-btn.selected::before { color: var(--accent); }
+
+/* ── Progress ── */
+.progress-wrap { margin-bottom: 20px; }
+.progress-label {
+  display: flex; justify-content: space-between;
+  font-family: var(--font-heading); font-size: 10px;
+  color: var(--text3); letter-spacing: 0.15em; margin-bottom: 6px;
+}
+.progress-track { height: 1px; background: var(--border); position: relative; }
+.progress-fill { height: 100%; background: var(--accent); transition: width 0.6s ease; position: relative; }
+.progress-dot {
+  position: absolute; right: 0; top: 50%;
+  transform: translate(50%, -50%);
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); border: 1px solid var(--background);
+}
+
+/* ── Tag ── */
+.tag {
+  display: inline-block; border: 1px solid var(--brand-700);
+  color: var(--accent); padding: 4px 12px;
+  font-family: var(--font-heading); font-size: 10px; letter-spacing: 0.15em;
+  background: transparent; margin: 4px 4px 4px 0;
+}
+.tag-filled { background: var(--brand-700); color: var(--background); border-color: var(--brand-700); }
+
+/* ── Button ── */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  background: transparent; border: 1px solid var(--brand-700);
+  color: var(--accent); padding: 14px 40px;
+  font-family: var(--font-heading); font-size: 14px; letter-spacing: 0.2em;
+  cursor: pointer; transition: all 0.25s; position: relative;
+}
+.btn-primary:hover { background: rgba(184,134,11,0.08); border-color: var(--accent); }
+.btn-secondary {
+  background: transparent; border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text3); padding: 8px 0;
+  font-family: var(--font-heading); font-size: 12px; letter-spacing: 0.15em;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-secondary:hover { color: var(--text1); border-color: var(--brand-700); }
+
+/* ── Moon Phase Row ── */
+.moon-row {
+  display: flex; justify-content: center; gap: 12px;
+  font-size: 1.4rem; padding: 8px 0; filter: sepia(0.15);
+}
+
+/* ── Avatar Grid ── */
+.avatar-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 8px; margin-top: 8px; }
+.avatar-item {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; border: 1px solid var(--border);
+  cursor: pointer; transition: all 0.2s; filter: sepia(0.15);
+}
+.avatar-item:hover { border-color: var(--border-visible); }
+.avatar-item.active { border-color: var(--accent); background: var(--accent-subtle); filter: none; }
+
+/* ── Codex Grid ── */
+.codex-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+.codex-card {
+  border: 1px solid var(--border); padding: 14px 10px;
+  text-align: center; background: var(--surface1); cursor: pointer;
+  transition: border-color 0.2s;
+}
+.codex-card:hover { border-color: var(--border-visible); }
+.codex-card.active { border-color: var(--accent); background: var(--accent-subtle); }
+.codex-emoji { font-size: 1.8rem; display: block; filter: sepia(0.2); margin-bottom: 6px; }
+.codex-name { font-family: var(--font-heading); font-size: 10px; letter-spacing: 0.15em; color: var(--text2); }
+.codex-name-cn { font-family: var(--font-body); font-size: 12px; color: var(--text1); margin-top: 2px; }
+
+/* ── Quote Card ── */
+.quote-card {
+  border-left: 3px solid var(--brand-700); padding: 12px 0 12px 20px;
+  font-family: var(--font-body); font-style: italic;
+  color: var(--text2); line-height: 1.9; font-size: 13px;
+}
+.quote-source { font-style: normal; font-family: var(--font-heading); font-size: 10px; letter-spacing: 0.2em; color: var(--text3); margin-top: 8px; }
+
+/* ── Color Palette Card ── */
+.palette-row { display: flex; gap: 8px; margin-top: 8px; }
+.palette-swatch {
+  flex: 1; height: 32px; border: 1px solid var(--border); position: relative;
+}
+.palette-label { font-family: var(--font-heading); font-size: 9px; color: var(--text3); margin-top: 4px; text-align: center; letter-spacing: 0.05em; }
+
+/* ── Typography Block ── */
+.type-showcase > div { margin-bottom: 16px; }
+.type-display { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--accent); letter-spacing: 0.15em; line-height: 1.2; }
+.type-heading { font-family: var(--font-heading); font-size: 18px; font-weight: 600; color: var(--text1); letter-spacing: 0.2em; }
+.type-body { font-family: var(--font-body); font-size: 14px; color: var(--text1); line-height: 2; }
+.type-caption { font-family: var(--font-heading); font-size: 10px; color: var(--text3); letter-spacing: 0.2em; }
+</style>
+</head>
+<body>
+
+<!-- Mode Toggle -->
+<div class="mode-bar">
+  <button class="active" onclick="setTheme('light')">LIGHT</button>
+  <button onclick="setTheme('dark')">DARK</button>
+</div>
+
+<div class="preview-wrap">
+  <!-- Header -->
+  <div style="border-top: 2px solid var(--accent); padding-top: 24px; margin-bottom: 8px;"></div>
+  <div class="page-title">神话人格</div>
+  <div class="page-sub">GREEK MYTHOLOGY · PERSONALITY TEST · DESIGN PREVIEW</div>
+  <div class="divider">✦</div>
+
+  <!-- BENTO GRID -->
+  <div class="bento-grid">
+
+    <!-- 1. God Result Card (span 2 tall) -->
+    <div class="card god-card span2" style="grid-row: span 2;">
+      <div class="card-badge">YOUR ARCHETYPE</div>
+      <span class="god-emoji">🦉</span>
+      <div class="god-name">雅典娜</div>
+      <div class="god-name-en">ATHENA</div>
+      <div class="god-role">智慧与战略女神 · 奥林匹斯守护者</div>
+      <div class="divider" style="margin: 16px 0;">◆</div>
+      <div class="card-muted" style="text-align:left;max-width:320px;margin:0 auto;">
+        你以理性与远见主导一切——不靠冲动，而靠精准。你是会议室里最安静的声音，也是最终被所有人听进去的那个。
+      </div>
+      <div style="margin-top: 20px; display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
+        <span class="tag">洞察力</span>
+        <span class="tag">战略思维</span>
+        <span class="tag tag-filled">战争女神</span>
+        <span class="tag">工艺守护</span>
+      </div>
+    </div>
+
+    <!-- 2. Personality Stats -->
+    <div class="card">
+      <div class="card-title">⊱ 六维人格 ⊰</div>
+      <div class="stat-row">
+        <div class="stat-label">理性</div>
+        <div class="stat-track"><div class="stat-bar" style="width:88%"></div></div>
+        <div class="stat-value">88%</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-label">直觉</div>
+        <div class="stat-track"><div class="stat-bar" style="width:72%"></div></div>
+        <div class="stat-value">72%</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-label">共情</div>
+        <div class="stat-track"><div class="stat-bar" style="width:55%"></div></div>
+        <div class="stat-value">55%</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-label">意志</div>
+        <div class="stat-track"><div class="stat-bar" style="width:94%"></div></div>
+        <div class="stat-value">94%</div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-label">创造</div>
+        <div class="stat-track"><div class="stat-bar" style="width:80%"></div></div>
+        <div class="stat-value">80%</div>
+      </div>
+      <div class="stat-row" style="margin-bottom:0">
+        <div class="stat-label">神秘</div>
+        <div class="stat-track"><div class="stat-bar" style="width:63%"></div></div>
+        <div class="stat-value">63%</div>
+      </div>
+    </div>
+
+    <!-- 3. Moon Phase + Progress -->
+    <div class="card">
+      <div class="card-title">── ☽ 测试进度 ── </div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>QUESTION</span>
+          <span>7 / 10</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:70%">
+            <div class="progress-dot"></div>
+          </div>
+        </div>
+      </div>
+      <div class="moon-row">🌑 🌒 🌓 🌔 🌕 🌖 🌗</div>
+      <div style="font-family:var(--font-heading);font-size:10px;color:var(--text3);text-align:center;letter-spacing:0.2em;">LUNAR CYCLE · VII</div>
+    </div>
+
+    <!-- 4. Question Card (span 3) -->
+    <div class="card span3">
+      <div class="card-title">── ✦ 问题 · III ✦ ──</div>
+      <div class="card-body" style="margin-bottom:16px;">当面对一个复杂的群体冲突时，你的第一反应是什么？</div>
+      <div>
+        <button class="option-btn" data-index="A">退出，等待局势自然冷却，再观察后续发展</button>
+        <button class="option-btn selected" data-index="B">寻找冲突的根本原因，提出系统性的解决方案</button>
+        <button class="option-btn" data-index="C">立刻介入，凭借个人魅力化解紧张气氛</button>
+        <button class="option-btn" data-index="D">记录各方立场，为日后调解保留分析资料</button>
+      </div>
+    </div>
+
+    <!-- 5. Avatar Selector -->
+    <div class="card">
+      <div class="card-title">── ✧ 选择形象 ──</div>
+      <div class="avatar-grid">
+        <div class="avatar-item">🌟</div>
+        <div class="avatar-item">⚡</div>
+        <div class="avatar-item active">🌙</div>
+        <div class="avatar-item">🔱</div>
+        <div class="avatar-item">🌹</div>
+        <div class="avatar-item">🦉</div>
+        <div class="avatar-item">🍃</div>
+        <div class="avatar-item">🔥</div>
+        <div class="avatar-item">🌊</div>
+        <div class="avatar-item">💫</div>
+        <div class="avatar-item">🗝️</div>
+        <div class="avatar-item">🌺</div>
+      </div>
+    </div>
+
+    <!-- 6. Buttons Showcase -->
+    <div class="card">
+      <div class="card-title">── ◆ 按钮组件 ──</div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;">
+        <button class="btn-primary">揭示神话人格</button>
+        <button class="btn-primary" style="padding:10px 28px;font-size:12px;">继续下一题</button>
+        <button class="btn-secondary">查看测试规则</button>
+      </div>
+    </div>
+
+    <!-- 7. Quote Card -->
+    <div class="card">
+      <div class="card-title">── ✦ 神谕 ──</div>
+      <div class="quote-card">
+        "认识你自己，不是为了评判自己，而是为了理解自己在宇宙叙事中的位置。"
+        <div class="quote-source">── 特尔斐神谕 · DELPHI</div>
+      </div>
+    </div>
+
+    <!-- 8. Codex Grid -->
+    <div class="card">
+      <div class="card-title">── ◆ 神祇图鉴 ──</div>
+      <div class="codex-grid">
+        <div class="codex-card active">
+          <span class="codex-emoji">🦉</span>
+          <div class="codex-name">ATHENA</div>
+          <div class="codex-name-cn">雅典娜</div>
+        </div>
+        <div class="codex-card">
+          <span class="codex-emoji">⚡</span>
+          <div class="codex-name">ZEUS</div>
+          <div class="codex-name-cn">宙斯</div>
+        </div>
+        <div class="codex-card">
+          <span class="codex-emoji">🌙</span>
+          <div class="codex-name">ARTEMIS</div>
+          <div class="codex-name-cn">阿尔忒弥斯</div>
+        </div>
+        <div class="codex-card">
+          <span class="codex-emoji">🔱</span>
+          <div class="codex-name">POSEIDON</div>
+          <div class="codex-name-cn">波塞冬</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. Color + Typography -->
+    <div class="card">
+      <div class="card-title">── ✧ 色彩系统 ──</div>
+      <div class="palette-row">
+        <div>
+          <div class="palette-swatch" style="background:#F5F0E8;border-color:#C4A882;"></div>
+          <div class="palette-label">#F5F0E8</div>
+        </div>
+        <div>
+          <div class="palette-swatch" style="background:#EDE6D6;"></div>
+          <div class="palette-label">#EDE6D6</div>
+        </div>
+        <div>
+          <div class="palette-swatch" style="background:#C4A882;border-color:#8B6E4E;"></div>
+          <div class="palette-label">#C4A882</div>
+        </div>
+        <div>
+          <div class="palette-swatch" style="background:#B8860B;border-color:#7A5C1E;"></div>
+          <div class="palette-label">#B8860B</div>
+        </div>
+        <div>
+          <div class="palette-swatch" style="background:#2C1F0E;border-color:#1A1008;"></div>
+          <div class="palette-label">#2C1F0E</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. Typography -->
+    <div class="card span2">
+      <div class="card-title">── ✦ 字体层级 ──</div>
+      <div class="type-showcase">
+        <div>
+          <div class="type-display">Cinzel Decorative</div>
+          <div class="type-caption" style="margin-top:2px;">DISPLAY · 神祇名大标题 · WEIGHT 700</div>
+        </div>
+        <div>
+          <div class="type-heading">Cinzel — Page Heading</div>
+          <div class="type-caption" style="margin-top:2px;">HEADING · 页面标题 · WEIGHT 600 · TRACKING 0.2em</div>
+        </div>
+        <div>
+          <div class="type-body">Noto Serif SC 正文字体——以理性与远见主导一切，行高 2.0</div>
+          <div class="type-caption" style="margin-top:2px;">BODY · 中文正文 · LINE-HEIGHT 2.0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. Tags Full Row -->
+    <div class="card span3">
+      <div class="card-title">⊱ ────── 标签与状态组件 ────── ⊰</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+        <span class="tag">洞察力</span>
+        <span class="tag">战略思维</span>
+        <span class="tag tag-filled">战争女神</span>
+        <span class="tag">工艺守护</span>
+        <span class="tag">智慧与理性</span>
+        <span class="tag" style="border-color:#5C7A4E;color:#5C7A4E;">✓ 已完成</span>
+        <span class="tag" style="border-color:#8B3A3A;color:#8B3A3A;">✗ 未解锁</span>
+        <div class="divider" style="width:1px;height:24px;display:block;background:var(--border);margin:0 8px;"></div>
+        <div style="font-family:var(--font-heading);font-size:10px;color:var(--text3);letter-spacing:0.2em;">
+          ORNAMENT SYMBOLS: ✦ ✧ ◆ ◇ ☽ ☾ ⊱ ⊰ ✠ ❖ ⊕ ●
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /bento-grid -->
+
+  <div class="divider" style="margin-top:32px;">── ◆ ──</div>
+  <div style="text-align:center;font-family:var(--font-heading);font-size:9px;color:var(--text3);letter-spacing:0.3em;padding-bottom:40px;">
+    GREEK MYTH DESIGN SYSTEM · v1.0 · 2026
+  </div>
+
+</div><!-- /preview-wrap -->
+
+<script>
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  document.querySelectorAll('.mode-bar button').forEach((b,i) => {
+    b.classList.toggle('active', (t==='light'&&i===0)||(t==='dark'&&i===1));
+  });
+}
+</script>
+</body>
+</html>

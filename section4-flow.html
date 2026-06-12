@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1440">
+  <title>Section 4 — How It Works</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=Noto+Serif+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --charcoal: #1a1713;
+      --parchment: #f0e8d5;
+      --parchment-mid: #e8dcc0;
+      --gold: #c4892a;
+      --gold-dim: rgba(196,137,42,0.65);
+      --text-light: #f0e8d5;
+      --text-light-dim: rgba(240,232,213,0.65);
+    }
+    html, body {
+      width: 1440px;
+      height: 680px;
+      overflow: hidden;
+      background: var(--charcoal);
+    }
+    .section {
+      width: 1440px;
+      height: 680px;
+      background: var(--charcoal);
+      padding: 60px 100px 56px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Constellation star pattern background */
+    .section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(196,137,42,0.18) 1px, transparent 1px),
+        radial-gradient(circle, rgba(196,137,42,0.1) 1px, transparent 1px);
+      background-size: 48px 48px, 96px 96px;
+      background-position: 0 0, 24px 24px;
+      pointer-events: none;
+    }
+    /* Vertical rail text */
+    .vertical-rail {
+      position: absolute;
+      right: 36px;
+      top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+      font-family: 'Cinzel', serif;
+      font-size: 8px;
+      letter-spacing: 0.35em;
+      color: rgba(196,137,42,0.22);
+      white-space: nowrap;
+      z-index: 2;
+    }
+    /* Bottom hairline rule */
+    .bottom-rule {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.5;
+    }
+    .header {
+      text-align: left;
+      margin-bottom: 44px;
+      position: relative;
+      z-index: 2;
+    }
+    .micro-label {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 0.45em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-family: 'Cinzel', Georgia, serif;
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--text-light);
+      letter-spacing: 0.1em;
+      line-height: 1.2;
+    }
+    /* Three step cards — asymmetric layout */
+    .steps-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      position: relative;
+      z-index: 2;
+      height: 420px;
+    }
+    /* Dashed connecting line */
+    .connect-line {
+      position: absolute;
+      top: 80px;
+      height: 1px;
+      background: repeating-linear-gradient(90deg, var(--gold) 0, var(--gold) 8px, transparent 8px, transparent 18px);
+      opacity: 0.4;
+      z-index: 1;
+    }
+    .connect-line-1 {
+      left: calc(42% + 12px);
+      width: calc(28% - 24px);
+    }
+    .connect-line-2 {
+      left: calc(70% + 12px);
+      width: calc(26% - 60px);
+    }
+    .step-card {
+      background: var(--parchment);
+      border: 1px solid rgba(44,34,24,0.5);
+      padding: 28px 28px 24px;
+      position: relative;
+    }
+    .step-card-1 {
+      width: 42%;
+      height: 380px;
+      margin-top: 0;
+    }
+    .step-card-2 {
+      width: 28%;
+      height: 400px;
+      margin-top: -24px;
+      margin-left: 12px;
+    }
+    .step-card-3 {
+      width: 26%;
+      height: 360px;
+      margin-top: 0;
+      margin-left: 12px;
+    }
+    .step-numeral {
+      font-family: 'Cinzel', serif;
+      font-size: 64px;
+      font-weight: 400;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 12px;
+      letter-spacing: 0.05em;
+    }
+    .step-rule {
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.6;
+      margin-bottom: 14px;
+    }
+    .step-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 17px;
+      font-weight: 500;
+      color: #1a1713;
+      letter-spacing: 0.08em;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+    .step-desc {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 13px;
+      color: rgba(26,23,19,0.65);
+      line-height: 2.0;
+      letter-spacing: 0.05em;
+    }
+    /* Step illustration area */
+    .step-illus {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+<div class="section">
+  <div class="vertical-rail">ORACLE · MYTHOLOGY · ARCHETYPES</div>
+  <div class="bottom-rule"></div>
+
+  <div class="header">
+    <div class="micro-label">How It Works</div>
+    <div class="section-title">三步，遇见命运中的神祇</div>
+  </div>
+
+  <div class="steps-container">
+    <!-- Connecting dashed lines -->
+    <div class="connect-line connect-line-1"></div>
+    <div class="connect-line connect-line-2"></div>
+
+    <!-- Step I -->
+    <div class="step-card step-card-1">
+      <div class="step-numeral">I</div>
+      <div class="step-rule"></div>
+      <div class="step-title">阅读题目，听从直觉</div>
+      <div class="step-desc">
+        每道题目如同一次古老的神谕问询。<br>
+        不必过度思考——你的第一反应<br>
+        往往最接近灵魂深处的真实。
+      </div>
+      <!-- Scroll illustration -->
+      <div class="step-illus">
+        <svg width="90" height="80" viewBox="0 0 90 80" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 15 Q12 8 18 8 L72 8 Q78 8 78 15 L78 65 Q78 72 72 72 L18 72 Q12 72 12 65 Z" fill="none" stroke="#2c2218" stroke-width="0.9"/>
+          <path d="M12 15 Q6 15 6 20 L6 60 Q6 65 12 65" fill="none" stroke="#2c2218" stroke-width="0.8"/>
+          <path d="M78 15 Q84 15 84 20 L84 60 Q84 65 78 65" fill="none" stroke="#2c2218" stroke-width="0.8"/>
+          <line x1="22" y1="24" x2="68" y2="24" stroke="#2c2218" stroke-width="0.6" opacity="0.5"/>
+          <line x1="22" y1="32" x2="68" y2="32" stroke="#2c2218" stroke-width="0.6" opacity="0.5"/>
+          <line x1="22" y1="40" x2="60" y2="40" stroke="#2c2218" stroke-width="0.6" opacity="0.5"/>
+          <line x1="22" y1="48" x2="64" y2="48" stroke="#2c2218" stroke-width="0.6" opacity="0.5"/>
+          <line x1="22" y1="56" x2="56" y2="56" stroke="#2c2218" stroke-width="0.6" opacity="0.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Step II -->
+    <div class="step-card step-card-2">
+      <div class="step-numeral">II</div>
+      <div class="step-rule"></div>
+      <div class="step-title">十二道抉择，<br>无对错之分</div>
+      <div class="step-desc">
+        每个选项都映射着不同<br>
+        的神话原型。真实作答，<br>
+        让神谕自行判断。
+      </div>
+      <!-- Scales illustration -->
+      <div class="step-illus">
+        <svg width="75" height="75" viewBox="0 0 75 75" xmlns="http://www.w3.org/2000/svg">
+          <line x1="37" y1="5" x2="37" y2="70" stroke="#2c2218" stroke-width="0.9"/>
+          <line x1="10" y1="20" x2="65" y2="20" stroke="#2c2218" stroke-width="0.9"/>
+          <circle cx="37" cy="8" r="4" fill="none" stroke="#2c2218" stroke-width="0.8"/>
+          <!-- Left pan -->
+          <line x1="10" y1="20" x2="8" y2="35" stroke="#2c2218" stroke-width="0.7"/>
+          <line x1="10" y1="20" x2="22" y2="35" stroke="#2c2218" stroke-width="0.7"/>
+          <path d="M5 35 Q15 40 25 35" fill="none" stroke="#2c2218" stroke-width="0.8"/>
+          <!-- Right pan -->
+          <line x1="65" y1="20" x2="52" y2="38" stroke="#2c2218" stroke-width="0.7"/>
+          <line x1="65" y1="20" x2="67" y2="38" stroke="#2c2218" stroke-width="0.7"/>
+          <path d="M49 38 Q59 43 70 38" fill="none" stroke="#2c2218" stroke-width="0.8"/>
+          <line x1="37" y1="70" x2="25" y2="70" stroke="#2c2218" stroke-width="0.7"/>
+          <line x1="37" y1="70" x2="49" y2="70" stroke="#2c2218" stroke-width="0.7"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Step III -->
+    <div class="step-card step-card-3">
+      <div class="step-numeral">III</div>
+      <div class="step-rule"></div>
+      <div class="step-title">神谕降临，<br>揭示你的原型</div>
+      <div class="step-desc">
+        命运的答案即将揭晓。<br>
+        你的神话人格档案<br>
+        等待解封。
+      </div>
+      <!-- Laurel + flame illustration -->
+      <div class="step-illus">
+        <svg width="70" height="75" viewBox="0 0 70 75" xmlns="http://www.w3.org/2000/svg">
+          <!-- Laurel left -->
+          <path d="M20 60 Q8 50 10 38 Q12 28 20 24" fill="none" stroke="#2c2218" stroke-width="0.8"/>
+          <path d="M20 50 Q10 44 12 36" fill="none" stroke="#2c2218" stroke-width="0.6" opacity="0.6"/>
+          <path d="M20 40 Q13 36 15 28" fill="none" stroke="#2c2218" stroke-width="0.6" opacity="0.6"/>
+          <!-- Laurel right -->
+          <path d="M50 60 Q62 50 60 38 Q58 28 50 24" fill="none" stroke="#2c2218" stroke-width="0.8"/>
+          <path d="M50 50 Q60 44 58 36" fill="none" stroke="#2c2218" stroke-width="0.6" opacity="0.6"/>
+          <path d="M50 40 Q57 36 55 28" fill="none" stroke="#2c2218" stroke-width="0.6" opacity="0.6"/>
+          <!-- Flame center -->
+          <path d="M30 65 Q32 50 35 38 Q38 50 40 65" fill="none" stroke="#c4892a" stroke-width="0.8" opacity="0.6"/>
+          <path d="M32 55 Q35 42 38 55 Q36 48 35 42 Q34 48 32 55Z" fill="rgba(196,137,42,0.35)" stroke="#c4892a" stroke-width="0.8"/>
+          <!-- Base -->
+          <line x1="20" y1="65" x2="50" y2="65" stroke="#2c2218" stroke-width="0.8"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

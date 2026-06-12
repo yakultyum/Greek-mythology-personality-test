@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless=new --disable-gpu --screenshot=/tmp/footer_test2.png --window-size=1600,900 --hide-scrollbars --virtual-time-budget=3000 file:///tmp/footer_test2.html)"
+    ]
+  }
+}

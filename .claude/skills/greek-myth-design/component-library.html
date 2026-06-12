@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greek Myth Design — Component Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=Noto+Serif+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --neutral-50:#FAF6EE;--neutral-100:#F5F0E8;--neutral-150:#EDE6D6;
+  --neutral-200:#E0D5BF;--neutral-300:#C4A882;--neutral-400:#A89880;
+  --neutral-500:#8B6E4E;--neutral-600:#6B5744;--neutral-700:#4A3828;
+  --neutral-800:#3A2818;--neutral-900:#2C1F0E;--neutral-950:#1A1008;
+  --brand-50:#FDF8EC;--brand-100:#FAF0D0;--brand-300:#D4A843;
+  --brand-500:#B8860B;--brand-600:#9A6F08;--brand-700:#7A5C1E;
+  --background:#F5F0E8;--bg:#F5F0E8;
+  --surface1:#EDE6D6;--surface2:#E0D5BF;--surface3:#C4A882;
+  --border:#C4A882;--border-visible:#8B6E4E;
+  --text1:#2C1F0E;--text2:#6B5744;--text3:#8B6E4E;--text4:#A89880;
+  --accent:#B8860B;--accent-subtle:#FDF8EC;
+  --success:#5C7A4E;--warning:#B8860B;--error:#8B3A3A;
+  --font-display:'Cinzel Decorative','Cinzel',Georgia,serif;
+  --font-heading:'Cinzel',Georgia,serif;
+  --font-body:'Noto Serif SC',Georgia,'宋体',serif;
+  --easing:cubic-bezier(0.22,1,0.36,1);
+  --bg-texture:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23F5F0E8'/%3E%3Ccircle cx='1' cy='1' r='.4' fill='%23E8DCC8' opacity='.5'/%3E%3Ccircle cx='3' cy='3' r='.3' fill='%23DDD0B8' opacity='.3'/%3E%3C/svg%3E");
+}
+[data-theme="dark"]{
+  --background:#1A1008;--bg:#1A1008;
+  --surface1:#2C1F0E;--surface2:#3A2818;--surface3:#4A3828;
+  --border:#4A3828;--border-visible:#6B5744;
+  --text1:#FAF6EE;--text2:#C4A882;--text3:#A89880;--text4:#8B6E4E;
+  --accent:#D4A843;--accent-subtle:#1E1505;
+  --bg-texture:none;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background-color:var(--background);background-image:var(--bg-texture);color:var(--text1);font-family:var(--font-body);font-size:14px;line-height:2;}
+
+/* Mode bar */
+.mode-bar{position:fixed;top:16px;right:16px;z-index:200;display:flex;border:1px solid var(--border-visible);}
+.mode-bar button{background:var(--surface1);color:var(--text2);border:none;padding:6px 16px;font-family:var(--font-heading);font-size:10px;letter-spacing:0.2em;cursor:pointer;transition:all 0.2s;}
+.mode-bar button.active{background:var(--accent);color:var(--background);}
+
+/* Layout */
+.cl-wrap{display:flex;min-height:100vh;}
+.cl-toc{width:220px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--border);padding:24px 0;background:var(--surface1);}
+.cl-toc-title{font-family:var(--font-display);font-size:12px;font-weight:700;color:var(--accent);letter-spacing:0.15em;padding:0 20px 16px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+.cl-toc a{display:block;font-family:var(--font-heading);font-size:10px;letter-spacing:0.15em;color:var(--text3);padding:7px 20px;text-decoration:none;transition:all 0.2s;}
+.cl-toc a:hover{color:var(--accent);}
+.cl-toc a.active{color:var(--accent);border-left:2px solid var(--accent);padding-left:18px;}
+.cl-main{flex:1;max-width:900px;padding:40px 48px;overflow-y:auto;}
+
+/* Section */
+.cl-section{margin-bottom:56px;scroll-margin-top:24px;}
+.cl-section-title{font-family:var(--font-heading);font-size:18px;font-weight:600;color:var(--text1);letter-spacing:0.2em;margin-bottom:6px;}
+.cl-section-desc{font-family:var(--font-body);font-size:12px;color:var(--text3);margin-bottom:24px;line-height:1.6;}
+.divider-section{height:1px;background:linear-gradient(90deg,transparent,var(--border-visible),transparent);margin-bottom:32px;}
+
+/* Canvas */
+.cl-canvas{background:var(--surface1);border:1px solid var(--border);padding:32px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;}
+
+/* Spec Table */
+.spec-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:32px;}
+.spec-table th{font-family:var(--font-heading);font-size:9px;letter-spacing:0.2em;color:var(--text3);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--surface1);}
+.spec-table td{padding:8px 12px;border-bottom:1px solid var(--border);font-family:var(--font-body);font-size:12px;color:var(--text1);vertical-align:top;}
+.spec-table td:first-child{font-family:var(--font-heading);font-size:10px;color:var(--text2);letter-spacing:0.1em;}
+code{font-family:'Courier New',monospace;font-size:11px;background:var(--surface2);padding:1px 6px;color:var(--accent);}
+
+/* State label */
+.state-label{font-family:var(--font-heading);font-size:9px;letter-spacing:0.2em;color:var(--text3);display:block;margin-bottom:6px;}
+
+/* ── Components ── */
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--brand-700);color:var(--accent);padding:14px 40px;font-family:var(--font-heading);font-size:14px;letter-spacing:0.2em;cursor:pointer;transition:all 0.25s;position:relative;}
+.btn-primary.is-hover{background:rgba(184,134,11,0.08);border-color:var(--accent);}
+.btn-primary.is-active{background:rgba(184,134,11,0.12);}
+.btn-primary:disabled,.btn-primary.is-disabled{opacity:0.4;cursor:not-allowed;}
+.btn-secondary{background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text3);padding:8px 0;font-family:var(--font-heading);font-size:12px;letter-spacing:0.15em;cursor:pointer;transition:all 0.2s;}
+.btn-ghost{background:transparent;border:none;color:var(--text2);padding:8px 16px;font-family:var(--font-heading);font-size:12px;letter-spacing:0.15em;cursor:pointer;}
+.btn-destructive{display:inline-flex;align-items:center;background:transparent;border:1px solid #8B3A3A;color:#8B3A3A;padding:14px 40px;font-family:var(--font-heading);font-size:14px;letter-spacing:0.2em;cursor:pointer;}
+
+.card-info{background:var(--surface1);border:1px solid var(--border);padding:20px 24px;position:relative;}
+.card-section{background:var(--surface1);border:1px solid var(--border-visible);padding:20px 24px;position:relative;}
+.card-title-label{font-family:var(--font-heading);font-size:10px;color:var(--accent);letter-spacing:0.2em;border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:12px;}
+.card-quote{border-left:3px solid var(--brand-700);padding:12px 0 12px 20px;font-family:var(--font-body);font-style:italic;color:var(--text2);line-height:1.9;font-size:13px;}
+.card-god{background:var(--background);border:1px solid var(--border-visible);padding:24px;text-align:center;position:relative;}
+.card-badge-el{position:absolute;top:-1px;left:20px;background:var(--brand-700);color:var(--background);font-family:var(--font-heading);font-size:9px;letter-spacing:0.2em;padding:4px 10px;}
+
+.input-field{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border-visible);padding:10px 0;font-family:var(--font-body);font-size:14px;color:var(--text1);outline:none;}
+.input-field::placeholder{color:var(--text4);}
+.input-field.is-focused{border-bottom-color:var(--accent);}
+.input-field.is-error{border-bottom-color:#8B3A3A;}
+.input-label-el{display:block;font-family:var(--font-heading);font-size:10px;letter-spacing:0.2em;color:var(--text3);margin-bottom:8px;}
+.input-error-msg{font-family:var(--font-heading);font-size:10px;color:#8B3A3A;letter-spacing:0.1em;margin-top:4px;}
+
+.option-btn{width:100%;text-align:left;background:transparent;border:1px solid var(--border);padding:12px 16px 12px 36px;font-family:var(--font-body);font-size:13px;line-height:1.7;color:var(--text1);cursor:pointer;position:relative;transition:all 0.2s;margin-bottom:8px;display:block;}
+.option-btn::before{content:attr(data-index);position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:var(--font-heading);font-size:10px;color:var(--text3);}
+.option-btn.is-hover{border-color:var(--brand-700);background:rgba(184,134,11,0.05);color:var(--accent);}
+.option-btn.is-selected{border-color:var(--accent);background:rgba(184,134,11,0.08);color:var(--accent);}
+.option-btn.is-selected::before{color:var(--accent);}
+.option-btn.is-disabled{opacity:0.4;cursor:not-allowed;}
+
+.progress-wrap{margin-bottom:8px;}
+.progress-label-row{display:flex;justify-content:space-between;font-family:var(--font-heading);font-size:10px;color:var(--text3);letter-spacing:0.15em;margin-bottom:6px;}
+.progress-track{height:1px;background:var(--border);position:relative;}
+.progress-fill{height:100%;background:var(--accent);position:relative;}
+.progress-dot{position:absolute;right:0;top:50%;transform:translate(50%,-50%);width:6px;height:6px;border-radius:50%;background:var(--accent);border:1px solid var(--background);}
+
+.stat-row{display:grid;grid-template-columns:64px 1fr 36px;align-items:center;gap:12px;margin-bottom:12px;}
+.stat-label{font-family:var(--font-heading);font-size:10px;color:var(--text2);text-align:right;letter-spacing:0.08em;}
+.stat-track{height:1px;background:var(--border);position:relative;}
+.stat-bar{position:absolute;top:0;left:0;height:100%;background:var(--brand-700);}
+.stat-bar::after{content:'';position:absolute;right:-3px;top:50%;transform:translateY(-50%);width:5px;height:5px;border-radius:50%;background:var(--accent);}
+.stat-val{font-family:var(--font-heading);font-size:10px;color:var(--accent);}
+
+.tag{display:inline-block;border:1px solid var(--brand-700);color:var(--accent);padding:4px 12px;font-family:var(--font-heading);font-size:10px;letter-spacing:0.15em;background:transparent;margin:4px;}
+.tag-filled{background:var(--brand-700);color:var(--background);border-color:var(--brand-700);}
+.tag-selected{background:var(--accent-subtle);color:var(--accent);border-color:var(--accent);}
+.tag-success{border-color:#5C7A4E;color:#5C7A4E;}
+.tag-error{border-color:#8B3A3A;color:#8B3A3A;}
+
+.divider-el{display:flex;align-items:center;gap:12px;margin:8px 0;color:var(--border-visible);font-size:0.7rem;letter-spacing:0.3em;}
+.divider-el::before,.divider-el::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border-visible),transparent);}
+
+.modal-box{background:var(--surface1);border:1px solid var(--border-visible);padding:32px 24px;max-width:360px;position:relative;}
+.modal-close{position:absolute;top:12px;right:16px;font-family:var(--font-heading);font-size:12px;color:var(--text3);cursor:pointer;}
+.backdrop{background:rgba(44,31,14,0.5);padding:24px;display:inline-block;}
+
+.toggle-track{width:44px;height:24px;border:1px solid var(--border-visible);background:transparent;position:relative;cursor:pointer;display:inline-block;transition:all 0.2s;}
+.toggle-track.on{border-color:var(--accent);background:rgba(184,134,11,0.1);}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;background:var(--text4);transition:all 0.2s;}
+.toggle-track.on .toggle-thumb{left:calc(100% - 19px);background:var(--accent);}
+
+.avatar-grid-el{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.avatar-item-el{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:1.4rem;border:1px solid var(--border);filter:sepia(0.15);}
+.avatar-item-el.active{border-color:var(--accent);background:var(--accent-subtle);filter:none;}
+
+.empty-state{text-align:center;padding:48px 24px;}
+.empty-icon{font-size:3rem;display:block;filter:sepia(0.2);margin-bottom:16px;}
+.empty-title{font-family:var(--font-heading);font-size:14px;color:var(--text2);letter-spacing:0.15em;margin-bottom:8px;}
+.empty-desc{font-family:var(--font-body);font-size:12px;color:var(--text3);line-height:1.75;}
+
+.tooltip-box{background:var(--neutral-900);color:var(--neutral-50);padding:6px 12px;font-family:var(--font-heading);font-size:10px;letter-spacing:0.1em;display:inline-block;max-width:200px;position:relative;}
+
+.moon-phase-row{display:flex;gap:12px;font-size:1.6rem;filter:sepia(0.15);}
+
+.ornament-box-el{position:relative;border:1px solid var(--border);padding:20px;display:inline-block;}
+.ornament-box-el::before{content:'';position:absolute;top:-3px;left:-3px;right:-3px;bottom:-3px;border:1px solid var(--border);opacity:0.4;pointer-events:none;}
+</style>
+</head>
+<body>
+
+<div class="mode-bar">
+  <button class="active" onclick="setTheme('light')">LIGHT</button>
+  <button onclick="setTheme('dark')">DARK</button>
+</div>
+
+<div class="cl-wrap">
+  <!-- TOC -->
+  <nav class="cl-toc">
+    <div class="cl-toc-title">神话人格 · 组件库</div>
+    <a href="#buttons" class="active">Buttons 按钮</a>
+    <a href="#cards">Cards 卡片</a>
+    <a href="#inputs">Inputs 输入</a>
+    <a href="#options">Options 选项</a>
+    <a href="#progress">Progress 进度</a>
+    <a href="#stats">Stats 数据条</a>
+    <a href="#tags">Tags 标签</a>
+    <a href="#dividers">Dividers 分割线</a>
+    <a href="#toggles">Toggles 开关</a>
+    <a href="#avatar">Avatar 头像</a>
+    <a href="#overlays">Overlays 弹层</a>
+    <a href="#states">States 状态</a>
+    <a href="#typography">Typography 字体</a>
+    <a href="#symbols">Symbols 符号</a>
+  </nav>
+
+  <!-- Main -->
+  <main class="cl-main">
+    <div style="border-top:2px solid var(--accent);margin-bottom:32px;"></div>
+    <div style="font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--accent);letter-spacing:0.15em;margin-bottom:4px;">Greek Myth Design</div>
+    <div style="font-family:var(--font-heading);font-size:10px;letter-spacing:0.4em;color:var(--text3);margin-bottom:40px;">COMPONENT LIBRARY · v1.0</div>
+
+    <!-- BUTTONS -->
+    <section class="cl-section" id="buttons">
+      <div class="cl-section-title">BUTTONS</div>
+      <div class="cl-section-desc">线框感设计，hover 时微填充金色。角花装饰只在主按钮 hover 时出现。</div>
+      <div class="cl-canvas">
+        <div>
+          <span class="state-label">DEFAULT</span>
+          <button class="btn-primary">揭示神话人格</button>
+        </div>
+        <div>
+          <span class="state-label">HOVER</span>
+          <button class="btn-primary is-hover">揭示神话人格</button>
+        </div>
+        <div>
+          <span class="state-label">ACTIVE</span>
+          <button class="btn-primary is-active">揭示神话人格</button>
+        </div>
+        <div>
+          <span class="state-label">DISABLED</span>
+          <button class="btn-primary is-disabled" disabled>揭示神话人格</button>
+        </div>
+        <div>
+          <span class="state-label">SECONDARY</span>
+          <button class="btn-secondary">查看测试规则</button>
+        </div>
+        <div>
+          <span class="state-label">GHOST</span>
+          <button class="btn-ghost">跳过</button>
+        </div>
+        <div>
+          <span class="state-label">DESTRUCTIVE</span>
+          <button class="btn-destructive">重置测试</button>
+        </div>
+      </div>
+      <table class="spec-table">
+        <tr><th>属性</th><th>Primary</th><th>Secondary</th><th>Ghost</th></tr>
+        <tr><td>Background</td><td><code>transparent</code></td><td><code>transparent</code></td><td><code>transparent</code></td></tr>
+        <tr><td>Border</td><td><code>1px solid #7A5C1E</code></td><td><code>border-bottom 1px solid --border</code></td><td><code>none</code></td></tr>
+        <tr><td>Color</td><td><code>--accent #B8860B</code></td><td><code>--text3</code></td><td><code>--text2</code></td></tr>
+        <tr><td>Padding</td><td><code>14px 40px</code></td><td><code>8px 0</code></td><td><code>8px 16px</code></td></tr>
+        <tr><td>Font</td><td><code>Cinzel 14px letter-spacing 0.2em</code></td><td><code>Cinzel 12px</code></td><td><code>Cinzel 12px</code></td></tr>
+        <tr><td>Radius</td><td><code>0px (直角)</code></td><td><code>0px</code></td><td><code>0px</code></td></tr>
+        <tr><td>Hover</td><td><code>background rgba(184,134,11,0.08) + border-color --accent</code></td><td><code>color --text1 + border-color --brand-700</code></td><td><code>color --text1</code></td></tr>
+      </table>
+    </section>
+    <div class="divider-section"></div>
+
+    <!-- CARDS -->
+    <section class="cl-section" id="cards">
+      <div class="cl-section-title">CARDS</div>
+      <div class="cl-section-desc">直角线框，无阴影。层次通过描边深浅和背景色差表达。</div>
+      <div class="cl-canvas">
+        <div style="flex:1;min-width:200px;">
+          <span class="state-label">INFO CARD</span>
+          <div class="card-info">
+            <div style="font-family:var(--font-body);font-size:13px;color:var(--text1);">基础信息卡片内容，使用正文字体，行高 2.0。</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <span class="state-label">SECTION CARD</span>
+          <div class="card-section">
+            <div class="card-title-label">── ✦ 章节标题 ──</div>
+            <div style="font-family:var(--font-body);font-size:13px;color:var(--text1);">章节卡使用深色描边和金色标题。</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <span class="state-label">QUOTE CARD</span>
+          <div class="card-quote">
+            "认识你自己，不是为了评判，而是为了理解。"
+            <div style="font-style:normal;font-family:var(--font-heading);font-size:10px;color:var(--text3);margin-top:8px;letter-spacing:0.2em;">── 特尔斐神谕</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <span class="state-label">GOD RESULT CARD</span>
+          <div class="card-god">
+            <div class="card-badge-el">YOUR ARCHETYPE</div>
+            <div style="font-size:3rem;filter:sepia(0.2);margin-bottom:8px;">🦉</div>
+            <div style="font-family:var(--font-display);font-size:24px;font-weight:700;color:var(--accent);letter-spacing:0.15em;">雅典娜</div>
+            <div style="font-family:var(--font-heading);font-size:10px;letter-spacing:0.5em;color:var(--text3);text-transform:uppercase;margin:4px 0;">ATHENA</div>
+            <div style="font-family:var(--font-body);font-size:12px;color:var(--text2);">智慧与战略女神</div>
+          </div>
+        </div>
+      </div>
+      <table class="spec-table">
+        <tr><th>类型</th><th>Background</th><th>Border</th><th>Padding</th><th>Radius</th></tr>
+        <tr><td>Info Card</td><td><code>--surface1 #EDE6D6</code></td><td><code>1px solid #C4A882</code></td><td><code>20px 24px</code></td><td><code>0px</code></td></tr>
+        <tr><td>Section Card</td><td><code>--surface1</code></td><td><code>1px solid #8B6E4E</code></td><td><code>20px 24px</code></td><td><code>0px</code></td></tr>
+        <tr><td>Quote Card</td><td><code>transparent</code></td><td><code>border-left 3px solid #7A5C1E</code></td><td><code>12px 0 12px 20px</code></td><td><code>—</code></td></tr>
+        <tr><td>God Result Card</td><td><code>--background #F5F0E8</code></td><td><code>1px solid #8B6E4E</code></td><td><code>32px 24px</code></td><td><code>0px</code></td></tr>
+      </table>
+    </section>
+    <div class="divider-section"></div>
+
+    <!-- INPUTS -->
+    <section class="cl-section" id="inputs">
+      <div class="cl-section-title">INPUTS</div>
+      <div class="cl-section-desc">下划线风格，无容器背景。焦点时下边线变金色。</div>
+      <div class="cl-canvas">
+        <div style="flex:1;min-width:200px;">
+          <span class="state-label">DEFAULT</span>
+          <label class="input-label-el">YOUR NAME</label>
+          <input class="input-field" placeholder="输入你的名字" type="text">
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <span class="state-label">FOCUSED</span>
+          <label class="input-label-el">YOUR NAME</label>
+          <input class="input-field is-focused" value="张明远" type="text">
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <span class="state-label">ERROR</span>
+          <label class="input-label-el">YOUR NAME</label>
+          <input class="input-field is-error" value="" placeholder="不能为空" type="text">
+          <div class="input-error-msg">此字段不能留空</div>
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <span class="state-label">DISABLED</span>
+          <label class="input-label-el" style="opacity:0.4;">YOUR NAME</label>
+          <input class="input-field" disabled placeholder="已禁用" type="text" style="opacity:0.4;">
+        </div>
+      </div>
+      <table class="spec-table">
+        <tr><th>属性</th><th>值</th></tr>
+        <tr><td>Background</td><td><code>transparent</code></td></tr>
+        <tr><td>Border</td><td><code>none; border-bottom: 1px solid #8B6E4E</code></td></tr>
+        <tr><td>Focused border</td><td><code>border-bottom-color: #B8860B</code></td></tr>
+        <tr><td>Error border</td><td><code>border-bottom-color: #8B3A3A</code></td></tr>
+        <tr><td>Padding</td><td><code>10px 0</code></td></tr>
+        <tr><td>Font</td><td><code>Noto Serif SC 14px</code></td></tr>
+        <tr><td>Radius</td><td><code>0px</code></td></tr>
+        <tr><td>Label font</td><td><code>Cinzel 10px letter-spacing 0.2em --text3</code></td></tr>
+      </table>
+    </section>
+    <div class="divider-section"></div>
+
+    <!-- OPTIONS -->
+    <section class="cl-section" id="options">
+      <div class="cl-section-title">OPTION BUTTONS</div>
+      <div class="cl-section-desc">测试题选项按钮。左侧序号 ::before，全宽，直角线框。</div>
+      <div class="cl-canvas" style="flex-direction:column;">
+        <div style="width:100%;">
+          <span class="state-label">DEFAULT / HOVER / SELECTED / DISABLED</span>
+          <button class="option-btn" data-index="A">退出，等待局势自然冷却，再观察后续发展</button>
+          <button class="option-btn is-hover" data-index="B">寻找冲突的根本原因，提出系统性的解决方案</button>
+          <button class="option-btn is-selected" data-index="C">立刻介入，凭借个人魅力化解紧张气氛（已选中）</button>
+          <button class="option-btn is-disabled" data-index="D">此选项已禁用</button>
+        </div>
+      </div>
+      <table class="spec-table">
+        <tr><th>状态</th><th>Border</th><th>Background</th><th>Text Color</th></tr>
+        <tr><td>Default</td><td><code>1px solid #C4A882</code></td><td><code>transparent</code></td><td><code>--text1</code></td></tr>
+        <tr><td>Hover</td><td><code>1px solid #7A5C1E</code></td><td><code>rgba(184,134,11,0.05)</code></td><td><code>--accent</code></td></tr>
+        <tr><td>Selected</td><td><code>1px solid #B8860B</code></td><td><code>rgba(184,134,11,0.08)</code></td><td><code>--accent</code></td></tr>
+        <tr><td>Disabled</td><td><code>opacity: 0.4</code></td><td>—</td><td>—</td></tr>
+      </table>
+    </section>
+    <div class="divider-section"></div>
+
+    <!-- PROGRESS -->
+    <section class="cl-section" id="progress">
+      <div class="cl-section-title">PROGRESS</div>
+      <div class="cl-section-desc">极细 1px 线，终点圆点。克制但有仪式感。</div>
+      <div class="cl-canvas" style="flex-direction:column;gap:24px;">
+        <div style="width:100%;">
+          <div class="progress-label-row"><span>QUESTION</span><span>3 / 10</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:30%;"><div class="progress-dot"></div></div></div>
+        </div>
+        <div style="width:100%;">
+          <div class="progress-label-row"><span>CHAPTER II</span><span>7 / 10</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:70%;"><div class="progress-dot"></div></div></div>
+        </div>
+        <div style="width:100%;">
+          <div class="progress-label-row"><span>COMPLETED</span><span>10 / 10</span></div>
+          <div class="progress-track"><div class="progress-fill" style="width:100%;"><div class="progress-dot"></div></div></div>
+        </div>
+      </div>
+      <table class="spec-table">
+        <tr><th>属性</th><th>值</th></tr>
+        <tr><td>Track height</td><td><code>1px</code></td></tr>
+        <tr><td>Track color</td><td><code>--border #C4A882</code></td></tr>
+        <tr><td>Fill color</td><td><code>--accent #B8860B</code></td></tr>
+        <tr><td>Dot size</td><td><code>6px × 6px, border-radius 50%</code></td></tr>
+        <tr><td>Radius</td><td><code>0px</code></td></tr>
+        <tr><td>Label font</td><td><code>Cinzel 10px letter-spacing 0.15em</code></td></tr>
+      </table>
+    </section>
+    <div class="divider-section"></div>
+
+    <!-- STATS -->
+    <section class="cl-section" id="stats">
+      <div class="cl-section-title">STAT ROWS</div>
+      <div class="cl-section-desc">6维人格数据条。极细线，终点圆点，标签右对齐。</div>
+      <div class="cl-canvas">
+        <div style="width:100%;max-width:400px;">
+          <div class="stat-row"><div class="stat-label">理性</div><div class="stat-track"><div class="stat-bar" style="width:88%"></div></div><div class="stat-val">88%</div></div>
+          <div class="stat-row"><div class="stat-label">直觉</div><div class="stat-track"><div class="stat-bar" style="width:72%"></div></div><div class="stat-val">72%</div></div>
+          <div class="stat-row"><div class="stat-label">共情</div><div class="stat-track"><div class="stat-bar" style="width:55%"></div></div><div class="stat-val">55%</div></div>
+          <div class="stat-row"><div class="stat-label">意志</div><div class="stat-track"><div class="stat-bar" style="width:94%"></div></div><div class="stat-val">94%</div></div>
+          <div class="stat-row" style="margin-bottom:0"><div class="stat-label">神秘</div><div class="stat-track"><div class="stat-bar" style="width:63%"></div></div><div class="stat-val">63%</div></div>
+        </div>
+      </div>
+      <table class="spec-table">
+        <tr><th>属性</th><th>值</th></tr>
+        <tr><td>Grid</td><td><code>64px 1fr 36px, gap 12px</code></td></tr>
+        <tr><td>Track height</td><td><code>1px, color --border</code></td></tr>
+        <tr><td>Bar color</td><td><code>--brand-700 #7A5C1E</code></td></tr>
+        <tr><td>Dot color</td><td><code>--accent #B8860B, 5px</code></td></tr>
+        <tr><td>Label font</td><td><code>Cinzel 10px, --text2, text-align right</code></td></tr>
+        <tr><td>Value font</td><td><code>Cinzel 10px, --accent</code></td></tr>
+      </table>
+    </section>
+    <div class="divider-section"></div>
+
+    <!-- TAGS -->
+    <section class="cl-section" id="tags">
+      <div class="cl-section-title">TAGS</div>
+      <div class="cl-section-desc">直角方形标签，金色线框。filled 变体用深金背景。</div>
+      <div class="cl-canvas" style="flex-wrap:wrap;gap:12px;align-items:center;">
+        <div><span class="state-label">DEFAULT</span><br><span class="tag">洞察力</span></div>
+        <div><span class="state-label">FILLED</span><br><span class="tag tag-filled">战争女神</span></div>
+        <div><span class="state-label">SELECTED</span><br><span class="tag tag-selected">智慧</span></div>
+        <div><span class="state-label">SUCCESS</span><br><span class="tag tag-success">✓ 已完成</span></div>
+        <div><span class="state-label">ERROR</span><br><span class="tag tag-error">✗ 未解锁</span></div>
+      </div>
+      <table class="spec-table">
+        <tr><th>属性</th><th>值</th></tr>
+        <tr><td>Height</td><td><code>24px</code></td></tr>
+        <tr><td>Padding</td><td><code>4px 12px</code></td></tr>
+        <tr><td>Radius</td><td><code>0px</code></td></tr>
+        <tr><td>Font</td><td><code>Cinzel 10px letter-spacing 0.15em</code></td></tr>
+        <tr><td>Default border</td><td><code>1px solid #7A5C1E</code></td></tr>
+        <tr><td>Default color</td><td><code>--accent #B8860B</code></td></tr>
+      </table>
+    </section>
+    <div class="divider-section"></div>
+
+    <!-- DIVIDERS -->
+    <section class="cl-section" id="dividers">
+      <div class="cl-section-title">DIVIDERS</div>
+      <div class="cl-section-desc">装饰性分割线，用渐变线 + Unicode 中心符号组合。</div>
+      <div class="cl-canvas" style="flex-direction:column;gap:16px;">
+        <div style="width:100%;"><span class="state-label">STAR</span><div class="divider-el">✦</div></div>
+        <div style="width:100%;"><span class="state-label">BRACKETS</span><div class="divider-el">⊱ ── ⊰</div></div>
+        <div style="width:100%;"><span class="state-label">DIAMOND</span><div class="divider-el">◆</div></div>
+        <div style="width:100%;"><span class="state-label">MOON</span><div class="divider-el">☽</div></div>
+      </div>
+      <table class="spec-table">
+        <tr><th>属性</th><th>值</th></tr>
+        <tr><td>Line height</td><td><code>1px</code></td></tr>
+        <tr><td>Line gradient</td><td><code>linear-gradient(90deg, transparent, #8B6E4E, transparent)</code></td></tr>
+        <tr><td>Symbol color</td><td><code>--border-visible #8B6E4E</code></td></tr>
+        <tr><td>Symbol font-size</td><td><code>0.7rem</code></td></tr>
+        <tr><td>Letter-spacing</td><td><code>0.3em</code></td></tr>
+        <tr><td>Margin</td><td><code>20px 0</code></td></tr>
+      </table>
+    </section>
+    <div class="divider-section"></div>
+
+    <!-- TOGGLES -->
+    <section class="cl-section" id="toggles">
+      <div class="cl-section-title">TOGGLES</div>
+      <div class="cl-section-desc">矩形 track，无圆角。与整体直角美学一致。</div>
+      <div class="cl-canvas" style="gap:32px;align-items:center;">
+        <div><span class="state-label">OFF</span><div class="toggle-track"><div class="toggle-thumb"></div></div></div>
+        <div><span class="state-label">ON</span><div class="toggle-track on"><div class="toggle-thumb"></div></div></div>
+        <div><span class="state-label">OFF DISABLED</span><div class="toggle-track" style="opacity:0.4;"><div class="toggle-thumb"></div></div></div>
+      </div>
+      <table class="spec-table">
+        <tr><th>属性</th><th>Off</th><th>On</th></tr>
+        <tr><td>Track size</td><td colspan="2"><code>44px × 24px, border: 1px</code></td></tr>
+        <tr><td>Track bg</td><td><code>transparent</code></td><td><code>rgba(184,134,11,0.1)</code></td></tr>
+        <tr><td>Track border</td><td><code>--border-visible</code></td><td><code>--accent</code></td></tr>
+        <tr><td>Thumb size</td><td colspan="2"><code>16px × 16px, radius: 0px</code></td></tr>
+        <tr><td>Thumb color</td><td><code>--text4</code></td><td><code>--accent</code></td></tr>
+        <tr><td>Radius</td><td colspan="2"><code>0px（直角，符合古典线框风）</code></td></tr>
+      </table>
+    </section>
+    <div class="divider-section"></div>
+
+    <!-- AVATAR -->
+    <section class="cl-section" id="avatar">
+      <div class="cl-section-title">AVATAR GRID</div>
+      <div class="cl-section-desc">12格 Emoji 头像选择器。选中时金色描边 + 微底色 + 去 sepia 滤镜。</div>
+      <div class="cl-canvas">
+        <div class="avatar-grid-el">
+          <div class="avatar-item-el">🌟</div>
+          <div class="avatar-item-el">⚡</div>
+          <div class="avatar-item-el active">🌙</div>
+          <div class="avatar-item-el">🔱</div>
+          <div class="avatar-item-el">🌹</div>
+          <div class="avatar-item-el">🦉</div>
+          <div class="avatar-item-el">🍃</div>
+          <div class="avatar-item-el">🔥</div>
+        </div>
+      </div>
+      <table class="spec-table">
+        <tr><th>状态</th><th>Border</th><th>Background</th><th>Filter</th></tr>
+        <tr><td>Default</td><td><code>1px solid --border</code></td><td><code>transparent</code></td><td><code>sepia(0.15)</code></td></tr>
+        <tr><td>Hover</td><td><code>1px solid --border-visible</code></td><td><code>transparent</code></td><td><code>sepia(0.15)</code></td></tr>
+        <tr><td>Active</td><td><code>1px solid --accent</code></td><td><code>--accent-subtle</code></td><td><code>none</code></td></tr>
+      </table>
+    </section>
+    <div class="divider-section"></div>
+
+    <!-- OVERLAYS -->
+    <section class="cl-section" id="overlays">
+      <div class="cl-section-title">OVERLAYS</div>
+      <div class="cl-section-desc">模态框直角线框，无阴影。backdrop 使用深棕半透明。</div>
+      <div class="cl-canvas">
+        <div class="backdrop">
+          <div class="modal-box">
+            <div class="modal-close">✦</div>
+            <div style="font-family:var(--font-heading);font-size:14px;letter-spacing:0.2em;color:var(--text1);margin-bottom:16px;">── 命运启示 ──</div>
+            <div class="divider-el" style="margin:8px 0 16px;">◆</div>
+            <div style="font-family:var(--font-body);font-size:13px;color:var(--text2);line-height:1.9;">你的测试结果已生成，是否立刻查看你的神话人格？</div>
+            <div style="margin-top:20px;display:flex;gap:12px;">
+              <button class="btn-primary" style="padding:10px 24px;font-size:12px;">立刻揭示</button>
+              <button class="btn-secondary">稍后再说</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <span class="state-label">TOOLTIP</span>
+          <div class="tooltip-box">智慧女神 · 掌管战争与工艺</div>
+        </div>
+      </div>
+      <table class="spec-table">
+        <tr><th>属性</th><th>Modal</th><th>Backdrop</th></tr>
+        <tr><td>Background</td><td><code>--surface1</code></td><td><code>rgba(44,31,14,0.5)</code></td></tr>
+        <tr><td>Border</td><td><code>1px solid --border-visible</code></td><td>—</td></tr>
+        <tr><td>Radius</td><td><code>2px</code></td><td>—</td></tr>
+        <tr><td>Shadow</td><td><code>none</code></td><td>—</td></tr>
+        <tr><td>Padding</td><td><code>32px 24px</code></td><td>—</td></tr>
+        <tr><td>Close button</td><td><code>✦ symbol, --text3, top-right</code></td><td>—</td></tr>
+      </table>
+    </section>
+    <div class="divider-section"></div>
+
+    <!-- STATES -->
+    <section class="cl-section" id="states">
+      <div class="cl-section-title">STATE PATTERNS</div>
+      <div class="cl-section-desc">空状态、加载、错误。古典克制语调，不用感叹号。</div>
+      <div class="cl-canvas" style="gap:24px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:200px;">
+          <span class="state-label">EMPTY STATE</span>
+          <div class="empty-state">
+            <span class="empty-icon">☽</span>
+            <div class="empty-title">尚无神祇记录</div>
+            <div class="empty-desc">完成测试后，你的神话人格将在此显示</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <span class="state-label">LOADING</span>
+          <div style="text-align:center;padding:32px;">
+            <div style="font-size:2.5rem;filter:sepia(0.3);animation:moonPulse 3s ease-in-out infinite;display:inline-block;">🌕</div>
+            <div style="font-family:var(--font-heading);font-size:10px;letter-spacing:0.3em;color:var(--text3);margin-top:16px;">CALCULATING</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <span class="state-label">ERROR</span>
+          <div style="border-left:3px solid #8B3A3A;padding:12px 0 12px 16px;">
+            <div style="font-family:var(--font-heading);font-size:12px;color:#8B3A3A;letter-spacing:0.1em;margin-bottom:4px;">发生了错误</div>
+            <div style="font-family:var(--font-body);font-size:12px;color:var(--text2);">无法加载测试内容，请刷新页面重试</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="divider-section"></div>
+
+    <!-- TYPOGRAPHY -->
+    <section class="cl-section" id="typography">
+      <div class="cl-section-title">TYPOGRAPHY</div>
+      <div class="cl-section-desc">三字体角色：Cinzel Decorative（展示）· Cinzel（标题/UI）· Noto Serif SC（中文正文）</div>
+      <div class="cl-canvas" style="flex-direction:column;gap:20px;">
+        <div>
+          <span class="state-label">DISPLAY · Cinzel Decorative 700 · 48px</span>
+          <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--accent);letter-spacing:0.15em;line-height:1.2;">雅典娜 ATHENA</div>
+        </div>
+        <div>
+          <span class="state-label">HEADING · Cinzel 600 · 20px · ls 0.2em</span>
+          <div style="font-family:var(--font-heading);font-size:20px;font-weight:600;color:var(--text1);letter-spacing:0.2em;">你的神话人格 · Your Archetype</div>
+        </div>
+        <div>
+          <span class="state-label">SUBHEADING · Cinzel 400 · 14px · ls 0.2em</span>
+          <div style="font-family:var(--font-heading);font-size:14px;color:var(--accent);letter-spacing:0.2em;">── ✦ 六维人格分析 ──</div>
+        </div>
+        <div>
+          <span class="state-label">BODY · Noto Serif SC 400 · 14px · lh 2.0</span>
+          <div style="font-family:var(--font-body);font-size:14px;color:var(--text1);line-height:2;">你以理性与远见主导一切——不靠冲动，而靠精准。你是会议室里最安静的声音，也是最终被所有人听进去的那个。每一个决策背后都有缜密的逻辑，而非情绪的驱动。</div>
+        </div>
+        <div>
+          <span class="state-label">CAPTION · Cinzel 400 · 10px · ls 0.2em</span>
+          <div style="font-family:var(--font-heading);font-size:10px;color:var(--text3);letter-spacing:0.2em;">ARCHETYPE · WISDOM · INTELLIGENCE · STRATEGY</div>
+        </div>
+      </div>
+    </section>
+    <div class="divider-section"></div>
+
+    <!-- SYMBOLS -->
+    <section class="cl-section" id="symbols">
+      <div class="cl-section-title">SYMBOL SYSTEM</div>
+      <div class="cl-section-desc">Unicode 符号体系替代图标库。分类速查表。</div>
+      <div class="cl-canvas" style="flex-direction:column;gap:16px;">
+        <table class="spec-table" style="margin-bottom:0;">
+          <tr><th>类型</th><th>符号</th><th>用途</th></tr>
+          <tr><td>星形装饰</td><td style="font-size:1.2em;letter-spacing:0.3em;">✦ ✧ ✶ ✷ ✸</td><td>分割点、角花、按钮装饰</td></tr>
+          <tr><td>月相</td><td style="font-size:1.2em;letter-spacing:0.2em;">☽ ☾ ● ◑ ◐</td><td>月亮装饰、页眉、进度</td></tr>
+          <tr><td>菱形</td><td style="font-size:1.2em;letter-spacing:0.3em;">◆ ◇ ▲ △</td><td>列表前缀、强调标记</td></tr>
+          <tr><td>括弧</td><td style="font-size:1.2em;letter-spacing:0.3em;">⊱ ⊰</td><td>分割线两端、章节标记</td></tr>
+          <tr><td>古典标记</td><td style="font-size:1.2em;letter-spacing:0.3em;">⊕ ⊗ ⊙ ✠ ❖</td><td>章节标记、神祇属性</td></tr>
+          <tr><td>月相序列</td><td style="font-size:1.2em;letter-spacing:0.1em;">🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘</td><td>月相测试、加载指示</td></tr>
+        </table>
+        <div style="padding:16px;background:var(--surface2);border:1px solid var(--border);">
+          <div style="font-family:var(--font-heading);font-size:10px;letter-spacing:0.2em;color:var(--accent);margin-bottom:12px;">ORNAMENT BOX 角花线框示例</div>
+          <div class="ornament-box-el">
+            <div style="font-family:var(--font-body);font-size:13px;color:var(--text2);line-height:1.9;">双重边框营造古籍装帧感，外层边框透明度 0.4，与主边框形成层次。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div style="text-align:center;font-family:var(--font-heading);font-size:9px;color:var(--text3);letter-spacing:0.3em;padding:32px 0 48px;">── ◆ · GREEK MYTH DESIGN SYSTEM · v1.0 · 2026 · ◆ ──</div>
+  </main>
+</div>
+
+<style>
+@keyframes moonPulse{0%,100%{transform:rotate(-15deg) scale(1);}50%{transform:rotate(15deg) scale(1.1);}}
+</style>
+<script>
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  document.querySelectorAll('.mode-bar button').forEach((b,i)=>{
+    b.classList.toggle('active',(t==='light'&&i===0)||(t==='dark'&&i===1));
+  });
+}
+// TOC active state
+const sections=document.querySelectorAll('.cl-section');
+const links=document.querySelectorAll('.cl-toc a');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      links.forEach(l=>l.classList.remove('active'));
+      const a=document.querySelector('.cl-toc a[href="#'+e.target.id+'"]');
+      if(a)a.classList.add('active');
+    }
+  });
+},{threshold:0.3});
+sections.forEach(s=>obs.observe(s));
+</script>
+</body>
+</html>
