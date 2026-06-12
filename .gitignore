@@ -3,3 +3,11 @@ node_modules/
 .claude/
 .agents/
 *.bak
+ui-design/
+设计参考图/
+hero-reference*.png
+hero-reference*.html
+section*.png
+section*.html
+section*.html.bak
+design-system.html
