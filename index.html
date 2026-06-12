@@ -44,7 +44,6 @@
 html{font-size:15px;scroll-behavior:smooth}
 body{
   background:var(--charcoal2);
-  background-image:url('./assets/quiz-bg.jpg');
   background-size:cover;
   background-attachment:fixed;
   color:var(--deep-brown);
@@ -261,7 +260,6 @@ body{
   display:flex;flex-direction:column;
   position:relative;overflow:hidden;
   background-color:var(--parchment);
-  background-image:url('./assets/parchment-texture.jpg');
   background-size:cover;
   background-blend-mode:multiply;
 }
@@ -274,13 +272,11 @@ body{
 }
 .setup-pillar-l{
   left:0;background-position:right center;
-  background-image:url('./assets/pillar-left.jpg');
   mask-image:linear-gradient(to right,rgba(0,0,0,.7) 0%,rgba(0,0,0,.4) 60%,transparent 100%);
   -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,.7) 0%,rgba(0,0,0,.4) 60%,transparent 100%);
 }
 .setup-pillar-r{
   right:0;background-position:left center;
-  background-image:url('./assets/pillar-right.jpg');
   mask-image:linear-gradient(to left,rgba(0,0,0,.7) 0%,rgba(0,0,0,.4) 60%,transparent 100%);
   -webkit-mask-image:linear-gradient(to left,rgba(0,0,0,.7) 0%,rgba(0,0,0,.4) 60%,transparent 100%);
 }
@@ -394,8 +390,6 @@ body{
   min-height:100dvh;
   display:flex;flex-direction:column;
   background-color:var(--charcoal);
-  /* AI 生成的深色背景：石像 + 罗盘 */
-  background-image:url('./assets/quiz-bg.jpg');
   background-size:cover;background-position:center;
   position:relative;
 }
@@ -588,7 +582,6 @@ body{
   width:100%;max-width:480px;margin:0 auto;
   min-height:100dvh;
   background-color:var(--parchment);
-  background-image:url('./assets/parchment-texture.jpg');
   background-size:cover;
   background-blend-mode:multiply;
   padding-bottom:0;
@@ -844,7 +837,6 @@ body{
   width:100%;max-width:480px;margin:0 auto;
   min-height:100dvh;
   background-color:var(--parchment);
-  background-image:url('./assets/parchment-texture.jpg');
   background-size:cover;
   background-blend-mode:multiply;
   padding:0 5.3vw 16vw;
@@ -1250,7 +1242,7 @@ body{
         <button class="btn-again" onclick="location.reload()">再测一次</button>
       </div>
       <!-- 底部卷草纹装饰带 -->
-      <img class="result-ornament-band" src="./assets/ornament-band.jpg" alt="">
+      <img class="result-ornament-band" src="" data-src="./assets/ornament-band.jpg" alt="" loading="lazy">
     </div>
   </div>
 </div>
@@ -1446,11 +1438,37 @@ var scores={},qIdx=0,isFriend=false,hostGodId=null,myGodId=null;
 // ============================================================
 // SCREENS
 // ============================================================
+// 背景图按需加载映射
+var BG_IMGS={
+  intro:   [{el:'intro-wrap',     img:'./assets/parchment-texture.jpg'}],
+  setup:   [{el:'setup-wrap',     img:'./assets/parchment-texture.jpg'},
+            {el:'setup-pillar-l', img:'./assets/pillar-left.jpg'},
+            {el:'setup-pillar-r', img:'./assets/pillar-right.jpg'}],
+  quiz:    [{el:'quiz-wrap',      img:'./assets/quiz-bg.jpg'}],
+  result:  [{el:'result-wrap',    img:'./assets/parchment-texture.jpg'}],
+  friend:  [{el:'friend-wrap',    img:'./assets/parchment-texture.jpg'}]
+};
+var _bgLoaded={};
+function applyBg(name){
+  if(_bgLoaded[name])return;
+  _bgLoaded[name]=true;
+  var defs=BG_IMGS[name];
+  if(!defs)return;
+  defs.forEach(function(d){
+    var el=document.querySelector('.'+d.el);
+    if(!el)return;
+    var img=new Image();
+    img.onload=function(){el.style.backgroundImage="url('"+d.img+"')";};
+    img.src=d.img;
+  });
+}
+
 var SCREEN_IDS={intro:'si',setup:'ss',quiz:'sq',loading:'sl',result:'sr',friend:'sfr'};
 function show(name){
   Object.values(SCREEN_IDS).forEach(function(id){document.getElementById(id).classList.remove('on')});
   var el=document.getElementById(SCREEN_IDS[name]);
   el.classList.add('on');el.scrollTop=0;
+  applyBg(name);
 }
 
 // ============================================================
@@ -1479,6 +1497,8 @@ function show(name){
   // URL 参数
   var p=new URLSearchParams(location.search);
   var from=p.get('from');
+  // 首屏背景图立即加载
+  applyBg(from&&GODS[from]?'friend':'intro');
   if(from&&GODS[from]){
     hostGodId=from;isFriend=true;
     document.getElementById('frd-icon').textContent=GODS[from].icon;
@@ -1768,6 +1788,9 @@ function showResult(gid){
   });
 
   show('result');
+  // 懒加载底部装饰图
+  var band=document.querySelector('.result-ornament-band');
+  if(band&&band.dataset.src){band.src=band.dataset.src;band.removeAttribute('data-src');}
   setTimeout(function(){
     document.querySelectorAll('.stat-bar').forEach(function(b,i){
       b.style.transitionDelay=(i*90)+'ms';
