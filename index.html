@@ -588,17 +588,10 @@ body{
 
 .result-wrap{
   width:100%;max-width:480px;margin:0 auto;
-  min-height:100dvh;
   background-color:var(--parchment);
   background-size:cover;
   background-blend-mode:multiply;
   padding-bottom:0;
-}
-.result-wrap::after{
-  content:'';display:block;
-  width:100%;height:60px;
-  background:linear-gradient(to bottom,transparent,var(--charcoal2));
-  margin-top:-2px;
 }
 
 /* 底部卷草纹装饰带 */
@@ -606,8 +599,17 @@ body{
   width:100%;height:auto;
   display:block;
   opacity:.65;
-  margin-top:6.4vw;
+  margin-top:0;
   filter:sepia(.2);
+}
+/* 卷草纹之后的深色收尾渐变 — 紧跟在装饰带之后才不会产生断点 */
+.result-ornament-band + .result-page-end{
+  display:block;height:60px;
+  background:linear-gradient(to bottom,transparent,var(--charcoal2));
+}
+.result-page-end{
+  display:block;height:60px;
+  background:linear-gradient(to bottom,transparent,var(--charcoal2));
 }
 
 /* 神祇大图区 */
@@ -686,17 +688,17 @@ body{
 }
 .result-en{
   font-family:var(--font-h);font-size:.58rem;
-  letter-spacing:.5em;color:rgba(240,232,213,.7);
+  letter-spacing:.5em;color:rgba(240,232,213,.75);
   text-transform:uppercase;margin-bottom:1.6vw;
 }
 .result-role{
   font-size:.82rem;
-  color:rgba(240,232,213,.85);
+  color:rgba(240,232,213,.9);
   letter-spacing:.05em;
 }
 
 /* 内容区 */
-.result-body{padding:5.3vw 5.3vw 16vw;position:relative;z-index:1}
+.result-body{padding:5.3vw 5.3vw 6vw;position:relative;z-index:1}
 
 /* 特质标签 */
 .result-tags{
@@ -718,7 +720,7 @@ body{
 }
 .result-desc{
   font-size:.88rem;line-height:2;
-  color:var(--mid-brown);margin-bottom:5.3vw;
+  color:var(--deep-brown);margin-bottom:5.3vw;
 }
 .result-quote{
   border-left:2px solid var(--gold-dk);
@@ -739,7 +741,7 @@ body{
 .stat-icon{font-size:.75rem;opacity:.7;filter:sepia(.4)}
 .stat-label-text{
   font-family:var(--font-h);font-size:.6rem;
-  letter-spacing:.1em;color:var(--mid-brown);
+  letter-spacing:.1em;color:var(--deep-brown);
 }
 /* 数据条 track */
 .stat-track-wrap{
@@ -771,6 +773,7 @@ body{
 .result-actions{
   display:flex;flex-direction:column;
   gap:3.2vw;align-items:center;
+  padding:4vw 0 8vw;
 }
 .btn-share{
   width:100%;background:transparent;
@@ -784,8 +787,8 @@ body{
 .btn-share:active{background:rgba(184,134,11,.1)}
 .btn-again{
   background:transparent;border:none;
-  border-bottom:1px solid var(--border);
-  color:var(--muted);padding:2vw 0;
+  border-bottom:1px solid var(--border-dk);
+  color:var(--mid-brown);padding:2vw 0;
   font-family:var(--font-h);font-size:.72rem;
   letter-spacing:.2em;cursor:pointer;
   transition:color .2s,border-color .2s;
@@ -856,7 +859,7 @@ body{
 }
 .bond-desc{
   font-family:var(--font-b);font-size:.72rem;
-  color:var(--mid-brown);line-height:1.5;
+  color:var(--deep-brown);line-height:1.5;
   margin-top:.8vw;
 }
 
@@ -1337,6 +1340,7 @@ body{
       </div>
       <!-- 底部卷草纹装饰带 -->
       <img class="result-ornament-band" src="" data-src="./assets/ornament-band.webp" alt="" loading="lazy">
+      <span class="result-page-end"></span>
     </div>
   </div>
 </div>
