@@ -616,14 +616,15 @@ body{
 /* 底部渐变过渡到羊皮纸 */
 .result-hero::after{
   content:'';position:absolute;
-  bottom:0;left:0;right:0;height:75%;
+  bottom:0;left:0;right:0;height:90%;
   background:linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(240,232,213,.3) 30%,
-    rgba(240,232,213,.75) 60%,
-    rgba(240,232,213,.95) 80%,
-    #F0E8D5 100%
+    rgba(240,232,213,.12) 18%,
+    rgba(240,232,213,.48) 38%,
+    rgba(240,232,213,.82) 55%,
+    rgba(240,232,213,.97) 68%,
+    rgba(240,232,213,1) 78%
   );pointer-events:none;
 }
 /* 名字叠在图片上 */
@@ -678,13 +679,13 @@ body{
 }
 
 /* 内容区 */
-.result-body{padding:0 5.3vw 16vw}
+.result-body{padding:5.3vw 5.3vw 16vw;position:relative;z-index:1}
 
 /* 特质标签 */
 .result-tags{
   display:flex;flex-wrap:wrap;gap:2vw;
   justify-content:center;
-  margin:5.3vw 0 6.4vw;
+  margin:0 0 6.4vw;
 }
 .tag{
   border:1px solid var(--gold-dk);
@@ -778,22 +779,11 @@ body{
    命运羁绊 DESTINY BONDS
    ============================================================ */
 .bonds-section{margin-bottom:6.4vw}
-.bonds-subtitle{
-  font-family:var(--font-h);font-size:.52rem;
-  letter-spacing:.35em;color:var(--gold-dk);
-  text-transform:uppercase;
-  text-align:center;margin-bottom:3.2vw;
-  display:flex;align-items:center;gap:6px;
-}
-.bonds-subtitle::before,.bonds-subtitle::after{
-  content:'';flex:1;height:1px;
-  background:linear-gradient(90deg,transparent,var(--border-dk),transparent);
-}
 .bond-card{
   display:flex;align-items:center;
   gap:3.2vw;padding:3vw 3.7vw;
-  border:1px solid rgba(184,134,11,.25);
-  background:rgba(240,232,213,.5);
+  border:1px solid rgba(184,134,11,.22);
+  background:rgba(240,232,213,.45);
   margin-bottom:2.4vw;
   position:relative;
 }
@@ -805,8 +795,15 @@ body{
   border-top:1px solid var(--gold-dk);border-left:1px solid var(--gold-dk)}
 .bond-card::after{bottom:5px;right:5px;
   border-bottom:1px solid var(--gold-dk);border-right:1px solid var(--gold-dk)}
-.bond-card.kindred{border-color:rgba(212,168,67,.45);background:rgba(240,232,213,.65)}
-.bond-card.tension{border-color:rgba(139,96,64,.3);background:rgba(240,232,213,.35)}
+
+/* 6种关系类型边框色调 */
+.bond-card.b-mirror {border-color:rgba(212,168,67,.55);background:rgba(240,232,213,.7)}
+.bond-card.b-dark   {border-color:rgba(90,60,90,.35);background:rgba(232,220,230,.45)}
+.bond-card.b-dream  {border-color:rgba(180,100,100,.35);background:rgba(238,224,218,.5)}
+.bond-card.b-key    {border-color:rgba(120,130,70,.35);background:rgba(228,232,210,.45)}
+.bond-card.b-wind   {border-color:rgba(160,140,110,.28);background:rgba(235,230,218,.38)}
+.bond-card.b-rival  {border-color:rgba(60,40,20,.4);background:rgba(220,210,195,.35)}
+
 .bond-avatar{
   width:11vw;height:11vw;
   max-width:44px;max-height:44px;
@@ -819,13 +816,31 @@ body{
 }
 .bond-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center}
 .bond-info{flex:1;min-width:0}
+.bond-type-row{
+  display:flex;align-items:baseline;gap:2vw;
+  margin-bottom:1vw;
+}
+.bond-type-tag{
+  font-family:var(--font-h);font-size:.5rem;
+  letter-spacing:.18em;
+  padding:.3vw 1.8vw;
+  border:1px solid currentColor;
+  white-space:nowrap;flex-shrink:0;
+}
+.bond-type-tag.t-mirror{color:var(--gold)}
+.bond-type-tag.t-dark  {color:#7A5080}
+.bond-type-tag.t-dream {color:#A05060}
+.bond-type-tag.t-key   {color:#607040}
+.bond-type-tag.t-wind  {color:var(--muted)}
+.bond-type-tag.t-rival {color:var(--deep-brown)}
 .bond-name{
-  font-family:var(--font-h);font-size:.75rem;
-  color:var(--gold);letter-spacing:.08em;margin-bottom:.8vw;
+  font-family:var(--font-d);font-size:.82rem;
+  color:var(--gold);letter-spacing:.08em;
 }
 .bond-desc{
   font-family:var(--font-b);font-size:.72rem;
   color:var(--mid-brown);line-height:1.5;
+  margin-top:.8vw;
 }
 
 /* ============================================================
@@ -1774,8 +1789,15 @@ function renderBonds(gid){
     return {id:k,sim:cosineSim(myDims,GODS[k].dims)};
   }).sort(function(a,b){return b.sim-a.sim});
 
-  var kindred=sims.slice(0,2);
-  var tension=sims.slice(-2).reverse();
+  // 6种关系类型：按余弦相似度排位取固定位置
+  var BOND_TYPES=[
+    {key:'mirror', rank:0,  label:'🔮 命途相镜', cls:'b-mirror', tcls:'t-mirror'},
+    {key:'dark',   rank:1,  label:'🌑 暗涌之缘', cls:'b-dark',   tcls:'t-dark'},
+    {key:'dream',  rank:4,  label:'💘 幻想之人', cls:'b-dream',  tcls:'t-dream'},
+    {key:'key',    rank:14, label:'🗝️ 解惑之神', cls:'b-key',    tcls:'t-key'},
+    {key:'wind',   rank:17, label:'🌊 过客如风', cls:'b-wind',   tcls:'t-wind'},
+    {key:'rival',  rank:sims.length-1, label:'⚔️ 宿命之敌', cls:'b-rival', tcls:'t-rival'}
+  ];
 
   var el=document.getElementById('r-bonds');
   if(!el)return;
@@ -1791,7 +1813,7 @@ function renderBonds(gid){
     var desc=texts[godId]||'命运将你们交织在一起';
 
     var card=document.createElement('div');
-    card.className='bond-card '+type;
+    card.className='bond-card '+type.cls;
 
     var avatarEl=document.createElement('div');
     avatarEl.className='bond-avatar';
@@ -1806,25 +1828,26 @@ function renderBonds(gid){
     }
 
     var info=document.createElement('div');info.className='bond-info';
-    var name=document.createElement('div');name.className='bond-name';name.textContent=g.name;
-    var descEl=document.createElement('div');descEl.className='bond-desc';descEl.textContent=desc;
-    info.appendChild(name);info.appendChild(descEl);
 
+    var typeRow=document.createElement('div');typeRow.className='bond-type-row';
+    var typeTag=document.createElement('span');
+    typeTag.className='bond-type-tag '+type.tcls;
+    typeTag.textContent=type.label;
+    var nameEl=document.createElement('span');
+    nameEl.className='bond-name';nameEl.textContent=g.name;
+    typeRow.appendChild(typeTag);typeRow.appendChild(nameEl);
+
+    var descEl=document.createElement('div');descEl.className='bond-desc';descEl.textContent=desc;
+
+    info.appendChild(typeRow);info.appendChild(descEl);
     card.appendChild(avatarEl);card.appendChild(info);
     return card;
   }
 
-  // 命运相契
-  var kindredLabel=document.createElement('div');
-  kindredLabel.className='bonds-subtitle';kindredLabel.textContent='命运相契';
-  el.appendChild(kindredLabel);
-  kindred.forEach(function(item){el.appendChild(makeBondCard(item.id,'kindred'))});
-
-  // 命运张力
-  var tensionLabel=document.createElement('div');
-  tensionLabel.className='bonds-subtitle';tensionLabel.textContent='命运张力';
-  el.appendChild(tensionLabel);
-  tension.forEach(function(item){el.appendChild(makeBondCard(item.id,'tension'))});
+  BOND_TYPES.forEach(function(type){
+    var item=sims[type.rank];
+    if(item) el.appendChild(makeBondCard(item.id,type));
+  });
 }
 
 // ============================================================
