@@ -291,8 +291,8 @@ body{
 }
 
 .setup-label{
-  font-family:var(--font-h);font-size:.55rem;
-  letter-spacing:.45em;color:var(--muted);
+  font-family:var(--font-h);font-size:.6rem;
+  letter-spacing:.35em;color:var(--gold-dk);
   text-transform:uppercase;text-align:center;
   margin-bottom:2vw;
 }
@@ -306,8 +306,8 @@ body{
 
 /* 输入框 */
 .field-label{
-  font-family:var(--font-h);font-size:.55rem;
-  letter-spacing:.3em;color:var(--muted);
+  font-family:var(--font-h);font-size:.6rem;
+  letter-spacing:.25em;color:var(--gold-dk);
   text-transform:uppercase;margin-bottom:2.4vw;
 }
 .input-field{
@@ -359,11 +359,11 @@ body{
 /* UID */
 .uid-row{
   text-align:center;
-  font-family:var(--font-h);font-size:.55rem;
-  letter-spacing:.2em;color:var(--muted);
+  font-family:var(--font-h);font-size:.6rem;
+  letter-spacing:.2em;color:var(--gold-dk);
   margin-bottom:5.3vw;
 }
-.uid-row span{color:var(--gold-dk);letter-spacing:.1em}
+.uid-row span{color:var(--gold);letter-spacing:.1em}
 
 /* 次要按钮 — 金边空心 */
 .btn-outline{
@@ -689,23 +689,20 @@ body{
   margin-bottom:1.6vw;
 }
 .result-en{
-  font-family:var(--font-h);font-size:.58rem;
-  letter-spacing:.5em;color:rgba(240,232,213,.75);
+  font-family:var(--font-h);font-size:.62rem;
+  letter-spacing:.45em;color:var(--gold-dk);
   text-transform:uppercase;margin-bottom:1.6vw;
 }
 .result-role{
-  font-size:.82rem;
-  color:rgba(240,232,213,.9);
+  font-size:.88rem;
+  color:var(--deep-brown);
   letter-spacing:.05em;
 }
 
-/* 内容区 — 左右8vw安全边距；独立纹理背景防透底 */
+/* 内容区 — 左右8vw安全边距；不设独立背景，继承 result-wrap 的纹理 */
 .result-body{
   padding:5.3vw 8vw 6vw;
   position:relative;z-index:1;
-  background-color:var(--parchment);
-  background-size:cover;
-  background-blend-mode:multiply;
 }
 
 /* 特质标签 */
@@ -716,14 +713,14 @@ body{
 }
 .tag{
   border:1px solid var(--gold-dk);
-  color:var(--gold);padding:.8vw 3.2vw;
-  font-family:var(--font-h);font-size:.62rem;
-  letter-spacing:.15em;background:transparent;
+  color:var(--gold-dk);padding:1vw 3.2vw;
+  font-family:var(--font-h);font-size:.68rem;
+  letter-spacing:.12em;background:rgba(184,134,11,.06);
 }
 
 .sec-label{
-  font-family:var(--font-h);font-size:.55rem;
-  letter-spacing:.35em;color:var(--gold-dk);
+  font-family:var(--font-h);font-size:.65rem;
+  letter-spacing:.3em;color:var(--gold-dk);
   text-transform:uppercase;margin-bottom:2.4vw;
 }
 .result-desc{
@@ -734,8 +731,8 @@ body{
   border-left:2px solid var(--gold-dk);
   padding:2vw 0 2vw 4vw;
   font-family:var(--font-b);font-style:italic;
-  color:var(--gold);font-size:.88rem;
-  line-height:1.8;margin-bottom:6.4vw;opacity:.9;
+  color:var(--gold-dk);font-size:.92rem;
+  line-height:1.8;margin-bottom:6.4vw;
 }
 
 /* 6维数据 */
@@ -1551,8 +1548,7 @@ var BG_IMGS={
             {el:'setup-pillar-l', img:'./assets/pillar-left.webp'},
             {el:'setup-pillar-r', img:'./assets/pillar-right.webp'}],
   quiz:    [{el:'quiz-wrap',      img:'./assets/quiz-bg.webp'}],
-  result:  [{el:'result-wrap',    img:'./assets/parchment-texture.webp'},
-            {el:'result-body',   img:'./assets/parchment-texture.webp'}],
+  result:  [{el:'result-wrap',    img:'./assets/parchment-texture.webp'}],
   friend:  [{el:'friend-wrap',    img:'./assets/parchment-texture.webp'}]
 };
 var _bgLoaded={};
