@@ -584,16 +584,16 @@ body{
 /* ============================================================
    RESULT PAGE  (04-result.jpg)
    ============================================================ */
-#sr{padding:0;align-items:stretch;background:var(--charcoal2)}
+#sr{padding:0;align-items:stretch;background:var(--parchment)}
 
 .result-wrap{
   width:100%;max-width:480px;margin:0 auto;
+  min-height:100dvh;
   background-color:var(--parchment);
   background-size:cover;
   background-blend-mode:multiply;
-  padding-bottom:0;
-  /* 确保没有纹理时也显示羊皮纸色，防止透出深色背景 */
   isolation:isolate;
+  padding-bottom:0;
 }
 
 /* 底部卷草纹装饰带 */
@@ -604,14 +604,10 @@ body{
   margin-top:0;
   filter:sepia(.2);
 }
-/* 卷草纹之后的深色收尾渐变 — 紧跟在装饰带之后才不会产生断点 */
-.result-ornament-band + .result-page-end{
-  display:block;height:60px;
-  background:linear-gradient(to bottom,transparent,var(--charcoal2));
-}
+/* 卷草纹后的深色收尾 */
 .result-page-end{
   display:block;height:60px;
-  background:linear-gradient(to bottom,transparent,var(--charcoal2));
+  background:linear-gradient(to bottom,var(--parchment),var(--charcoal2));
 }
 
 /* 神祇大图区 */
