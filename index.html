@@ -835,29 +835,38 @@ body{
 .bond-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center}
 .bond-info{flex:1;min-width:0}
 .bond-type-row{
-  display:flex;align-items:baseline;gap:2vw;
-  margin-bottom:1vw;
+  display:flex;align-items:center;gap:2vw;
+  margin-bottom:1.6vw;
+  flex-wrap:wrap;
 }
 .bond-type-tag{
-  font-family:var(--font-h);font-size:.5rem;
-  letter-spacing:.18em;
-  padding:.3vw 1.8vw;
-  border:1px solid currentColor;
+  font-family:var(--font-h);font-size:.68rem;
+  font-weight:600;
+  letter-spacing:.12em;
+  padding:.8vw 2.4vw;
+  border:1.5px solid currentColor;
   white-space:nowrap;flex-shrink:0;
 }
-.bond-type-tag.t-mirror{color:var(--gold)}
-.bond-type-tag.t-dark  {color:#7A5080}
-.bond-type-tag.t-dream {color:#A05060}
-.bond-type-tag.t-key   {color:#607040}
-.bond-type-tag.t-wind  {color:var(--muted)}
+.bond-type-tag.t-mirror{color:var(--gold-dk)}
+.bond-type-tag.t-dark  {color:#6A3A70}
+.bond-type-tag.t-dream {color:#904050}
+.bond-type-tag.t-key   {color:#4A6030}
+.bond-type-tag.t-wind  {color:var(--mid-brown)}
 .bond-type-tag.t-rival {color:var(--deep-brown)}
+.bond-name-wrap{display:flex;flex-direction:column;gap:.4vw;min-width:0}
 .bond-name{
-  font-family:var(--font-d);font-size:.82rem;
-  color:var(--gold);letter-spacing:.08em;
+  font-family:var(--font-d);font-size:.88rem;
+  color:var(--deep-brown);letter-spacing:.06em;
+  line-height:1.2;
+}
+.bond-en{
+  font-family:var(--font-h);font-size:.52rem;
+  color:var(--mid-brown);letter-spacing:.25em;
+  text-transform:uppercase;
 }
 .bond-desc{
-  font-family:var(--font-b);font-size:.72rem;
-  color:var(--deep-brown);line-height:1.5;
+  font-family:var(--font-b);font-size:.75rem;
+  color:var(--deep-brown);line-height:1.6;
   margin-top:.8vw;
 }
 
@@ -1857,9 +1866,15 @@ function renderBonds(gid){
     var typeTag=document.createElement('span');
     typeTag.className='bond-type-tag '+type.tcls;
     typeTag.textContent=type.label;
-    var nameEl=document.createElement('span');
+
+    var nameWrap=document.createElement('div');nameWrap.className='bond-name-wrap';
+    var nameEl=document.createElement('div');
     nameEl.className='bond-name';nameEl.textContent=g.name;
-    typeRow.appendChild(typeTag);typeRow.appendChild(nameEl);
+    var enEl=document.createElement('div');
+    enEl.className='bond-en';enEl.textContent=g.en;
+    nameWrap.appendChild(nameEl);nameWrap.appendChild(enEl);
+
+    typeRow.appendChild(typeTag);typeRow.appendChild(nameWrap);
 
     var descEl=document.createElement('div');descEl.className='bond-desc';descEl.textContent=desc;
 
