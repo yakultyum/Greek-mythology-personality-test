@@ -625,27 +625,28 @@ body{
   object-fit:cover;object-position:top center;
   display:block;
 }
-/* 底部铺和 wrap 完全相同的纹理背景，mask 只露出底部 */
+/* 底部铺和 #sr 完全相同的纹理，mask 从底部 40% 开始显现 */
 .result-hero::before{
   content:'';position:absolute;
   inset:0;z-index:1;pointer-events:none;
   background-color:var(--parchment);
-  background-image:url('./assets/parchment-texture.webp');
-  background-size:cover;
-  background-blend-mode:multiply;
-  -webkit-mask-image:linear-gradient(to bottom,transparent 20%,black 68%);
-  mask-image:linear-gradient(to bottom,transparent 20%,black 68%);
+  background-image:url('./assets/parchment-tile.webp');
+  background-size:480px auto;
+  background-repeat:repeat;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 50%,black 82%);
+  mask-image:linear-gradient(to bottom,transparent 50%,black 82%);
 }
-/* 图片本身的渐变淡出，叠在 before 下方（z-index 低） */
+/* 图片渐变淡出：让图片在下半段自然消融到纹理背景 */
 .result-hero::after{
   content:'';position:absolute;
-  bottom:0;left:0;right:0;height:85%;
+  bottom:0;left:0;right:0;height:60%;
   z-index:0;pointer-events:none;
   background:linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(240,232,213,.6) 50%,
-    rgba(240,232,213,1)  70%
+    rgba(200,175,130,.4) 55%,
+    rgba(200,175,130,.85) 75%,
+    rgba(200,175,130,1)  88%
   );
 }
 /* 名字叠在图片上 */
