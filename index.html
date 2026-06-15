@@ -584,15 +584,19 @@ body{
 /* ============================================================
    RESULT PAGE  (04-result.jpg)
    ============================================================ */
-#sr{padding:0;align-items:stretch;background:var(--parchment)}
+/* 结果页滚动容器 — 统一铺羊皮纸纹理，彻底消除断点 */
+#sr{
+  padding:0;align-items:stretch;
+  background-color:var(--parchment);
+  background-image:url('./assets/parchment-tile.webp');
+  background-repeat:repeat;
+  background-size:480px auto;
+}
 
 .result-wrap{
   width:100%;max-width:480px;margin:0 auto;
-  min-height:100dvh;
-  background-color:var(--parchment);
-  background-size:cover;
-  background-blend-mode:multiply;
-  isolation:isolate;
+  /* 背景透明，完全依赖 #sr 的纹理，不再自己画背景 */
+  background:transparent;
   padding-bottom:0;
 }
 
@@ -607,7 +611,7 @@ body{
 /* 卷草纹后的深色收尾 */
 .result-page-end{
   display:block;height:60px;
-  background:linear-gradient(to bottom,var(--parchment),var(--charcoal2));
+  background:linear-gradient(to bottom,transparent,var(--charcoal2));
 }
 
 /* 神祇大图区 */
@@ -1544,7 +1548,7 @@ var BG_IMGS={
             {el:'setup-pillar-l', img:'./assets/pillar-left.webp'},
             {el:'setup-pillar-r', img:'./assets/pillar-right.webp'}],
   quiz:    [{el:'quiz-wrap',      img:'./assets/quiz-bg.webp'}],
-  result:  [{el:'result-wrap',    img:'./assets/parchment-texture.webp'}],
+  result:  [],
   friend:  [{el:'friend-wrap',    img:'./assets/parchment-texture.webp'}]
 };
 var _bgLoaded={};
