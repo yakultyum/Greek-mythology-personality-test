@@ -600,14 +600,6 @@ body{
   padding-bottom:0;
 }
 
-/* 底部卷草纹装饰带 */
-.result-ornament-band{
-  width:100%;height:auto;
-  display:block;
-  opacity:.65;
-  margin-top:0;
-  filter:sepia(.2);
-}
 /* 卷草纹后的深色收尾 */
 .result-page-end{
   display:block;height:60px;
@@ -1344,8 +1336,6 @@ body{
         <button class="btn-share" onclick="doShare()">✦ 邀请好友测试 · 查看你们的神话关系</button>
         <button class="btn-again" onclick="location.reload()">再测一次</button>
       </div>
-      <!-- 底部卷草纹装饰带 -->
-      <img class="result-ornament-band" src="" data-src="./assets/ornament-band.webp" alt="" loading="lazy">
       <span class="result-page-end"></span>
     </div>
   </div>
@@ -1936,7 +1926,7 @@ function showResult(gid){
   show('result');
   // 懒加载底部装饰图
   var band=document.querySelector('.result-ornament-band');
-  if(band&&band.dataset.src){band.src=band.dataset.src;band.removeAttribute('data-src');}
+  if(band)band.remove();
   setTimeout(function(){
     document.querySelectorAll('.stat-bar').forEach(function(b,i){
       b.style.transitionDelay=(i*90)+'ms';
