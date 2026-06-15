@@ -10,6 +10,9 @@
 <meta property="og:description" content="10道题，20位希腊神祇，找到属于你的神话对应。">
 <link rel="preload" href="./fonts/cinzel-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="./fonts/cinzel-decorative-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="./assets/parchment-texture.webp" as="image">
+<link rel="preload" href="./assets/ink-border.webp" as="image">
+<link rel="preload" href="./assets/scene-crisis.webp" as="image">
 <style id="font-face-inline">
 @font-face{font-family:'Cinzel';font-style:normal;font-weight:400;font-display:swap;src:url('./fonts/cinzel-400.woff2') format('woff2')}
 @font-face{font-family:'Cinzel';font-style:normal;font-weight:600;font-display:swap;src:url('./fonts/cinzel-600.woff2') format('woff2')}
@@ -1659,14 +1662,12 @@ function prefetchImg(src){
   var i=new Image();i.src=src;
 }
 function prefetchAfterLoad(){
-  // 预取前3题场景图
-  setTimeout(function(){
-    Q_SCENES.slice(0,3).forEach(prefetchImg);
-  },800);
-  // 预取剩余场景图
+  // 立即预取前3题场景图（用户最快看到）
+  Q_SCENES.slice(0,3).forEach(prefetchImg);
+  // 100ms 后预取剩余全部场景图（不分批，带宽允许就全拉）
   setTimeout(function(){
     Q_SCENES.slice(3).forEach(prefetchImg);
-  },2000);
+  },100);
 }
 // 页面加载完成后开始预取
 if(document.readyState==='complete'){prefetchAfterLoad()}
@@ -1746,6 +1747,11 @@ function pick(i){
   opts[i].classList.add('sel');
   var sc=QS[qIdx].opts[i].scores;
   Object.entries(sc).forEach(function(p){scores[p[0]]=(scores[p[0]]||0)+p[1]});
+  // 从第4题起实时预加载领先神祇大图，Loading时已就绪
+  if(qIdx>=3){
+    var top3=Object.entries(scores).sort(function(a,b){return b[1]-a[1]}).slice(0,3);
+    top3.forEach(function(p){prefetchImg(GOD_IMGS[p[0]])});
+  }
   setTimeout(function(){
     qIdx++;
     if(qIdx>=QS.length){finishQuiz()}else{renderQ()}
@@ -1753,6 +1759,11 @@ function pick(i){
 }
 
 function finishQuiz(){
+  // 立即预加载前5候选神祇图，不等 2.2s 计时结束
+  var top5=Object.entries(scores).sort(function(a,b){return b[1]-a[1]}).slice(0,5);
+  top5.forEach(function(p){prefetchImg(GOD_IMGS[p[0]])});
+  // 同时预加载结果页纹理（若未加载）
+  prefetchImg('./assets/parchment-texture.webp');
   show('loading');
   setTimeout(function(){
     var winner=Object.entries(scores).sort(function(a,b){return b[1]-a[1]})[0][0];
