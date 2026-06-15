@@ -460,9 +460,14 @@ body{
   aspect-ratio:16/9;
   overflow:hidden;
   border-bottom:1px solid var(--border-dk);
-  display:flex;align-items:center;justify-content:center;
-  background:var(--charcoal2);
   position:relative;
+  background:var(--charcoal2);
+}
+.q-scene-img img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:center top;
+  display:block;
 }
 .q-scene-emoji{
   font-size:12vw;
@@ -1690,7 +1695,7 @@ function renderQ(){
   card.style.animation='none';
   requestAnimationFrame(function(){
     card.style.animation='';
-    card.innerHTML='';
+    card.replaceChildren();
 
     // 场景图区 — AI 油画场景图，降级到 emoji
     var sceneDiv=document.createElement('div');
@@ -1698,11 +1703,10 @@ function renderQ(){
     var scenePath=Q_SCENES[qIdx];
     if(scenePath){
       var sImg=document.createElement('img');
-      sImg.style.cssText='width:100%;height:100%;object-fit:cover;object-position:center top;display:block;';
       sImg.loading='lazy';
       sImg.src=scenePath;sImg.alt='';
       sImg.onerror=function(){
-        sceneDiv.innerHTML='';
+        sceneDiv.replaceChildren();
         var fb=document.createElement('span');
         fb.className='q-scene-emoji';fb.textContent=q.scene;
         sceneDiv.appendChild(fb);
@@ -1810,7 +1814,7 @@ function renderBonds(gid){
 
   var el=document.getElementById('r-bonds');
   if(!el)return;
-  el.innerHTML='';
+  el.replaceChildren();
 
   var secLabel=document.createElement('div');
   secLabel.className='sec-label';secLabel.textContent='命运羁绊';
@@ -1882,14 +1886,14 @@ function showResult(gid){
   document.getElementById('r-en').textContent=g.en;
   document.getElementById('r-role').textContent=g.role;
 
-  var tagsEl=document.getElementById('r-tags');tagsEl.innerHTML='';
+  var tagsEl=document.getElementById('r-tags');tagsEl.replaceChildren();
   g.tags.forEach(function(t){
     var s=document.createElement('span');s.className='tag';s.textContent=t;tagsEl.appendChild(s);
   });
   document.getElementById('r-desc').textContent=g.desc;
   document.getElementById('r-quote').textContent=g.quote;
 
-  var statsEl=document.getElementById('r-stats');statsEl.innerHTML='';
+  var statsEl=document.getElementById('r-stats');statsEl.replaceChildren();
   STAT_DIMS.forEach(function(dim,i){
     var val=g.dims[i]||0;
     var row=document.createElement('div');row.className='stat-row';
