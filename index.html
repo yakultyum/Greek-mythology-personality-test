@@ -584,7 +584,7 @@ body{
 /* ============================================================
    RESULT PAGE  (04-result.jpg)
    ============================================================ */
-#sr{padding:0;align-items:stretch}
+#sr{padding:0;align-items:stretch;background:var(--charcoal2)}
 
 .result-wrap{
   width:100%;max-width:480px;margin:0 auto;
@@ -592,6 +592,8 @@ body{
   background-size:cover;
   background-blend-mode:multiply;
   padding-bottom:0;
+  /* 确保没有纹理时也显示羊皮纸色，防止透出深色背景 */
+  isolation:isolate;
 }
 
 /* 底部卷草纹装饰带 */
@@ -650,7 +652,7 @@ body{
 .result-hero-info{
   position:absolute;
   bottom:0;left:0;right:0;
-  padding:4vw 5.3vw 5.3vw;
+  padding:4vw 8vw 5.3vw;
   text-align:center;z-index:2;
 }
 
@@ -697,8 +699,14 @@ body{
   letter-spacing:.05em;
 }
 
-/* 内容区 */
-.result-body{padding:5.3vw 5.3vw 6vw;position:relative;z-index:1}
+/* 内容区 — 左右8vw安全边距；独立纹理背景防透底 */
+.result-body{
+  padding:5.3vw 8vw 6vw;
+  position:relative;z-index:1;
+  background-color:var(--parchment);
+  background-size:cover;
+  background-blend-mode:multiply;
+}
 
 /* 特质标签 */
 .result-tags{
@@ -1132,7 +1140,7 @@ body{
   .result-wrap,
   .friend-wrap{max-width:520px}
   .result-hero{aspect-ratio:4/3}
-  .result-body{padding:0 20px 60px}
+  .result-body{padding:0 32px 60px}
   .result-tags{gap:8px;margin:20px 0 24px}
   .result-desc{margin-bottom:20px}
   .result-quote{margin-bottom:24px}
@@ -1543,7 +1551,8 @@ var BG_IMGS={
             {el:'setup-pillar-l', img:'./assets/pillar-left.webp'},
             {el:'setup-pillar-r', img:'./assets/pillar-right.webp'}],
   quiz:    [{el:'quiz-wrap',      img:'./assets/quiz-bg.webp'}],
-  result:  [{el:'result-wrap',    img:'./assets/parchment-texture.webp'}],
+  result:  [{el:'result-wrap',    img:'./assets/parchment-texture.webp'},
+            {el:'result-body',   img:'./assets/parchment-texture.webp'}],
   friend:  [{el:'friend-wrap',    img:'./assets/parchment-texture.webp'}]
 };
 var _bgLoaded={};
