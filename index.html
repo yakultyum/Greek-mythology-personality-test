@@ -8,9 +8,6 @@
 <meta name="description" content="十道命运之问，揭示你灵魂深处对应的希腊神祇。20位神祇，完整关系故事。">
 <meta property="og:title" content="神话人格 · Greek Myth Personality">
 <meta property="og:description" content="10道题，20位希腊神祇，找到属于你的神话对应。">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap" rel="stylesheet">
 <link rel="preload" href="./fonts/cinzel-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="./fonts/cinzel-decorative-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="./assets/parchment-texture.webp" as="image">
@@ -43,17 +40,18 @@
   --border-dk:   #8B6040;
   --font-d: 'Cinzel Decorative','Cinzel',Georgia,serif;
   --font-h: 'Cinzel',Georgia,serif;
-  --font-b: 'LXGW WenKai TC','LXGW WenKai','霞鹜文楷','Noto Serif SC',Georgia,serif;
+  --font-b: 'STKaiti','华文楷体','KaiTi','楷体','Noto Serif SC',Georgia,serif;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:15px;scroll-behavior:smooth}
+html{font-size:16px;scroll-behavior:smooth}
 body{
   background:var(--charcoal2);
   background-size:cover;
   background-attachment:fixed;
   color:var(--deep-brown);
   font-family:var(--font-b);
+  font-weight:500;
   min-height:100dvh;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
@@ -314,16 +312,16 @@ body{
   text-transform:uppercase;margin-bottom:2.4vw;
 }
 .field-label-zh{
-  font-family:var(--font-b);font-size:.72rem;
+  font-family:var(--font-b);font-size:.82rem;
   letter-spacing:.06em;color:var(--muted);
-  text-transform:none;font-weight:400;
+  text-transform:none;font-weight:600;
   margin-left:.5em;vertical-align:baseline;
 }
 .input-field{
   width:100%;background:transparent;
   border:none;border-bottom:1px solid var(--border-dk);
   padding:2.4vw 0;
-  font-family:var(--font-b);font-size:1rem;
+  font-family:var(--font-b);font-size:1.08rem;
   color:var(--deep-brown);outline:none;
   transition:border-color .2s;
   margin-bottom:6.4vw;
@@ -500,7 +498,7 @@ body{
 /* 问题文字 */
 .q-text{
   padding:4vw 5.3vw 3.2vw;
-  font-family:var(--font-b);font-size:.92rem;
+  font-family:var(--font-b);font-size:1rem;
   line-height:1.75;color:var(--deep-brown);
   text-align:center;font-weight:500;
 }
@@ -516,7 +514,7 @@ body{
   border:none;
   border-bottom:1px solid rgba(184,134,11,.15);
   padding:3.7vw 4.5vw 3.7vw 10.7vw;
-  font-family:var(--font-b);font-size:.85rem;
+  font-family:var(--font-b);font-size:.95rem;
   line-height:1.65;color:rgba(240,232,213,.8);
   cursor:pointer;
   transition:background .18s,color .18s;
@@ -733,7 +731,7 @@ body{
   border-left:2px solid var(--gold-dk);
   padding:2vw 0 2vw 4vw;
   font-family:var(--font-b);font-style:italic;
-  color:var(--gold-dk);font-size:.92rem;
+  color:var(--gold-dk);font-size:1rem;
   line-height:1.8;margin-bottom:6.4vw;
 }
 
@@ -874,7 +872,7 @@ body{
   text-transform:uppercase;
 }
 .bond-desc{
-  font-family:var(--font-b);font-size:.75rem;
+  font-family:var(--font-b);font-size:.88rem;
   color:var(--deep-brown);line-height:1.6;
   margin-top:.8vw;
 }
@@ -1016,7 +1014,7 @@ body{
   border-left:2px solid var(--gold-dk);
   padding:1.6vw 0 1.6vw 3.7vw;
   font-family:var(--font-b);font-style:italic;
-  font-size:.82rem;color:var(--gold);
+  font-size:.92rem;color:var(--gold);
   opacity:.88;line-height:1.7;
 }
 
