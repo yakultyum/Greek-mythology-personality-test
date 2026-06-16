@@ -8,6 +8,9 @@
 <meta name="description" content="十道命运之问，揭示你灵魂深处对应的希腊神祇。20位神祇，完整关系故事。">
 <meta property="og:title" content="神话人格 · Greek Myth Personality">
 <meta property="og:description" content="10道题，20位希腊神祇，找到属于你的神话对应。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap" rel="stylesheet">
 <link rel="preload" href="./fonts/cinzel-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="./fonts/cinzel-decorative-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="./assets/parchment-texture.webp" as="image">
@@ -40,7 +43,7 @@
   --border-dk:   #8B6040;
   --font-d: 'Cinzel Decorative','Cinzel',Georgia,serif;
   --font-h: 'Cinzel',Georgia,serif;
-  --font-b: 'Noto Serif SC','Georgia','宋体',serif;
+  --font-b: 'LXGW WenKai TC','LXGW WenKai','霞鹜文楷','Noto Serif SC',Georgia,serif;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -309,6 +312,12 @@ body{
   font-family:var(--font-h);font-size:.6rem;
   letter-spacing:.25em;color:var(--gold-dk);
   text-transform:uppercase;margin-bottom:2.4vw;
+}
+.field-label-zh{
+  font-family:var(--font-b);font-size:.72rem;
+  letter-spacing:.06em;color:var(--muted);
+  text-transform:none;font-weight:400;
+  margin-left:.5em;vertical-align:baseline;
 }
 .input-field{
   width:100%;background:transparent;
@@ -1260,12 +1269,12 @@ body{
       <div class="setup-title">为自己命名</div>
       <div class="divider">◆</div>
 
-      <div class="field-label">Your Name</div>
+      <div class="field-label">Your Name <span class="field-label-zh">你的昵称</span></div>
       <input id="inp-nick" class="input-field" type="text"
              maxlength="12" placeholder="Enter your name..."
              oninput="checkSetup()">
 
-      <div class="field-label">Select Your Totem</div>
+      <div class="field-label">Select Your Totem <span class="field-label-zh">选择你的图腾</span></div>
       <div class="totem-grid" id="totem-grid"></div>
 
       <div class="uid-row">Your Unique ID &nbsp;<span id="uid-val"></span></div>

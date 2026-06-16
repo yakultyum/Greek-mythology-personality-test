@@ -1,5 +1,6 @@
 node_modules/
 .DS_Store
+bug 反馈专用/
 .claude/
 .agents/
 *.bak
