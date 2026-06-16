@@ -78,7 +78,7 @@ body{
   position:fixed;
   top:0;bottom:0;
   left:50%;transform:translateX(-50%);
-  width:100%;max-width:6.4rem;
+  width:100%;max-width:480px;
   pointer-events:none;z-index:50;
   background:url('./assets/ink-border.webp') center/100% 100% no-repeat;
   mix-blend-mode:multiply;
@@ -86,7 +86,7 @@ body{
 }
 /* On desktop, expand the ink frame to follow the content column */
 @media(min-width:600px){
-  .ink-frame{max-width:6.93rem}
+  .ink-frame{max-width:520px}
 }
 /* 四角金色内框 */
 .ink-frame::before{
@@ -131,7 +131,7 @@ body{
 .top-gold-line{
   position:fixed;top:0;
   left:50%;transform:translateX(-50%);
-  width:100%;max-width:6.4rem;
+  width:100%;max-width:480px;
   height:2px;
   background:linear-gradient(90deg,transparent,var(--gold-dk),var(--gold),var(--gold-dk),transparent);
   z-index:200;pointer-events:none;
@@ -143,7 +143,7 @@ body{
 #si{padding:0;align-items:stretch}
 
 .intro-wrap{
-  width:100%;max-width:6.4rem;margin:0 auto;
+  width:100%;max-width:480px;margin:0 auto;
   min-height:100dvh;
   display:flex;flex-direction:column;
   padding:0 0.4rem 0.6rem;
@@ -260,7 +260,7 @@ body{
 #ss{padding:0;align-items:stretch}
 
 .setup-wrap{
-  width:100%;max-width:6.4rem;margin:0 auto;
+  width:100%;max-width:480px;margin:0 auto;
   min-height:100dvh;
   display:flex;flex-direction:column;
   position:relative;overflow:hidden;
@@ -397,7 +397,7 @@ body{
 }
 
 .quiz-wrap{
-  width:100%;max-width:6.4rem;margin:0 auto;
+  width:100%;max-width:480px;margin:0 auto;
   min-height:100dvh;
   display:flex;flex-direction:column;
   background-color:var(--charcoal);
@@ -602,7 +602,7 @@ body{
 }
 
 .result-wrap{
-  width:100%;max-width:6.4rem;margin:0 auto;
+  width:100%;max-width:480px;margin:0 auto;
   /* 背景透明，完全依赖 #sr 的纹理，不再自己画背景 */
   background:transparent;
   padding-bottom:0;
@@ -884,7 +884,7 @@ body{
 #sfr{padding:0;align-items:stretch}
 
 .friend-wrap{
-  width:100%;max-width:6.4rem;margin:0 auto;
+  width:100%;max-width:480px;margin:0 auto;
   min-height:100dvh;
   background-color:var(--parchment);
   background-size:cover;
@@ -1144,7 +1144,7 @@ body{
 
   /* Result page */
   .result-wrap,
-  .friend-wrap{max-width:6.93rem}
+  .friend-wrap{max-width:520px}
   .result-hero{aspect-ratio:4/3}
   .result-body{padding:0 0.43rem 0.8rem}
   .result-tags{gap:0.11rem;margin:0.27rem 0 0.32rem}
