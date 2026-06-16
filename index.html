@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script>!function(){function s(){var w=document.documentElement.clientWidth;document.documentElement.style.fontSize=(w>750?750:w)/7.5+'px'}s();window.addEventListener('resize',s)}();</script>
 <meta name="format-detection" content="telephone=no">
 <title>神话人格 · 你是哪位希腊神？</title>
 <meta name="description" content="十道命运之问，揭示你灵魂深处对应的希腊神祇。20位神祇，完整关系故事。">
@@ -44,7 +45,7 @@
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px;scroll-behavior:smooth}
+html{font-size:100px;scroll-behavior:smooth}
 body{
   background:var(--charcoal2);
   background-size:cover;
@@ -77,19 +78,19 @@ body{
   position:fixed;
   top:0;bottom:0;
   left:50%;transform:translateX(-50%);
-  width:100%;max-width:480px;
+  width:100%;max-width:6.4rem;
   pointer-events:none;z-index:50;
   background:url('./assets/ink-border.webp') center/100% 100% no-repeat;
   mix-blend-mode:multiply;
   opacity:.92;
 }
 /* On desktop, expand the ink frame to follow the content column */
-@media(min-width:600px){
-  .ink-frame{max-width:520px}
+@media(min-width:8rem){
+  .ink-frame{max-width:6.93rem}
 }
 /* 四角金色内框 */
 .ink-frame::before{
-  content:'';position:absolute;inset:14px;
+  content:'';position:absolute;inset:0.061rem;
   border:1px solid rgba(184,134,11,.22);
   pointer-events:none;
 }
@@ -98,7 +99,7 @@ body{
   content:'◆';
   position:absolute;top:6px;left:50%;
   transform:translateX(-50%);
-  font-size:.45rem;color:var(--gold-dk);
+  font-size:0.144rem;color:var(--gold-dk);
   opacity:.7;letter-spacing:0;
 }
 
@@ -116,9 +117,9 @@ body{
    SHARED — 装饰分割线
    ============================================================ */
 .divider{
-  display:flex;align-items:center;gap:8px;
-  margin:4.5vw 0;
-  font-family:var(--font-h);font-size:.55rem;
+  display:flex;align-items:center;gap:0.05rem;
+  margin:0.337rem 0;
+  font-family:var(--font-h);font-size:0.176rem;
   letter-spacing:.3em;color:var(--gold-dk);
 }
 .divider::before,.divider::after{
@@ -130,7 +131,7 @@ body{
 .top-gold-line{
   position:fixed;top:0;
   left:50%;transform:translateX(-50%);
-  width:100%;max-width:480px;
+  width:100%;max-width:6.4rem;
   height:2px;
   background:linear-gradient(90deg,transparent,var(--gold-dk),var(--gold),var(--gold-dk),transparent);
   z-index:200;pointer-events:none;
@@ -142,10 +143,10 @@ body{
 #si{padding:0;align-items:stretch}
 
 .intro-wrap{
-  width:100%;max-width:480px;margin:0 auto;
+  width:100%;max-width:6.4rem;margin:0 auto;
   min-height:100dvh;
   display:flex;flex-direction:column;
-  padding:0 clamp(16px,5.3vw,28px) clamp(24px,8vw,48px);
+  padding:0 0.128rem 0.192rem;
   position:relative;
   background-color:var(--parchment);
   background-image:url('./assets/parchment-texture.webp');
@@ -169,13 +170,13 @@ body{
   display:flex;flex-direction:column;
   align-items:center;
   flex:1;
-  padding-top:clamp(32px,12vw,64px);
+  padding-top:0.288rem;
 }
 
 /* 月牙符号 */
 .intro-moon{
-  font-size:9.3vw;color:var(--gold-dk);
-  margin-bottom:3.2vw;
+  font-size:0.698rem;color:var(--gold-dk);
+  margin-bottom:0.24rem;
   filter:drop-shadow(0 0 8px rgba(184,134,11,.3));
   font-family:serif;
 }
@@ -183,50 +184,50 @@ body{
 /* 大标题 */
 .intro-title{
   font-family:var(--font-d);
-  font-size:clamp(2rem,9.3vw,3.2rem);
+  font-size:0.224rem;
   font-weight:700;color:var(--gold);
   letter-spacing:.08em;line-height:1.1;
-  margin-bottom:1.6vw;text-align:center;
+  margin-bottom:0.12rem;text-align:center;
 }
 .intro-en{
   font-family:var(--font-h);
-  font-size:.6rem;letter-spacing:.45em;
-  color:var(--muted);margin-bottom:5.3vw;
+  font-size:0.192rem;letter-spacing:.45em;
+  color:var(--muted);margin-bottom:0.397rem;
   text-transform:uppercase;
 }
 
 /* 正文描述 */
 .intro-desc{
-  font-size:.82rem;line-height:2;
+  font-size:0.262rem;line-height:2;
   color:var(--mid-brown);text-align:center;
-  margin-bottom:5.3vw;
-  max-width:76vw;
+  margin-bottom:0.397rem;
+  max-width:5.7rem;
 }
 
 /* 功能三卡 */
 .feat-list{
   width:100%;display:flex;flex-direction:column;
-  gap:2.4vw;margin-bottom:6.4vw;
+  gap:0.18rem;margin-bottom:0.48rem;
 }
 .feat-item{
   display:flex;align-items:center;
   border:1px solid var(--border-dk);
   background:rgba(220,200,160,.15);
-  padding:3.2vw 4vw;gap:3.2vw;
+  padding:0.24rem 0.3rem;gap:0.24rem;
 }
 .feat-num{
-  font-family:var(--font-h);font-size:.7rem;
+  font-family:var(--font-h);font-size:0.224rem;
   color:var(--gold-dk);letter-spacing:.05em;
-  flex-shrink:0;min-width:1.4rem;
+  flex-shrink:0;min-width:0.448rem;
 }
 .feat-text{
-  font-size:.82rem;line-height:1.6;
+  font-size:0.262rem;line-height:1.6;
   color:var(--deep-brown);flex:1;
 }
 .feat-icon{
   flex-shrink:0;opacity:.85;
-  width:5.8vw;height:5.8vw;
-  max-width:28px;max-height:28px;
+  width:0.435rem;height:0.435rem;
+  max-width:0.118rem;max-height:28px;
 }
 
 /* 主按钮 — 实心金色 */
@@ -235,9 +236,9 @@ body{
   background:var(--gold-dk);
   border:none;
   color:var(--parchment);
-  padding:4vw 0;
+  padding:0.3rem 0;
   font-family:var(--font-h);
-  font-size:.95rem;font-weight:600;
+  font-size:0.304rem;font-weight:600;
   letter-spacing:.25em;
   cursor:pointer;
   transition:background .2s;
@@ -248,9 +249,9 @@ body{
 .intro-footer{
   text-align:center;
   font-family:var(--font-h);
-  font-size:.55rem;letter-spacing:.35em;
+  font-size:0.176rem;letter-spacing:.35em;
   color:var(--muted);opacity:.7;
-  margin-top:4vw;
+  margin-top:0.3rem;
 }
 
 /* ============================================================
@@ -259,7 +260,7 @@ body{
 #ss{padding:0;align-items:stretch}
 
 .setup-wrap{
-  width:100%;max-width:480px;margin:0 auto;
+  width:100%;max-width:6.4rem;margin:0 auto;
   min-height:100dvh;
   display:flex;flex-direction:column;
   position:relative;overflow:hidden;
@@ -270,7 +271,7 @@ body{
 
 /* 左右神庙柱廊装饰 — 真实 AI 图片 */
 .setup-pillar-l,.setup-pillar-r{
-  position:absolute;top:0;bottom:0;width:18vw;max-width:86px;
+  position:absolute;top:0;bottom:0;width:1.35rem;max-width:0.365rem;
   pointer-events:none;z-index:0;
   background-size:cover;background-repeat:no-repeat;
 }
@@ -288,31 +289,31 @@ body{
 .setup-content{
   position:relative;z-index:1;
   flex:1;display:flex;flex-direction:column;
-  padding:12vw 6.4vw 8vw;
+  padding:0.9rem 0.48rem 0.6rem;
 }
 
 .setup-label{
-  font-family:var(--font-h);font-size:.6rem;
+  font-family:var(--font-h);font-size:0.192rem;
   letter-spacing:.35em;color:var(--gold-dk);
   text-transform:uppercase;text-align:center;
-  margin-bottom:2vw;
+  margin-bottom:0.15rem;
 }
 .setup-title{
   font-family:var(--font-d);
-  font-size:clamp(1.6rem,7.5vw,2.6rem);
+  font-size:0.179rem;
   font-weight:700;color:var(--gold);
   letter-spacing:.08em;text-align:center;
-  margin-bottom:5.3vw;
+  margin-bottom:0.397rem;
 }
 
 /* 输入框 */
 .field-label{
-  font-family:var(--font-h);font-size:.6rem;
+  font-family:var(--font-h);font-size:0.192rem;
   letter-spacing:.25em;color:var(--gold-dk);
-  text-transform:uppercase;margin-bottom:2.4vw;
+  text-transform:uppercase;margin-bottom:0.18rem;
 }
 .field-label-zh{
-  font-family:var(--font-b);font-size:.82rem;
+  font-family:var(--font-b);font-size:0.262rem;
   letter-spacing:.06em;color:var(--muted);
   text-transform:none;font-weight:600;
   margin-left:.5em;vertical-align:baseline;
@@ -320,11 +321,11 @@ body{
 .input-field{
   width:100%;background:transparent;
   border:none;border-bottom:1px solid var(--border-dk);
-  padding:2.4vw 0;
-  font-family:var(--font-b);font-size:1.08rem;
+  padding:0.18rem 0;
+  font-family:var(--font-b);font-size:0.346rem;
   color:var(--deep-brown);outline:none;
   transition:border-color .2s;
-  margin-bottom:6.4vw;
+  margin-bottom:0.48rem;
 }
 .input-field::placeholder{color:var(--muted)}
 .input-field:focus{border-color:var(--gold)}
@@ -333,13 +334,13 @@ body{
 .totem-grid{
   display:grid;
   grid-template-columns:repeat(6,1fr);
-  gap:2vw;margin-top:2.4vw;
-  margin-bottom:4vw;
+  gap:0.15rem;margin-top:0.18rem;
+  margin-bottom:0.3rem;
 }
 .totem-cell{
   aspect-ratio:1;
   display:flex;align-items:center;justify-content:center;
-  font-size:5.5vw;
+  font-size:0.412rem;
   border:1px solid var(--border);
   background:transparent;
   cursor:pointer;
@@ -366,9 +367,9 @@ body{
 /* UID */
 .uid-row{
   text-align:center;
-  font-family:var(--font-h);font-size:.6rem;
+  font-family:var(--font-h);font-size:0.192rem;
   letter-spacing:.2em;color:var(--gold-dk);
-  margin-bottom:5.3vw;
+  margin-bottom:0.397rem;
 }
 .uid-row span{color:var(--gold);letter-spacing:.1em}
 
@@ -377,12 +378,12 @@ body{
   width:100%;background:transparent;
   border:1px solid var(--gold-dk);
   color:var(--gold);
-  padding:3.7vw 0;
+  padding:0.278rem 0;
   font-family:var(--font-h);
-  font-size:.88rem;font-weight:600;
+  font-size:0.282rem;font-weight:600;
   letter-spacing:.2em;cursor:pointer;
   transition:background .2s;text-align:center;
-  display:flex;align-items:center;justify-content:center;gap:2vw;
+  display:flex;align-items:center;justify-content:center;gap:0.15rem;
 }
 .btn-outline:active{background:rgba(184,134,11,.1)}
 .btn-outline.dim{opacity:.4;pointer-events:none}
@@ -396,7 +397,7 @@ body{
 }
 
 .quiz-wrap{
-  width:100%;max-width:480px;margin:0 auto;
+  width:100%;max-width:6.4rem;margin:0 auto;
   min-height:100dvh;
   display:flex;flex-direction:column;
   background-color:var(--charcoal);
@@ -406,12 +407,12 @@ body{
 
 /* 顶部金线 + 题号 */
 .quiz-top{
-  padding:10.7vw 5.3vw 4vw;
+  padding:0.802rem 0.397rem 0.3rem;
 }
 .quiz-progress-bar{
   width:100%;height:1px;
   background:rgba(184,134,11,.2);
-  margin-bottom:3.2vw;position:relative;
+  margin-bottom:0.24rem;position:relative;
 }
 .quiz-progress-fill{
   position:absolute;top:0;left:0;height:100%;
@@ -426,24 +427,24 @@ body{
 }
 .quiz-meta{
   display:flex;align-items:center;justify-content:center;
-  gap:2vw;
-  font-family:var(--font-h);font-size:.6rem;
+  gap:0.15rem;
+  font-family:var(--font-h);font-size:0.192rem;
   letter-spacing:.2em;color:var(--muted);
 }
-.quiz-meta-num{color:var(--gold-lt);font-size:.7rem}
+.quiz-meta-num{color:var(--gold-lt);font-size:0.224rem}
 .quiz-meta-sep{opacity:.4}
 /* ─── 命运之问 标题 ─── */
 .quiz-section-title{
   text-align:center;
-  font-family:var(--font-h);font-size:.62rem;
+  font-family:var(--font-h);font-size:0.198rem;
   letter-spacing:.3em;color:var(--gold-dk);
-  margin-top:1.6vw;text-transform:uppercase;
+  margin-top:0.12rem;text-transform:uppercase;
 }
 
 /* 题目卡片 */
 .quiz-body{
   flex:1;display:flex;align-items:center;
-  justify-content:center;padding:0 5.3vw 4vw;
+  justify-content:center;padding:0 0.397rem 0.3rem;
 }
 .q-card{
   width:100%;
@@ -459,7 +460,7 @@ body{
 /* 四角金色装饰 */
 .q-card::before,.q-card::after{
   content:'◆';position:absolute;
-  font-size:.45rem;color:var(--gold);opacity:.6;
+  font-size:0.144rem;color:var(--gold);opacity:.6;
 }
 .q-card::before{top:6px;left:8px}
 .q-card::after{bottom:6px;right:8px}
@@ -480,7 +481,7 @@ body{
   display:block;
 }
 .q-scene-emoji{
-  font-size:12vw;
+  font-size:0.9rem;
   filter:drop-shadow(0 0 10px rgba(184,134,11,.3));
   animation:sceneFloat 4s ease-in-out infinite;
 }
@@ -497,8 +498,8 @@ body{
 
 /* 问题文字 */
 .q-text{
-  padding:4vw 5.3vw 3.2vw;
-  font-family:var(--font-b);font-size:1rem;
+  padding:0.3rem 0.397rem 0.24rem;
+  font-family:var(--font-b);font-size:0.32rem;
   line-height:1.75;color:var(--deep-brown);
   text-align:center;font-weight:500;
 }
@@ -513,8 +514,8 @@ body{
   background:rgba(26,21,16,.88);
   border:none;
   border-bottom:1px solid rgba(184,134,11,.15);
-  padding:3.7vw 4.5vw 3.7vw 10.7vw;
-  font-family:var(--font-b);font-size:.95rem;
+  padding:0.278rem 0.337rem 0.278rem 0.802rem;
+  font-family:var(--font-b);font-size:0.304rem;
   line-height:1.65;color:rgba(240,232,213,.8);
   cursor:pointer;
   transition:background .18s,color .18s;
@@ -524,9 +525,9 @@ body{
 /* 字母前缀 */
 .opt-btn::before{
   content:attr(data-idx);
-  position:absolute;left:4.5vw;top:50%;
+  position:absolute;left:0.337rem;top:50%;
   transform:translateY(-50%);
-  font-family:var(--font-h);font-size:.6rem;
+  font-family:var(--font-h);font-size:0.192rem;
   color:var(--gold-dk);letter-spacing:0;
 }
 .opt-btn:active,.opt-btn.sel{
@@ -537,9 +538,9 @@ body{
 /* 选中态右侧指南针图标 */
 .opt-btn.sel::after{
   content:'✦';
-  position:absolute;right:4vw;top:50%;
+  position:absolute;right:0.3rem;top:50%;
   transform:translateY(-50%);
-  font-size:.65rem;color:var(--gold);
+  font-size:0.208rem;color:var(--gold);
   animation:spinStar 3s linear infinite;
 }
 @keyframes spinStar{to{transform:translateY(-50%) rotate(360deg)}}
@@ -552,11 +553,11 @@ body{
   align-items:center;justify-content:center;
 }
 .loading-inner{
-  text-align:center;padding:4vw;
+  text-align:center;padding:0.3rem;
 }
 .loading-moon{
-  font-size:14vw;display:block;
-  margin:0 auto 6vw;
+  font-size:1.05rem;display:block;
+  margin:0 auto 0.45rem;
   animation:moonSway 3.5s ease-in-out infinite;
   color:var(--gold);
   filter:drop-shadow(0 0 16px rgba(184,134,11,.4));
@@ -566,16 +567,16 @@ body{
   50%{transform:rotate(12deg) scale(1.06)}
 }
 .loading-title{
-  font-family:var(--font-h);font-size:.88rem;
+  font-family:var(--font-h);font-size:0.282rem;
   letter-spacing:.25em;color:var(--gold);
-  margin-bottom:2vw;
+  margin-bottom:0.15rem;
 }
 .loading-sub{
-  font-family:var(--font-h);font-size:.55rem;
+  font-family:var(--font-h);font-size:0.176rem;
   letter-spacing:.4em;color:var(--muted);
-  margin-bottom:5.3vw;text-transform:uppercase;
+  margin-bottom:0.397rem;text-transform:uppercase;
 }
-.loading-dots{display:flex;gap:2vw;justify-content:center}
+.loading-dots{display:flex;gap:0.15rem;justify-content:center}
 .loading-dots span{
   width:5px;height:5px;border-radius:50%;
   background:var(--gold-dk);
@@ -597,11 +598,11 @@ body{
   background-color:var(--parchment);
   background-image:url('./assets/parchment-tile.webp');
   background-repeat:repeat;
-  background-size:480px auto;
+  background-size:6.4rem auto;
 }
 
 .result-wrap{
-  width:100%;max-width:480px;margin:0 auto;
+  width:100%;max-width:6.4rem;margin:0 auto;
   /* 背景透明，完全依赖 #sr 的纹理，不再自己画背景 */
   background:transparent;
   padding-bottom:0;
@@ -609,7 +610,7 @@ body{
 
 /* 卷草纹后的深色收尾 */
 .result-page-end{
-  display:block;height:60px;
+  display:block;height:0.256rem;
   background:linear-gradient(to bottom,transparent,var(--charcoal2));
 }
 
@@ -630,7 +631,7 @@ body{
   inset:0;z-index:1;pointer-events:none;
   background-color:var(--parchment);
   background-image:url('./assets/parchment-tile.webp');
-  background-size:480px auto;
+  background-size:6.4rem auto;
   background-repeat:repeat;
   -webkit-mask-image:linear-gradient(to bottom,transparent 50%,black 82%);
   mask-image:linear-gradient(to bottom,transparent 50%,black 82%);
@@ -652,7 +653,7 @@ body{
 .result-hero-info{
   position:absolute;
   bottom:0;left:0;right:0;
-  padding:4vw 8vw 5.3vw;
+  padding:0.3rem 0.6rem 0.397rem;
   text-align:center;z-index:2;
 }
 
@@ -661,12 +662,12 @@ body{
   aspect-ratio:unset;
   background:var(--parchment2);
   display:flex;flex-direction:column;
-  align-items:center;padding:10vw 0 0;
+  align-items:center;padding:0.75rem 0 0;
 }
 .result-hero.no-img .result-hero-img{display:none}
 .result-hero-emoji{
   display:none;
-  font-size:20vw;margin-bottom:4vw;
+  font-size:1.5rem;margin-bottom:0.3rem;
   filter:sepia(.2);
   animation:floatIcon 5s ease-in-out infinite;
 }
@@ -677,81 +678,81 @@ body{
 .result-hero.no-img .result-hero-emoji{display:block}
 .result-hero.no-img::after{display:none}
 .result-hero.no-img .result-hero-info{
-  position:static;padding:0 5.3vw 5.3vw;
+  position:static;padding:0 0.397rem 0.397rem;
 }
 
 .result-name{
   font-family:var(--font-d);
-  font-size:clamp(1.8rem,8.5vw,3rem);
+  font-size:0.205rem;
   font-weight:700;color:var(--deep-brown);
   letter-spacing:.12em;
   text-shadow:0 1px 12px rgba(26,21,16,.6);
-  margin-bottom:1.6vw;
+  margin-bottom:0.12rem;
 }
 .result-en{
-  font-family:var(--font-h);font-size:.62rem;
+  font-family:var(--font-h);font-size:0.198rem;
   letter-spacing:.45em;color:var(--gold-dk);
-  text-transform:uppercase;margin-bottom:1.6vw;
+  text-transform:uppercase;margin-bottom:0.12rem;
 }
 .result-role{
-  font-size:.88rem;
+  font-size:0.282rem;
   color:var(--deep-brown);
   letter-spacing:.05em;
 }
 
-/* 内容区 — 左右8vw安全边距；不设独立背景，继承 result-wrap 的纹理 */
+/* 内容区 — 左右0.6rem安全边距；不设独立背景，继承 result-wrap 的纹理 */
 .result-body{
-  padding:5.3vw 8vw 6vw;
+  padding:0.397rem 0.6rem 0.45rem;
   position:relative;z-index:1;
 }
 
 /* 特质标签 */
 .result-tags{
-  display:flex;flex-wrap:wrap;gap:2vw;
+  display:flex;flex-wrap:wrap;gap:0.15rem;
   justify-content:center;
-  margin:0 0 6.4vw;
+  margin:0 0 0.48rem;
 }
 .tag{
   border:1px solid var(--deep-brown);
-  color:var(--deep-brown);padding:1vw 3.2vw;
-  font-family:var(--font-h);font-size:.68rem;
+  color:var(--deep-brown);padding:0.075rem 0.24rem;
+  font-family:var(--font-h);font-size:0.218rem;
   letter-spacing:.12em;background:rgba(44,31,14,.06);
 }
 
 .sec-label{
-  font-family:var(--font-h);font-size:.65rem;
+  font-family:var(--font-h);font-size:0.208rem;
   letter-spacing:.3em;color:var(--gold-dk);
-  text-transform:uppercase;margin-bottom:2.4vw;
+  text-transform:uppercase;margin-bottom:0.18rem;
 }
 .result-desc{
-  font-size:.88rem;line-height:2;
-  color:var(--deep-brown);margin-bottom:5.3vw;
+  font-size:0.282rem;line-height:2;
+  color:var(--deep-brown);margin-bottom:0.397rem;
 }
 .result-quote{
   border-left:2px solid var(--gold-dk);
-  padding:2vw 0 2vw 4vw;
+  padding:0.15rem 0 0.15rem 0.3rem;
   font-family:var(--font-b);font-style:italic;
-  color:var(--gold-dk);font-size:1rem;
-  line-height:1.8;margin-bottom:6.4vw;
+  color:var(--gold-dk);font-size:0.32rem;
+  line-height:1.8;margin-bottom:0.48rem;
 }
 
 /* 6维数据 */
-.stats-section{margin-bottom:6.4vw}
+.stats-section{margin-bottom:0.48rem}
 .stat-row{
   display:grid;
-  grid-template-columns:24px 1fr 36px;
-  align-items:center;gap:2.4vw;
-  margin-bottom:3.2vw;
+  grid-template-columns:0.154rem 1fr 0.23rem;
+  align-items:center;gap:0.18rem;
+  margin-bottom:0.24rem;
 }
-.stat-icon{font-size:.9rem;opacity:.7;filter:sepia(.4)}
+.stat-icon{font-size:0.288rem;opacity:.7;filter:sepia(.4)}
 .stat-label-text{
-  font-family:var(--font-b);font-size:.88rem;
+  font-family:var(--font-b);font-size:0.282rem;
   font-weight:600;letter-spacing:.04em;color:var(--deep-brown);
 }
 /* 数据条 track */
 .stat-track-wrap{
   grid-column:2;
-  display:flex;align-items:center;gap:2vw;
+  display:flex;align-items:center;gap:0.15rem;
 }
 .stat-track{
   flex:1;height:1px;
@@ -770,22 +771,22 @@ body{
   background:var(--gold);
 }
 .stat-val{
-  font-family:var(--font-h);font-size:.75rem;
-  color:var(--deep-brown);font-weight:700;text-align:right;min-width:32px;
+  font-family:var(--font-h);font-size:0.24rem;
+  color:var(--deep-brown);font-weight:700;text-align:right;min-width:0.138rem;
 }
 
 /* 操作按钮 */
 .result-actions{
   display:flex;flex-direction:column;
-  gap:3.2vw;align-items:center;
-  padding:4vw 0 8vw;
+  gap:0.24rem;align-items:center;
+  padding:0.3rem 0 0.6rem;
 }
 .btn-share{
   width:100%;background:transparent;
   border:1px solid var(--gold-dk);
   color:var(--gold);
-  padding:3.7vw 4vw;
-  font-family:var(--font-h);font-size:.82rem;
+  padding:0.278rem 0.3rem;
+  font-family:var(--font-h);font-size:0.262rem;
   letter-spacing:.08em;cursor:pointer;
   transition:background .2s;text-align:center;
 }
@@ -793,8 +794,8 @@ body{
 .btn-again{
   background:transparent;border:none;
   border-bottom:1px solid var(--border-dk);
-  color:var(--mid-brown);padding:2vw 0;
-  font-family:var(--font-h);font-size:.72rem;
+  color:var(--mid-brown);padding:0.15rem 0;
+  font-family:var(--font-h);font-size:0.23rem;
   letter-spacing:.2em;cursor:pointer;
   transition:color .2s,border-color .2s;
 }
@@ -803,13 +804,13 @@ body{
 /* ============================================================
    命运羁绊 DESTINY BONDS
    ============================================================ */
-.bonds-section{margin-bottom:6.4vw}
+.bonds-section{margin-bottom:0.48rem}
 .bond-card{
   display:flex;align-items:center;
-  gap:3.2vw;padding:3vw 3.7vw;
+  gap:0.24rem;padding:0.225rem 0.278rem;
   border:1px solid rgba(184,134,11,.22);
   background:rgba(240,232,213,.45);
-  margin-bottom:2.4vw;
+  margin-bottom:0.18rem;
   position:relative;
 }
 .bond-card::before,.bond-card::after{
@@ -830,27 +831,27 @@ body{
 .bond-card.b-rival  {border-color:rgba(60,40,20,.4);background:rgba(220,210,195,.35)}
 
 .bond-avatar{
-  width:11vw;height:11vw;
-  max-width:44px;max-height:44px;
+  width:0.825rem;height:0.825rem;
+  max-width:0.189rem;max-height:44px;
   border-radius:50%;
   border:1px solid var(--border-dk);
   object-fit:cover;object-position:top center;
   flex-shrink:0;background:var(--parchment2);
   display:flex;align-items:center;justify-content:center;
-  font-size:5.5vw;overflow:hidden;
+  font-size:0.412rem;overflow:hidden;
 }
 .bond-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center}
 .bond-info{flex:1;min-width:0}
 .bond-type-row{
-  display:flex;align-items:center;gap:2vw;
-  margin-bottom:1.6vw;
+  display:flex;align-items:center;gap:0.15rem;
+  margin-bottom:0.12rem;
   flex-wrap:wrap;
 }
 .bond-type-tag{
-  font-family:var(--font-h);font-size:.68rem;
+  font-family:var(--font-h);font-size:0.218rem;
   font-weight:600;
   letter-spacing:.12em;
-  padding:.8vw 2.4vw;
+  padding:0.06rem 0.18rem;
   border:1.5px solid currentColor;
   white-space:nowrap;flex-shrink:0;
 }
@@ -860,21 +861,21 @@ body{
 .bond-type-tag.t-key   {color:#4A6030}
 .bond-type-tag.t-wind  {color:var(--mid-brown)}
 .bond-type-tag.t-rival {color:var(--deep-brown)}
-.bond-name-wrap{display:flex;flex-direction:column;gap:.4vw;min-width:0}
+.bond-name-wrap{display:flex;flex-direction:column;gap:0.05rem;min-width:0}
 .bond-name{
-  font-family:var(--font-d);font-size:.88rem;
+  font-family:var(--font-d);font-size:0.282rem;
   color:var(--deep-brown);letter-spacing:.06em;
   line-height:1.2;
 }
 .bond-en{
-  font-family:var(--font-h);font-size:.52rem;
+  font-family:var(--font-h);font-size:0.166rem;
   color:var(--mid-brown);letter-spacing:.25em;
   text-transform:uppercase;
 }
 .bond-desc{
-  font-family:var(--font-b);font-size:.88rem;
+  font-family:var(--font-b);font-size:0.282rem;
   color:var(--deep-brown);line-height:1.6;
-  margin-top:.8vw;
+  margin-top:0.06rem;
 }
 
 /* ============================================================
@@ -883,40 +884,40 @@ body{
 #sfr{padding:0;align-items:stretch}
 
 .friend-wrap{
-  width:100%;max-width:480px;margin:0 auto;
+  width:100%;max-width:6.4rem;margin:0 auto;
   min-height:100dvh;
   background-color:var(--parchment);
   background-size:cover;
   background-blend-mode:multiply;
-  padding:0 5.3vw 16vw;
+  padding:0 0.397rem 1.2rem;
 }
 
 .friend-head{
-  text-align:center;padding:12vw 0 0;
+  text-align:center;padding:0.9rem 0 0;
 }
 .friend-title{
   font-family:var(--font-d);
-  font-size:clamp(1.5rem,7.5vw,2.4rem);
+  font-size:0.179rem;
   font-weight:700;color:var(--gold);
-  letter-spacing:.08em;margin-bottom:1.6vw;
+  letter-spacing:.08em;margin-bottom:0.12rem;
 }
 .friend-subtitle{
-  font-family:var(--font-h);font-size:.55rem;
+  font-family:var(--font-h);font-size:0.176rem;
   letter-spacing:.45em;color:var(--muted);
-  text-transform:uppercase;margin-bottom:6.4vw;
+  text-transform:uppercase;margin-bottom:0.48rem;
 }
 
 /* 邀请提示区 */
 .frd-prompt{text-align:center}
-.frd-icon{font-size:14vw;display:block;margin:0 auto 3.2vw;filter:sepia(.2)}
+.frd-icon{font-size:1.05rem;display:block;margin:0 auto 0.24rem;filter:sepia(.2)}
 .frd-name{
-  font-family:var(--font-h);font-size:1.1rem;
+  font-family:var(--font-h);font-size:0.352rem;
   font-weight:700;color:var(--gold);
-  letter-spacing:.1em;margin-bottom:2.4vw;
+  letter-spacing:.1em;margin-bottom:0.18rem;
 }
 .frd-desc{
-  font-size:.82rem;line-height:1.85;
-  color:var(--mid-brown);margin-bottom:6.4vw;
+  font-size:0.262rem;line-height:1.85;
+  color:var(--mid-brown);margin-bottom:0.48rem;
 }
 
 /* 对比区 */
@@ -926,7 +927,7 @@ body{
 /* 两神祇对比卡 */
 .cmp-pair{
   display:flex;align-items:stretch;
-  gap:0;margin-bottom:5.3vw;
+  gap:0;margin-bottom:0.397rem;
 }
 .cmp-card{
   flex:1;
@@ -941,19 +942,19 @@ body{
   display:block;
 }
 .cmp-portrait-emoji{
-  display:none;font-size:12vw;
-  padding:4vw 0 2vw;filter:sepia(.2);
+  display:none;font-size:0.9rem;
+  padding:0.3rem 0 0.15rem;filter:sepia(.2);
 }
 .cmp-card.no-img .cmp-portrait{display:none}
 .cmp-card.no-img .cmp-portrait-emoji{display:block}
-.cmp-info{padding:2.4vw 2vw;text-align:center;width:100%}
+.cmp-info{padding:0.18rem 0.15rem;text-align:center;width:100%}
 .cmp-name{
-  font-family:var(--font-d);font-size:clamp(.9rem,4.5vw,1.2rem);
+  font-family:var(--font-d);font-size:0.109rem;
   font-weight:700;color:var(--gold);
-  letter-spacing:.08em;margin-bottom:1.2vw;
+  letter-spacing:.08em;margin-bottom:0.09rem;
 }
 .cmp-role{
-  font-family:var(--font-h);font-size:.52rem;
+  font-family:var(--font-h);font-size:0.166rem;
   letter-spacing:.06em;color:var(--muted);
   line-height:1.5;
 }
@@ -962,15 +963,15 @@ body{
 .vs-sep{
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  padding:0 3.2vw;flex-shrink:0;
+  padding:0 0.24rem;flex-shrink:0;
 }
 .vs-bolt{
-  font-size:7vw;color:var(--gold);
+  font-size:0.525rem;color:var(--gold);
   filter:drop-shadow(0 0 6px rgba(184,134,11,.5));
-  margin-bottom:1.6vw;
+  margin-bottom:0.12rem;
 }
 .vs-txt{
-  font-family:var(--font-h);font-size:.55rem;
+  font-family:var(--font-h);font-size:0.176rem;
   letter-spacing:.3em;color:var(--muted);
 }
 
@@ -978,14 +979,14 @@ body{
 .rel-card{
   border:1px solid var(--border-dk);
   background:var(--parchment2);
-  padding:5.3vw 4.5vw;
-  margin-bottom:6.4vw;
+  padding:0.397rem 0.337rem;
+  margin-bottom:0.48rem;
   position:relative;
 }
 /* 角花 */
 .rel-card::before,.rel-card::after{
   content:'';position:absolute;
-  width:10px;height:10px;
+  width:0.042rem;height:0.042rem;
 }
 .rel-card::before{top:6px;left:6px;
   border-top:1px solid var(--gold-dk);border-left:1px solid var(--gold-dk)}
@@ -993,62 +994,62 @@ body{
   border-bottom:1px solid var(--gold-dk);border-right:1px solid var(--gold-dk)}
 .rel-type{
   font-family:var(--font-d);
-  font-size:clamp(1rem,5vw,1.4rem);
+  font-size:0.122rem;
   font-weight:700;
   letter-spacing:.08em;color:var(--gold);
-  text-align:center;margin-bottom:4vw;
+  text-align:center;margin-bottom:0.3rem;
   line-height:1.3;
 }
 .rel-type-en{
-  font-family:var(--font-h);font-size:.52rem;
+  font-family:var(--font-h);font-size:0.166rem;
   letter-spacing:.4em;color:var(--muted);
   text-transform:uppercase;
-  text-align:center;margin-bottom:4vw;
+  text-align:center;margin-bottom:0.3rem;
   display:block;
 }
 .rel-story{
-  font-size:.85rem;line-height:2;
-  color:var(--mid-brown);margin-bottom:4vw;
+  font-size:0.272rem;line-height:2;
+  color:var(--mid-brown);margin-bottom:0.3rem;
 }
 .rel-dynamic{
   border-left:2px solid var(--gold-dk);
-  padding:1.6vw 0 1.6vw 3.7vw;
+  padding:0.12rem 0 0.12rem 0.278rem;
   font-family:var(--font-b);font-style:italic;
-  font-size:.92rem;color:var(--gold);
+  font-size:0.294rem;color:var(--gold);
   opacity:.88;line-height:1.7;
 }
 
 /* 底部两按钮 */
 .friend-actions{
   display:grid;grid-template-columns:1fr 1fr;
-  gap:3.2vw;
+  gap:0.24rem;
 }
 .btn-act{
   background:transparent;
   border:1px solid var(--border-dk);
   color:var(--gold);
-  padding:3.7vw 2vw;
-  font-family:var(--font-h);font-size:.7rem;
+  padding:0.278rem 0.15rem;
+  font-family:var(--font-h);font-size:0.224rem;
   letter-spacing:.06em;cursor:pointer;
   transition:background .2s;text-align:center;
   display:flex;flex-direction:column;
-  align-items:center;gap:1.5vw;
+  align-items:center;gap:0.112rem;
 }
 .btn-act:active{background:rgba(184,134,11,.1)}
-.btn-act-icon{font-size:1rem;opacity:.8}
-.btn-act-text{font-size:.62rem;letter-spacing:.08em}
+.btn-act-icon{font-size:0.32rem;opacity:.8}
+.btn-act-text{font-size:0.198rem;letter-spacing:.08em}
 
 /* ============================================================
    TOAST
    ============================================================ */
 .toast{
-  position:fixed;bottom:8vw;left:50%;
+  position:fixed;bottom:0.6rem;left:50%;
   transform:translateX(-50%);
   background:var(--charcoal);
   border:1px solid var(--border-dk);
   color:var(--parchment);
-  padding:3vw 6vw;
-  font-family:var(--font-h);font-size:.75rem;
+  padding:0.225rem 0.45rem;
+  font-family:var(--font-h);font-size:0.24rem;
   letter-spacing:.1em;z-index:9999;
   white-space:nowrap;
   animation:toastIn .3s ease,toastOut .3s ease 2.5s forwards;
@@ -1070,28 +1071,28 @@ body{
 #splash.hide{opacity:0;pointer-events:none}
 .splash-title{
   font-family:var(--font-d);
-  font-size:clamp(1.6rem,8vw,2.4rem);
+  font-size:0.192rem;
   font-weight:700;color:var(--gold);
-  letter-spacing:.12em;margin-bottom:1.6vw;
+  letter-spacing:.12em;margin-bottom:0.12rem;
   text-align:center;
 }
 .splash-sub{
-  font-family:var(--font-h);font-size:.55rem;
+  font-family:var(--font-h);font-size:0.176rem;
   letter-spacing:.45em;color:var(--muted);
-  text-transform:uppercase;margin-bottom:10vw;
+  text-transform:uppercase;margin-bottom:0.75rem;
 }
 .splash-moon{
-  font-size:12vw;color:var(--gold);
+  font-size:0.9rem;color:var(--gold);
   animation:splashMoon 2s ease-in-out infinite;
   filter:drop-shadow(0 0 16px rgba(184,134,11,.4));
-  margin-bottom:8vw;
+  margin-bottom:0.6rem;
 }
 @keyframes splashMoon{
   0%,100%{transform:rotate(-12deg) scale(1);opacity:.7}
   50%{transform:rotate(12deg) scale(1.1);opacity:1}
 }
 .splash-bar-wrap{
-  width:48vw;max-width:180px;
+  width:3.6rem;max-width:2.4rem;
   height:1px;background:rgba(184,134,11,.2);
   position:relative;overflow:hidden;
 }
@@ -1105,15 +1106,14 @@ body{
   0%{left:-40%}100%{left:100%}
 }
 .splash-hint{
-  margin-top:4vw;
-  font-family:var(--font-h);font-size:.52rem;
+  margin-top:0.3rem;
+  font-family:var(--font-h);font-size:0.166rem;
   letter-spacing:.2em;color:var(--muted);
   opacity:.5;
 }
 
 
-@media(min-width:600px){
-  html{font-size:16px}
+@media(min-width:8rem){
 
   /* Screens are fixed full-viewport; content max-width stays */
   .screen{
@@ -1122,45 +1122,45 @@ body{
   }
 
   /* Cap vw-based spacing that becomes excessive on wide viewports */
-  .intro-content{padding-top:48px}
-  .intro-moon{font-size:36px;margin-bottom:12px}
-  .intro-desc{margin-bottom:20px;max-width:360px}
-  .feat-list{gap:8px;margin-bottom:24px}
-  .feat-item{padding:12px 16px;gap:12px}
-  .divider{margin:16px 0}
+  .intro-content{padding-top:0.205rem}
+  .intro-moon{font-size:0.154rem;margin-bottom:0.051rem}
+  .intro-desc{margin-bottom:0.086rem;max-width:4.8rem}
+  .feat-list{gap:0.05rem;margin-bottom:0.102rem}
+  .feat-item{padding:0.051rem 0.067rem;gap:0.051rem}
+  .divider{margin:0.067rem 0}
 
   /* Setup page */
-  .setup-content{padding:48px 24px 32px}
-  .input-field{margin-bottom:24px}
-  .totem-grid{gap:8px;margin-bottom:16px}
-  .uid-row{margin-bottom:20px}
+  .setup-content{padding:0.205rem 0.102rem 0.138rem}
+  .input-field{margin-bottom:0.102rem}
+  .totem-grid{gap:0.05rem;margin-bottom:0.067rem}
+  .uid-row{margin-bottom:0.086rem}
 
   /* Quiz page */
   .q-scene-img{aspect-ratio:21/9}
-  .q-text{padding:16px 20px 12px}
-  .opt-btn{padding:14px 18px 14px 42px}
-  .opt-btn::before{left:18px}
-  .quiz-top{padding:40px 20px 16px}
+  .q-text{padding:0.067rem 0.086rem 0.051rem}
+  .opt-btn{padding:0.061rem 0.077rem 0.061rem 0.179rem}
+  .opt-btn::before{left:0.077rem}
+  .quiz-top{padding:0.17rem 0.086rem 0.067rem}
 
   /* Result page */
   .result-wrap,
-  .friend-wrap{max-width:520px}
+  .friend-wrap{max-width:6.93rem}
   .result-hero{aspect-ratio:4/3}
-  .result-body{padding:0 32px 60px}
-  .result-tags{gap:8px;margin:20px 0 24px}
-  .result-desc{margin-bottom:20px}
-  .result-quote{margin-bottom:24px}
-  .stats-section{margin-bottom:24px}
-  .stat-row{margin-bottom:12px}
-  .result-actions{gap:12px}
+  .result-body{padding:0 0.138rem 0.256rem}
+  .result-tags{gap:0.05rem;margin:0.086rem 0 0.102rem}
+  .result-desc{margin-bottom:0.086rem}
+  .result-quote{margin-bottom:0.102rem}
+  .stats-section{margin-bottom:0.102rem}
+  .stat-row{margin-bottom:0.051rem}
+  .result-actions{gap:0.051rem}
 
   /* Friend page */
-  .friend-wrap{padding:0 20px 60px}
-  .friend-head{padding:48px 0 0}
-  .rel-card{padding:20px 18px}
+  .friend-wrap{padding:0 0.086rem 0.256rem}
+  .friend-head{padding:0.205rem 0 0}
+  .rel-card{padding:0.086rem 0.077rem}
 
   /* Toast */
-  .toast{padding:12px 24px}
+  .toast{padding:0.051rem 0.102rem}
 
   /* Content column shadow to lift it from the dark bg */
   .intro-wrap,
@@ -1172,7 +1172,6 @@ body{
   }
 }
 
-@media(max-width:360px){html{font-size:14px}}
 
 .hid{display:none!important}
 </style>
@@ -1933,7 +1932,7 @@ function showResult(gid){
     var icon=document.createElement('div');icon.className='stat-icon';
     icon.textContent=STAT_ICONS[dim]||'✦';
     var wrap=document.createElement('div');
-    wrap.style.cssText='grid-column:2;display:flex;flex-direction:column;gap:1.5vw';
+    wrap.style.cssText='grid-column:2;display:flex;flex-direction:column;gap:0.11rem';
     var lbl=document.createElement('div');lbl.className='stat-label-text';lbl.textContent=dim;
     var trackWrap=document.createElement('div');trackWrap.className='stat-track-wrap';
     var trk=document.createElement('div');trk.className='stat-track';
